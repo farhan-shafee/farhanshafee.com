@@ -25,6 +25,9 @@ const projectsByRoute = new Map(
 );
 const routes = [...coreRoutes, ...projectsByRoute.keys()];
 const flagshipSlugs = ["cyberbit-solutions", "ai-job-intelligence-engine"];
+const jobEngineTitle = "Job Intelligence Engine";
+const jobEngineRoute = "/work/ai-job-intelligence-engine";
+const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
 
 async function expectProjectImages(page: Page, project: Project) {
   const assets = [
@@ -180,13 +183,20 @@ test("metadata, internal links, security headers and feeds are valid", async ({
 }) => {
   const links = new Set<string>();
   const titles = new Set<string>();
-  for (const route of routes) {
+  const publicHtmlRoutes = new Set([
+    ...routes,
+    ...sitemap().map(({ url }) => new URL(url).pathname),
+  ]);
+  for (const route of publicHtmlRoutes) {
     const response = await page.goto(route);
     // Check the full response, including metadata and React's serialized output.
-    expect(
-      await response!.text(),
-      `No editorial TODOs on ${route}`,
-    ).not.toMatch(/\bTODO\b|projectEvidenceBacklog/);
+    const html = await response!.text();
+    expect(html, `No editorial TODOs on ${route}`).not.toMatch(
+      /\bTODO\b|projectEvidenceBacklog/,
+    );
+    expect(html, `No stale project name on ${route}`).not.toMatch(
+      oldJobEngineTitle,
+    );
     const headers = response!.headers();
     expect(headers["x-content-type-options"]).toBe("nosniff");
     expect(headers["content-security-policy"]).toContain(
@@ -209,6 +219,57 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       "content",
       /https:\/\/farhanshafee.com\/opengraph-image/,
     );
+    if (route === "/" || route === "/work") {
+      await expect(
+        page.getByRole("heading", { name: jobEngineTitle, exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("link", { name: jobEngineTitle, exact: true }),
+      ).toHaveAttribute("href", jobEngineRoute);
+    }
+    if (route === jobEngineRoute) {
+      expect(response?.status()).toBe(200);
+      await expect(page).toHaveURL(new RegExp(`${jobEngineRoute}$`));
+      await expect(page.locator("h1")).toHaveText(jobEngineTitle);
+      expect(title).toBe(`${jobEngineTitle} | Farhan Shafee`);
+      const project = projectsByRoute.get(jobEngineRoute)!;
+      for (const selector of [
+        'meta[property="og:title"]',
+        'meta[name="twitter:title"]',
+      ])
+        await expect(page.locator(selector)).toHaveAttribute(
+          "content",
+          `${jobEngineTitle} | Farhan Shafee`,
+        );
+      for (const selector of [
+        'meta[name="description"]',
+        'meta[property="og:description"]',
+        'meta[name="twitter:description"]',
+      ])
+        await expect(page.locator(selector)).toHaveAttribute(
+          "content",
+          project.description,
+        );
+      await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+        "content",
+        `https://farhanshafee.com${jobEngineRoute}`,
+      );
+      const structuredData = await page
+        .locator('script[type="application/ld+json"]')
+        .evaluateAll((scripts) =>
+          scripts.map((script) => JSON.parse(script.textContent ?? "{}")),
+        );
+      const breadcrumbs = structuredData.find(
+        (schema) => schema["@type"] === "BreadcrumbList",
+      );
+      expect(breadcrumbs).toBeDefined();
+      expect(breadcrumbs.itemListElement).toContainEqual({
+        "@type": "ListItem",
+        position: 2,
+        name: jobEngineTitle,
+        item: `https://farhanshafee.com${jobEngineRoute}`,
+      });
+    }
     for (const href of await page
       .locator("a[href]")
       .evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!)))
@@ -228,17 +289,25 @@ test("metadata, internal links, security headers and feeds are valid", async ({
   ]) {
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
-    if (path !== "/opengraph-image")
-      expect(
-        await response.text(),
-        `No editorial TODOs in ${path}`,
-      ).not.toMatch(/\bTODO\b/);
+    if (path !== "/opengraph-image") {
+      const body = await response.text();
+      expect(body, `No editorial TODOs in ${path}`).not.toMatch(/\bTODO\b/);
+      expect(body, `No stale project name in ${path}`).not.toMatch(
+        oldJobEngineTitle,
+      );
+    }
   }
   const articles = getPublishedArticles();
   const rss = await (await request.get("/rss.xml")).text();
   expect(rss.match(/<item>/g)?.length ?? 0).toBe(articles.length);
   const sitemapXml = await (await request.get("/sitemap.xml")).text();
   expect(sitemapXml.match(/<loc>/g)?.length).toBe(sitemap().length);
+  expect(sitemapXml).toContain(
+    `<loc>https://farhanshafee.com${jobEngineRoute}</loc>`,
+  );
+  expect(sitemapXml).not.toContain(
+    "<loc>https://farhanshafee.com/work/job-intelligence-engine</loc>",
+  );
   for (const file of readdirSync("content/writing").filter((f) =>
     f.endsWith(".mdx"),
   )) {

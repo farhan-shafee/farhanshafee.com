@@ -154,13 +154,13 @@ export const projects: Project[] = [
     visibility: "public",
   },
   {
-    title: "AI Job Intelligence Engine",
+    title: "Job Intelligence Engine",
     slug: "ai-job-intelligence-engine",
     status: "Active",
-    category: "AI automation / Systems engineering",
+    category: "Workflow automation / Systems engineering",
     kind: "personal",
     description:
-      "A personal system for job discovery, evidence-based matching, application preparation, and tracking.",
+      "An engineering system for job discovery, normalization, matching against career evidence, and application workflows.",
     caseStudy: {
       overview: {
         paragraphs: [
@@ -187,13 +187,13 @@ export const projects: Project[] = [
         bullets: [
           "Greenhouse, Lever, and Ashby public-feed adapters; JSON-LD job extraction; and LinkedIn public-page/import parsing.",
           "Microsoft Graph Mail.Read integration for discovering job, recruiter, and application messages.",
-          "Evidence-linked matching, recruiter messages, optional cover letters, screening-answer assistance, and résumé/application packets.",
+          "Evidence-linked matching, recruiter-message templates, optional cover-letter templates, screening-answer assistance, and résumé/application packets.",
           "Résumé review and DOCX export, plus a tracker for stages, notes, follow-ups, outcomes, and event history.",
         ],
       },
       engineeringDecisions: {
         bullets: [
-          "Use deterministic requirement scoring and evidence-backed templates. The current generation code does not call a language model.",
+          "Application assistance uses deterministic templates grounded in career evidence; requirement scoring is deterministic as well. The current workflow does not use a language model.",
           "Retain evidence references and gaps. Unresolved personal screening questions require user input rather than an invented answer.",
           "Run discovery against selected inputs and configured sources; do not treat a source adapter as unrestricted background crawling.",
         ],

@@ -67,6 +67,21 @@ const exploringLabSlugs = [
   "secure-infrastructure-homelab",
 ] as const;
 
+const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
+
+test("Job Intelligence Engine retains its established URL and accurate public positioning", () => {
+  const project = getPublicProjects().find(
+    ({ slug }) => slug === "ai-job-intelligence-engine",
+  );
+  assert.ok(project, "The established project slug must remain public");
+  assert.equal(project.title, "Job Intelligence Engine");
+  assert.equal(project.category, "Workflow automation / Systems engineering");
+  assert.equal(project.status, "Active");
+  assert.equal(project.kind, "personal");
+  assert.equal(project.featured, true);
+  assert.doesNotMatch(JSON.stringify(getPublicProjects()), oldJobEngineTitle);
+});
+
 test("absent or whitespace-only content creates no empty case-study modules", () => {
   const empty = { paragraphs: [" ", "\n"], bullets: [""] };
   for (const project of [
@@ -310,11 +325,37 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
     const metadata = await generateMetadata(props);
     assert.equal(metadata.title, project.title);
     assert.equal(metadata.description, project.description);
+    const fullTitle = `${project.title} | Farhan Shafee`;
+    assert.equal(metadata.openGraph?.title, fullTitle);
+    assert.equal(metadata.openGraph?.description, project.description);
+    assert.equal(metadata.twitter?.title, fullTitle);
+    assert.equal(metadata.twitter?.description, project.description);
     assert.equal(
       metadata.alternates?.canonical,
       `https://farhanshafee.com/work/${project.slug}`,
     );
+    assert.equal(
+      metadata.openGraph?.url,
+      `https://farhanshafee.com/work/${project.slug}`,
+    );
+    assert.doesNotMatch(JSON.stringify(metadata), oldJobEngineTitle);
     const html = renderToStaticMarkup(await ProjectPage(props));
+    assert.doesNotMatch(html, oldJobEngineTitle);
+    const structuredData = [
+      ...html.matchAll(
+        /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs,
+      ),
+    ].map((match) => JSON.parse(match[1]));
+    const breadcrumbs = structuredData.find(
+      (schema) => schema["@type"] === "BreadcrumbList",
+    );
+    assert.ok(breadcrumbs, `${project.slug} must include breadcrumbs`);
+    assert.deepEqual(breadcrumbs.itemListElement.at(-1), {
+      "@type": "ListItem",
+      position: 2,
+      name: project.title,
+      item: `https://farhanshafee.com/work/${project.slug}`,
+    });
     assert.match(html, /class="split-layout section"/);
     assert.match(html, /id="overview">Overview<\/h2>/);
     const imageCount =
