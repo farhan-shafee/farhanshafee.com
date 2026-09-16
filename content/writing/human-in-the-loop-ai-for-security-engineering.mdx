@@ -1,0 +1,47 @@
+---
+title: "Human-in-the-Loop AI for Security Engineering"
+description: "Draft outline for the decision boundaries, evidence, and review mechanisms needed in AI-assisted defensive workflows."
+date: "2026-09-16"
+slug: "human-in-the-loop-ai-for-security-engineering"
+tags: ["ai-automation", "security-engineering"]
+draft: true
+featured: false
+---
+
+> Working outline. This may become a design essay or an implementation write-up. Choose the form after evidence review; do not imply that a proposed architecture has been deployed.
+
+## Which decisions belong to whom?
+
+- TODO: Define a bounded defensive task and identify the consequences of an incorrect recommendation.
+- Distinguish summarization, prioritization, and decision support from actions that change external systems.
+- TODO: State the human review boundary and the authority required for any action.
+
+## Give the reviewer usable evidence
+
+- TODO: Describe how source records, timestamps, uncertainty, and model output would be presented.
+- Evidence needed: an actual reviewed interface or a clearly labeled conceptual sketch.
+- Questions to answer: can the reviewer trace each claim to a source and identify unsupported conclusions?
+
+## Constrain the system
+
+- TODO: Research and cite authoritative guidance on untrusted input, bounded tool permissions, and separation of data from instructions.
+- TODO: Distinguish implemented safeguards from design recommendations.
+- Avoid including offensive procedures or describing automated exploitation workflows.
+
+## Evaluate the complete workflow
+
+- TODO: Define a representative, authorized evaluation set and the expected behavior for uncertain cases.
+- Potential evaluation dimensions: unsupported assertions, missed context, reviewer effort, and incorrect actions prevented.
+- Claims to validate: any reported improvement needs a comparison method, sample size, and limitations.
+
+## Design for disagreement and failure
+
+- TODO: Explain how a reviewer can reject, correct, or defer a recommendation.
+- Questions to answer: what is recorded after an override, and what happens when models or source systems are unavailable?
+- Be explicit about residual risk and the limits of human review.
+
+## Publication checklist
+
+- Separate conceptual recommendations from claims about Farhan's implementation.
+- Review examples for authorization, sensitive information, and factual support.
+- Replace TODOs, verify cited sources, and set an accurate publication date before changing the draft flag.

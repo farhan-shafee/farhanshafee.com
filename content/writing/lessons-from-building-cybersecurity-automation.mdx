@@ -1,0 +1,47 @@
+---
+title: "Lessons From Building Cybersecurity Automation"
+description: "Draft outline for evidence-based lessons about reliability, scope, and human judgment in defensive automation."
+date: "2026-09-16"
+slug: "lessons-from-building-cybersecurity-automation"
+tags: ["security-automation", "systems-engineering"]
+draft: true
+featured: false
+---
+
+> Working outline. Select verified examples from work Farhan is authorized to discuss. Do not invent incidents, customers, effectiveness metrics, or business outcomes.
+
+## Start with a bounded problem
+
+- TODO: Choose a real defensive workflow and describe its inputs, intended output, and limits.
+- TODO: Explain why automation was appropriate and which decisions were deliberately retained by a person.
+- Evidence needed: a redacted workflow diagram and a description consistent with the implementation.
+
+## Data quality is part of the system
+
+- TODO: Record an actual example involving missing, stale, duplicate, or inconsistent input.
+- Questions to answer: how does the implementation represent unknown states and preserve source context?
+- Claims to validate: any data-quality improvements must have a documented baseline.
+
+## Failure behavior matters
+
+- TODO: Explain implemented handling for dependency failures, retries, partial results, and repeated requests.
+- TODO: Include a safe, synthetic failure example from tests if one exists, clearly labeled.
+- Separate current behavior from proposed improvements.
+
+## Keep actions reviewable
+
+- TODO: Describe the actual permissions, approval boundaries, and audit information associated with external changes.
+- Questions to answer: can a reviewer understand why a result was produced, and can an action be reversed?
+- Keep the discussion focused on authorized defensive operations.
+
+## Lessons supported by evidence
+
+- TODO: Select two or three lessons with a concrete decision, observation, and consequence for each.
+- TODO: Include code only when reviewed for publication and stripped of sensitive identifiers.
+- Omit broad claims that automation replaces expertise or guarantees security.
+
+## Publication checklist
+
+- Confirm ownership and permission for every example.
+- Check that CyberBit references accurately describe verified work without implied customer adoption.
+- Replace all TODOs and unsupported claims; review the publication date and draft flag.

@@ -1,0 +1,48 @@
+---
+title: "Designing a Secure Remote-Access Homelab"
+description: "Draft outline for explaining a homelab's access boundaries, operational tradeoffs, and recovery plan without exposing private infrastructure."
+date: "2026-09-16"
+slug: "designing-a-secure-remote-access-homelab"
+tags: ["infrastructure", "security-engineering"]
+draft: true
+featured: false
+---
+
+> Working outline. No hardware, network design, access product, or implemented control is asserted here. Validate the actual environment before writing in the first person.
+
+## Goals and threat model
+
+- TODO: State the genuine learning and operational goals for the lab.
+- TODO: Describe the assets being protected and the consequences of losing access or a device.
+- Questions to answer: who needs access, from which device classes, and under what trust assumptions?
+
+## Access boundaries
+
+- TODO: Diagram a simplified, redacted architecture using generic labels.
+- TODO: Explain the intended separation between management, workloads, and everyday devices.
+- Claims to validate: identity checks, least-privilege access, device requirements, and any segmentation actually implemented.
+- Keep out of the article: public or private addresses, internal hostnames, live topology details, credentials, and recovery secrets.
+
+## Operational choices
+
+- TODO: Compare the access approaches actually considered using manageability, exposure, and failure behavior.
+- TODO: Explain the chosen approach only after verifying it against configuration.
+- Evidence needed: a sanitized design diagram and configuration excerpts that demonstrate a general principle without revealing an operational path into the lab.
+
+## Recovery and maintenance
+
+- TODO: Document the real update routine, access revocation process, backup strategy, and recovery checks.
+- Questions to answer: what happens if the identity service is unavailable or the primary administration device is lost?
+- Claims to validate: backup recoverability requires a recorded restore exercise; a configured backup alone is insufficient evidence.
+
+## What remains unresolved
+
+- TODO: State known limitations and changes still being evaluated.
+- Avoid describing the system as fully secure; explain the specific properties verified and their limits.
+
+## Publication checklist
+
+- Review diagrams and screenshots for secrets and identifying infrastructure details.
+- Separate implemented controls from proposed improvements.
+- Include only defensive design discussion and verified experience.
+- Replace TODOs, review factual claims, and set an accurate publication date before publishing.
