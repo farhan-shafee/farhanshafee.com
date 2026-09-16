@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="640" viewBox="0 0 420 640" role="img" aria-labelledby="title desc">
+  <title id="title">CyberBit public-signal workflows</title>
+  <desc id="desc">Public checks and shared evaluation support browser summaries and reviewed Snapshot reports. Only eligible completed domain checks feed the paid Brief. Operations and email integrations support the relevant workflows.</desc>
+  <style>
+    svg { --bg:#f8f9fb; --surface:#fff; --ink:#20232c; --muted:#5d6370; --line:#dfe2e9; --accent:#5b46cb; }
+    @media (prefers-color-scheme:dark) { svg { --bg:#121419; --surface:#191c23; --ink:#ecedf2; --muted:#a8adba; --line:#333743; --accent:#b1a2ff; } }
+    .canvas { fill:var(--bg); }
+    .box { fill:var(--surface); stroke:var(--line); }
+    .flow { fill:none; stroke:var(--accent); stroke-width:1.5; }
+    .arrow { fill:var(--accent); }
+    text { font-family:Arial,Helvetica,sans-serif; text-anchor:middle; fill:var(--ink); font-size:20px; }
+    .note { font-size:17px; fill:var(--muted); }
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path class="arrow" d="M0 0 8 4 0 8Z"/></marker></defs>
+  <rect class="canvas" width="420" height="640"/>
+  <rect class="box" x="24" y="24" width="372" height="74" rx="5"/>
+  <text x="210" y="54">Public security tools</text>
+  <text class="note" x="210" y="79">Website · email · connection</text>
+  <path class="flow" d="M210 98V129" marker-end="url(#arrow)"/>
+  <rect class="box" x="24" y="132" width="372" height="62" rx="5"/>
+  <text x="210" y="169">Public-signal evaluation</text>
+  <path class="flow" d="M210 194V208H40V465"/>
+  <path class="flow" d="M40 257H69M40 361H69M40 465H69" marker-end="url(#arrow)"/>
+  <rect class="box" x="72" y="220" width="324" height="74" rx="5"/>
+  <text x="234" y="250">Browser summary</text>
+  <text class="note" x="234" y="275">Free public-check results</text>
+  <rect class="box" x="72" y="324" width="324" height="74" rx="5"/>
+  <text x="234" y="354">Human-reviewed Snapshot</text>
+  <text class="note" x="234" y="379">Intake · review · print / PDF</text>
+  <rect class="box" x="72" y="428" width="324" height="74" rx="5"/>
+  <text x="234" y="452">Eligible domain-check Brief</text>
+  <text class="note" x="234" y="478">Stripe · paid access · PDF</text>
+  <rect class="box" x="24" y="544" width="372" height="72" rx="5"/>
+  <text x="210" y="575">Operations &amp; communication</text>
+  <text class="note" x="210" y="600">Service CRM · paid state · email</text>
+</svg>

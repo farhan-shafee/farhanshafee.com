@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { getPublicProjects } from "../../src/data/projects";
+import { getPublicProjects, type Project } from "../../src/data/projects";
 import { readdirSync, readFileSync } from "node:fs";
 import {
   getPublishedArticles,
@@ -19,10 +19,35 @@ const coreRoutes = [
   "/now",
   "/contact",
 ];
-const routes = [
-  ...coreRoutes,
-  ...getPublicProjects().map(({ slug }) => `/work/${slug}`),
-];
+const publicProjects = getPublicProjects();
+const projectsByRoute = new Map(
+  publicProjects.map((project) => [`/work/${project.slug}`, project]),
+);
+const routes = [...coreRoutes, ...projectsByRoute.keys()];
+const flagshipSlugs = ["cyberbit-solutions", "ai-job-intelligence-engine"];
+
+async function expectProjectImages(page: Page, project: Project) {
+  const assets = [
+    ...(project.architectureDiagrams ?? []),
+    ...(project.screenshots ?? []),
+  ];
+  await expect(page.locator("main img")).toHaveCount(assets.length);
+  for (const asset of assets) {
+    const image = page.getByRole("img", { name: asset.alt, exact: true });
+    await expect(image).toHaveCount(1);
+    await expect(image).toHaveAttribute("alt", /\S/);
+    const source = new URL((await image.getAttribute("src")) ?? "", page.url());
+    expect(source.searchParams.get("url") ?? source.pathname).toBe(asset.src);
+    await image.scrollIntoViewIfNeeded();
+    await expect(image).toBeVisible();
+    await expect(image).toHaveJSProperty("complete", true);
+    await expect
+      .poll(() =>
+        image.evaluate((node) => (node as HTMLImageElement).naturalWidth),
+      )
+      .toBeGreaterThan(0);
+  }
+}
 
 for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
   test(`all pages render without overflow at ${width}px`, async ({ page }) => {
@@ -37,6 +62,12 @@ for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
       expect(response?.status(), route).toBe(200);
       await expect(page.locator("h1"), route).toHaveCount(1);
       await expect(page.locator("main")).toBeVisible();
+      const project = projectsByRoute.get(route);
+      if (project) await expectProjectImages(page, project);
+      // Capture fixed elements from their normal viewport position after lazy images load.
+      await page.evaluate(() =>
+        window.scrollTo({ top: 0, behavior: "instant" }),
+      );
       const dimensions = await page.evaluate(() => ({
         document: document.documentElement.scrollWidth,
         viewport: innerWidth,
@@ -64,11 +95,15 @@ for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
 }
 
 for (const theme of ["light", "dark"] as const) {
-  test(`core routes pass axe in ${theme} theme`, async ({ page }) => {
+  test(`core and project routes pass axe in ${theme} theme`, async ({
+    page,
+  }) => {
     await page.emulateMedia({ colorScheme: theme });
-    for (const route of coreRoutes) {
+    for (const route of routes) {
       await page.goto(route);
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+      const project = projectsByRoute.get(route);
+      if (project) await expectProjectImages(page, project);
       const result = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         .analyze();
@@ -83,6 +118,31 @@ for (const theme of ["light", "dark"] as const) {
       fullPage: true,
     });
   });
+
+  for (const width of [375, 1440]) {
+    test(`flagship evidence loads in ${theme} theme at ${width}px`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+      await page.setViewportSize({ width, height: width === 375 ? 812 : 1000 });
+      for (const slug of flagshipSlugs) {
+        const route = `/work/${slug}`;
+        const project = projectsByRoute.get(route);
+        expect(project, `${slug} is a public flagship`).toBeDefined();
+        const response = await page.goto(route);
+        expect(response?.status()).toBe(200);
+        await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+        await expectProjectImages(page, project!);
+        await page.evaluate(() =>
+          window.scrollTo({ top: 0, behavior: "instant" }),
+        );
+        await page.screenshot({
+          path: `.artifacts/flagship-${slug}-${theme}-${width}.png`,
+          fullPage: true,
+        });
+      }
+    });
+  }
 }
 
 test("keyboard navigation, persisted theme, and mobile links work", async ({

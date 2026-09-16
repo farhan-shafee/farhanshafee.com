@@ -14,7 +14,7 @@ type ProjectEvidenceReview = {
 /**
  * Source-only editorial backlog. Never import this module into application code
  * or serialize it into public project records, pages, metadata, feeds, or bundles.
- * These are questions to resolve, not claims that a feature or system exists.
+ * Sources record reviewed evidence; TODOs are unresolved questions, not claims.
  * The repository is public: record evidence requests here, never confidential data.
  * Draft article headings and prompts are not implementation evidence.
  */
@@ -22,171 +22,71 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   "cyberbit-solutions": {
     sources: [
       {
-        path: "src/app/about/page.tsx",
+        path: "docs/flagship-evidence-review.md",
         supports:
-          "Farhan created CyberBit Solutions to develop cybersecurity tools and services for businesses.",
-      },
-      {
-        path: "src/data/now.ts",
-        supports:
-          "CyberBit is current work. The original Building entry supports Active, without establishing deployment or production operation.",
+          "Claims C01-C21 distinguish owner attribution, source-confirmed capabilities, public website evidence, and deployment/provider-state limits. Source inspection was read-only against the existing working tree.",
       },
       {
         path: "src/config/site.ts",
-        supports: "The existing public CyberBit website URL.",
+        supports: "The verified public CyberBit website link.",
       },
     ],
     statusReview: {
       status: "Active",
       reason:
-        "Existing current-work content establishes ongoing work. No repository evidence establishes production deployment, customers, usage, or outcomes.",
+        "Owner-supplied active business/project, implemented source, and reachable public website. Keep Active rather than implying every inspected workflow has verified production operation.",
     },
     todos: [
       {
-        area: "problem",
+        area: "approved-visual-evidence",
         prompt:
-          "TODO: Describe the actual problem and intended users, with a concrete input, task, and output. Confirm Farhan's responsibility without implying customer adoption.",
+          "TODO: Supply publication-approved free-check results, a reviewed report, a sanitized report-preparation view, and the paid Brief experience. No customer records or private operational details.",
       },
       {
-        area: "architecture",
+        area: "deployment-provider-state",
         prompt:
-          "TODO: Provide a reviewed high-level system architecture, distinguish implemented components from plans, and supply a sanitized diagram if available.",
+          "TODO: Confirm the deployed revision and operating state of the documented integrations before adding production-operation claims. Source and deployment documentation do not establish live provider health.",
       },
       {
-        area: "components",
+        area: "measured-outcomes",
         prompt:
-          "TODO: Identify the major components that exist, what Farhan built, their responsibilities, and the evidence supporting each description.",
-      },
-      {
-        area: "application-workflows",
-        prompt:
-          "TODO: Document an implemented application workflow from input to output, including review boundaries and failure behavior where supported.",
-      },
-      {
-        area: "security",
-        prompt:
-          "TODO: Explain verified security and privacy decisions, their threat assumptions, and limits. Do not infer controls from the company category.",
-      },
-      {
-        area: "reporting-tooling",
-        prompt:
-          "TODO: Confirm whether reporting or tooling pipelines exist; if so, document their actual inputs, processing, outputs, and review steps.",
-      },
-      {
-        area: "payments-access",
-        prompt:
-          "TODO: Confirm whether payments or access-management systems exist; if so, describe their architecture and authorization boundaries without inferring a provider.",
-      },
-      {
-        area: "admin-crm",
-        prompt:
-          "TODO: Confirm whether admin or CRM workflows exist; if so, identify the actual workflow, data boundaries, and Farhan's implementation work.",
-      },
-      {
-        area: "transactional-email",
-        prompt:
-          "TODO: Confirm whether transactional email exists; if so, document verified triggers, delivery handling, and privacy decisions without guessing an integration.",
-      },
-      {
-        area: "deployment",
-        prompt:
-          "TODO: Confirm the deployment architecture and operating state from project evidence before using Production or naming hosting, storage, or delivery infrastructure.",
-      },
-      {
-        area: "screenshots",
-        prompt:
-          "TODO: Supply real, publication-approved screenshots with descriptive alt text, intrinsic dimensions, and captions; remove private records and sensitive configuration.",
-      },
-      {
-        area: "technologies",
-        prompt:
-          "TODO: List technologies verified in CyberBit's implementation. Farhan's general skills and this portfolio's stack do not establish the CyberBit stack.",
-      },
-      {
-        area: "engineering-decisions-lessons",
-        prompt:
-          "TODO: Record actual engineering decisions, alternatives considered, constraints, and lessons with supporting examples; omit unsupported outcome or effectiveness claims.",
+          "TODO: Add outcomes only with an approved measurement method and evidence; no security, revenue, conversion, or time-saving metrics are currently established.",
       },
     ],
   },
   "ai-job-intelligence-engine": {
     sources: [
       {
-        path: "src/data/projects.ts",
+        path: "docs/flagship-evidence-review.md",
         supports:
-          "Personal project scope: job discovery, scoring, tracking, application workflow automation, and application intelligence. No implemented feature is verified.",
-      },
-      {
-        path: "content/writing/how-i-built-an-ai-job-intelligence-engine.mdx",
-        supports:
-          "Explicitly provisional draft outline requiring verification of the title, implementation, and experience claims; not evidence of a completed system.",
+          "Claims J01-J18 record read-only source validation of the runtime, evidence model, discovery, matching, templates, resume review, tracking, and Graph integration, including qualifications.",
       },
     ],
     statusReview: {
-      status: "Exploring",
+      status: "Active",
       reason:
-        "The repository provides scope and an unverified draft outline, without code, deployment evidence, assets, or a confirmed current implementation. Retain the conservative existing status until reviewed.",
+        "Implemented personal system supported by source inspection and owner-provided current-use context. No public SaaS, external adoption, or verified production-operation claim.",
     },
     todos: [
       {
-        area: "problem-ownership",
+        area: "approved-visual-evidence",
         prompt:
-          "TODO: Describe the actual manual workflow that motivated the project and what Farhan implemented, supported by a sanitized example.",
+          "TODO: Supply reviewed Top Matches, scoring detail, Resume Lab, and tracker captures with safe demonstration data. Do not publish career facts, correspondence, private URLs, or application history.",
       },
       {
-        area: "architecture",
+        area: "runtime-integrations",
         prompt:
-          "TODO: Document the verified architecture and data flow; distinguish existing stages from proposed ones and supply a reviewed diagram if available.",
-      },
-      {
-        area: "job-source-adapters",
-        prompt:
-          "TODO: Confirm whether source adapters exist, identify the sources actually used and permitted access methods, and document normalization and provenance only where implemented.",
-      },
-      {
-        area: "scoring-pipeline",
-        prompt:
-          "TODO: Confirm whether a scoring pipeline exists; document actual inputs, scoring rules or model contracts, checks, and limitations without implying measured accuracy.",
-      },
-      {
-        area: "workflow-automation",
-        prompt:
-          "TODO: Verify which workflow steps are automated and which require human review. Do not imply automatic application submission without verified evidence.",
-      },
-      {
-        area: "data-model",
-        prompt:
-          "TODO: Describe the implemented data model, retained records, relationships, and lifecycle if they exist; provide a sanitized schema rather than personal application history.",
-      },
-      {
-        area: "integrations-technologies",
-        prompt:
-          "TODO: Confirm actual integrations, languages, storage, and model providers from project evidence; do not infer them from this portfolio or Farhan's general experience.",
-      },
-      {
-        area: "screenshots",
-        prompt:
-          "TODO: Supply real, reviewed interface captures with alt text, dimensions, and captions. Remove personal records, employer correspondence, private endpoints, and tokens.",
-      },
-      {
-        area: "privacy-security",
-        prompt:
-          "TODO: Document verified data handling, retention, permissions, and human approval boundaries, and distinguish implemented safeguards from proposals.",
+          "TODO: Confirm live deployment and provider consent/operation before adding operational claims. The code requests Microsoft Graph Mail.Read; tenant consent and successful discovery were not exercised in this review.",
       },
       {
         area: "repository-demo-links",
         prompt:
-          "TODO: Add verified public repository or demo links only when appropriate to publish and confirmed to belong to this project.",
+          "TODO: Add a verified public repository or demonstration link only if Farhan chooses to publish one. The source review does not authorize exposing private repository contents.",
       },
       {
-        area: "current-state",
+        area: "measured-outcomes",
         prompt:
-          "TODO: Confirm what runs today and which capabilities remain planned; update status only with supporting implementation or operating evidence.",
-      },
-      {
-        area: "engineering-decisions-lessons",
-        prompt:
-          "TODO: Provide concrete decisions, failure cases, constraints, and lessons from the actual implementation. Any time-saving or accuracy claim requires a measurement method and data.",
+          "TODO: Supply an evaluation method and approved data before claiming matching accuracy, time savings, or application outcomes.",
       },
     ],
   },

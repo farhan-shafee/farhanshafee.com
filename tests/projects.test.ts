@@ -57,6 +57,16 @@ const imageFixture: ProjectImage = {
   caption: "Test-only caption.",
 };
 
+const flagshipSlugs = [
+  "cyberbit-solutions",
+  "ai-job-intelligence-engine",
+] as const;
+
+const exploringLabSlugs = [
+  "detection-security-lab",
+  "secure-infrastructure-homelab",
+] as const;
+
 test("absent or whitespace-only content creates no empty case-study modules", () => {
   const empty = { paragraphs: [" ", "\n"], bullets: [""] };
   for (const project of [
@@ -171,11 +181,7 @@ test("an architecture diagram can provide evidence without filler prose", () => 
   assert.doesNotMatch(html, /<p>|Overview|Selected interfaces/);
 });
 
-test("project statuses and unverified details match the reviewed evidence boundary", () => {
-  assert.equal(
-    projects.find((project) => project.slug === "cyberbit-solutions")?.status,
-    "Active",
-  );
+test("project statuses match the reviewed evidence boundary", () => {
   for (const project of projects) {
     assert.ok(projectStatuses.includes(project.status));
     const review = projectEvidenceBacklog[project.slug];
@@ -185,12 +191,55 @@ test("project statuses and unverified details match the reviewed evidence bounda
     for (const source of review.sources) {
       assert.ok(fs.existsSync(path.resolve(source.path)));
     }
-    // The current repository does not establish any per-project stack or assets.
+  }
+});
+
+test("the two flagships contain reviewed engineering content and architecture evidence", () => {
+  for (const slug of flagshipSlugs) {
+    const project = getPublicProjects().find((entry) => entry.slug === slug);
+    assert.ok(project, `${slug} must have a public project record`);
+    assert.equal(project.featured, true);
+    assert.ok(
+      project.technologies.length > 0,
+      `${slug} needs a verified stack`,
+    );
+    assert.ok(
+      project.technologies.every((technology) => technology.trim()),
+      `${slug} cannot contain blank technology names`,
+    );
+    assert.ok(
+      project.technicalHighlights?.some((highlight) => highlight.trim()),
+      `${slug} needs reviewed technical highlights`,
+    );
+    for (const section of ["overview", "problem", "system"] as const) {
+      const content = project.caseStudy?.[section];
+      assert.ok(
+        [...(content?.paragraphs ?? []), ...(content?.bullets ?? [])].some(
+          (item) => item.trim(),
+        ),
+        `${slug} needs a substantive ${section} section`,
+      );
+    }
+    assert.ok(
+      project.architectureDiagrams?.length,
+      `${slug} needs its authored conceptual architecture diagram`,
+    );
+    const html = render(project);
+    assert.match(html, /id="architecture">Architecture<\/h2>/);
+    assert.match(html, /id="technical-highlights">Technical highlights<\/h2>/);
+  }
+});
+
+test("unverified labs retain their conservative scope", () => {
+  for (const slug of exploringLabSlugs) {
+    const project = projects.find((entry) => entry.slug === slug);
+    assert.ok(project, `Missing lab record ${slug}`);
+    assert.equal(project.status, "Exploring");
     assert.deepEqual(project.technologies, []);
     assert.equal(project.screenshots, undefined);
     assert.equal(project.architectureDiagrams, undefined);
     assert.equal(project.technicalHighlights, undefined);
-    assert.notEqual(project.status, "Production");
+    assert.deepEqual(Object.keys(project.caseStudy ?? {}), ["overview"]);
   }
 });
 
@@ -209,6 +258,15 @@ test("every declared project image names a real public asset with full context",
       assert.ok(image.alt.trim() && image.caption.trim());
       assert.ok(Number.isInteger(image.width) && image.width > 0);
       assert.ok(Number.isInteger(image.height) && image.height > 0);
+      assert.doesNotMatch(
+        `${image.alt} ${image.caption}`,
+        /\bTODO\b|projectEvidenceBacklog/,
+      );
+      if (path.extname(absolute).toLowerCase() === ".svg") {
+        const svg = fs.readFileSync(absolute, "utf8");
+        assert.match(svg, /<svg\b/, `${image.src} must be an SVG asset`);
+        assert.doesNotMatch(svg, /\bTODO\b|projectEvidenceBacklog/);
+      }
     }
   }
 });
@@ -230,12 +288,12 @@ test("evidence TODOs stay outside all application imports and public serializati
   }
   assert.doesNotMatch(
     JSON.stringify(getPublicProjects()),
-    /TODO:|statusReview|todos/,
+    /\bTODO\b|statusReview|todos/,
   );
   for (const project of getPublicProjects()) {
     const props = { params: Promise.resolve({ slug: project.slug }) };
     const html = renderToStaticMarkup(await ProjectPage(props));
-    assert.doesNotMatch(html, /TODO:|statusReview|projectEvidenceBacklog/);
+    assert.doesNotMatch(html, /\bTODO\b|statusReview|projectEvidenceBacklog/);
     for (const todo of projectEvidenceBacklog[project.slug].todos) {
       assert.ok(!html.includes(todo.prompt));
     }
@@ -259,9 +317,18 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
     const html = renderToStaticMarkup(await ProjectPage(props));
     assert.match(html, /class="split-layout section"/);
     assert.match(html, /id="overview">Overview<\/h2>/);
-    assert.doesNotMatch(
-      html,
-      /<img|id="architecture"|id="selected-interfaces"/,
+    const imageCount =
+      (project.screenshots?.length ?? 0) +
+      (project.architectureDiagrams?.length ?? 0);
+    assert.equal(
+      html.match(/<img\b/g)?.length ?? 0,
+      imageCount,
+      `${project.slug} must render each declared asset`,
+    );
+    assert.equal(
+      html.includes('id="selected-interfaces"'),
+      Boolean(project.screenshots?.length),
+      "Selected interfaces appears only when real screenshots are supplied",
     );
   }
   const props = {
