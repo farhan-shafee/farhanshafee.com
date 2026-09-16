@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Lab",
-  "Farhan Shafee's engineering notebook for security experiments, AI-assisted automation, detection, and infrastructure exploration.",
+  "Farhan Shafee's engineering notebook on detection signals, AI-assisted security workflows, and infrastructure access boundaries.",
   "/lab",
 );
 
@@ -14,7 +14,7 @@ export default function LabPage() {
       <PageIntro
         eyebrow="Lab / An engineering notebook"
         title="Questions worth investigating."
-        description="A place for security experiments, prototypes, and infrastructure notes. These are current areas of exploration; detailed results will follow as the work develops."
+        description="Notes on detection engineering, AI-assisted security workflows, and infrastructure. Detailed experiments and results are not yet published."
       />
       <div className="row-list section">
         {labEntries.map((entry, index) => (

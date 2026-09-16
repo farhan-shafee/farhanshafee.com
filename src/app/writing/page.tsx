@@ -24,10 +24,11 @@ export default function WritingPage() {
       {articles.length > 0 ? (
         <WritingList articles={articles} />
       ) : (
-        <EmptyState title="Good notes take real work.">
+        <EmptyState title="Technical writing in progress.">
           <p>
-            Technical articles will appear here as they are ready. In the
-            meantime, explore the systems and experiments behind the writing.
+            Articles on security engineering, automation, and infrastructure are
+            being prepared for review. Project overviews are available in the
+            meantime.
           </p>
           <TextLink href="/work">Explore the work</TextLink>
         </EmptyState>

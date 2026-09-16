@@ -23,8 +23,8 @@ export default function AboutPage() {
       />
       <PageIntro
         eyebrow="About / Farhan Shafee"
-        title="Engineering is the through line."
-        description="From backend financial systems to security tooling, my work is grounded in building practical technical systems."
+        title="Fintech, automation, and security engineering."
+        description="My background spans fintech software engineering, test automation, and backend financial systems."
       />
       <div className="split-layout section">
         <div className="side-label">Background & direction</div>
@@ -36,27 +36,24 @@ export default function AboutPage() {
             software delivery.
           </p>
           <p>
-            Security engineering is a growing focus of my work. I build
-            technical projects and security labs to explore how systems behave,
-            how they fail, and how to make them more dependable.
+            My security work includes technical projects and labs. The lab
+            notebook focuses on detection engineering, infrastructure security,
+            and AI-assisted workflows.
           </p>
-          <h2>Building CyberBit Solutions</h2>
+          <h2>CyberBit Solutions</h2>
           <p>
-            I created CyberBit Solutions to develop practical cybersecurity
-            tools and services for businesses. It brings together my interests
-            in security, automation, and technical entrepreneurship.
+            I created CyberBit Solutions to develop cybersecurity tools and
+            services primarily for businesses.
           </p>
           <p>
-            This site is the broader record of my work: the systems I build, the
-            questions I investigate, and the engineering decisions worth writing
-            down.
+            This site documents that work alongside my personal automation
+            projects, security labs, and financial systems background.
           </p>
-          <h2>Where my interests meet</h2>
+          <h2>Technical background</h2>
           <p>
-            I am interested in the overlap between security, AI-assisted
-            automation, and infrastructure, with a financial systems background
-            shaping how I approach those problems. My technical experience
-            includes Python, Java, SQL, APIs, and automation engineering.
+            My technical experience includes Python, Java, SQL, APIs, and
+            automation engineering. My current focus is security tooling,
+            AI-assisted automation, and infrastructure security.
           </p>
           <div className="inline-links">
             <TextLink href={siteConfig.github} external>

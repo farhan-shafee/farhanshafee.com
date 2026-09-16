@@ -1,5 +1,42 @@
 import { siteConfig } from "@/config/site";
 
+export const projectStatuses = [
+  "Active",
+  "Production",
+  "Completed",
+  "Exploring",
+  "Archived",
+] as const;
+
+export type ProjectStatus = (typeof projectStatuses)[number];
+
+/** Reviewed prose only. Unanswered research prompts belong in project-evidence.ts. */
+export type CaseStudySection = {
+  paragraphs?: string[];
+  bullets?: string[];
+};
+
+export type ProjectCaseStudy = {
+  overview?: CaseStudySection;
+  problem?: CaseStudySection;
+  system?: CaseStudySection;
+  architecture?: CaseStudySection;
+  whatIBuilt?: CaseStudySection;
+  engineeringDecisions?: CaseStudySection;
+  securityPrivacy?: CaseStudySection;
+  lessonsConstraints?: CaseStudySection;
+  currentState?: CaseStudySection;
+};
+
+/** Real, reviewed assets under public/. Dimensions are the intrinsic pixel size. */
+export type ProjectImage = {
+  src: `/${string}`;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+};
+
 /**
  * Public project records. Add evidence before adding implementation details,
  * dates, technologies, or outcomes. Private records never receive public routes.
@@ -7,21 +44,20 @@ import { siteConfig } from "@/config/site";
 export type Project = {
   title: string;
   slug: string;
-  status: "Building" | "Documenting" | "Exploring" | "Completed" | "Archived";
+  status: ProjectStatus;
   year?: string;
   category: string;
   kind: "business" | "personal" | "lab";
   description: string;
-  longDescription?: string;
   technologies: string[];
-  problem?: string;
-  approach?: string;
-  outcome?: string;
+  caseStudy?: ProjectCaseStudy;
+  technicalHighlights?: string[];
+  screenshots?: ProjectImage[];
+  architectureDiagrams?: ProjectImage[];
   links?: { label: string; href: string }[];
   github?: string;
   website?: string;
   featured: boolean;
-  image?: { src: string; alt: string };
   visibility: "public" | "private";
 };
 
@@ -35,13 +71,18 @@ export const projects: Project[] = [
   {
     title: "CyberBit Solutions",
     slug: "cyberbit-solutions",
-    status: "Building",
+    status: "Active",
     category: "Security engineering / Product",
     kind: "business",
     description:
-      "Practical cybersecurity tools and services, developed primarily for businesses.",
-    longDescription:
-      "CyberBit Solutions develops cybersecurity tools and services aimed primarily at businesses. It is where I bring together my interests in security engineering, automation, and building useful technical systems.",
+      "Cybersecurity tools and services developed primarily for businesses.",
+    caseStudy: {
+      overview: {
+        paragraphs: [
+          "I created CyberBit Solutions to develop cybersecurity tools and services primarily for businesses.",
+        ],
+      },
+    },
     technologies: [],
     website: siteConfig.cyberbit,
     featured: true,
@@ -54,9 +95,14 @@ export const projects: Project[] = [
     category: "AI automation / Systems engineering",
     kind: "personal",
     description:
-      "A personal engineering project exploring job discovery, scoring, tracking, and application workflow automation.",
-    longDescription:
-      "A personal project exploring how discovery, scoring, tracking, and application intelligence can fit into a coherent workflow. Implementation details and supporting examples are not yet documented publicly.",
+      "A personal engineering project focused on job discovery, scoring, tracking, and application workflow automation.",
+    caseStudy: {
+      overview: {
+        paragraphs: [
+          "The scope is a workflow for job discovery, scoring, tracking, and application intelligence. Implementation details and supporting examples are not yet documented publicly.",
+        ],
+      },
+    },
     technologies: [],
     featured: true,
     visibility: "public",
@@ -68,9 +114,14 @@ export const projects: Project[] = [
     category: "Security engineering",
     kind: "lab",
     description:
-      "An area of exploration for detection engineering, security signals, and the practical work of making systems observable.",
-    longDescription:
-      "An engineering notebook for investigating detection and security automation. Specific experiments, configurations, and results will be documented here when they are ready for public review.",
+      "Detection engineering, security signals, and system observability.",
+    caseStudy: {
+      overview: {
+        paragraphs: [
+          "The lab's scope covers detection engineering and security automation. Specific experiments, configurations, and results are not yet documented publicly.",
+        ],
+      },
+    },
     technologies: [],
     featured: true,
     visibility: "public",
@@ -82,9 +133,14 @@ export const projects: Project[] = [
     category: "Infrastructure / Security",
     kind: "lab",
     description:
-      "Exploring infrastructure security and the engineering decisions behind a secure, maintainable personal lab.",
-    longDescription:
-      "A space for infrastructure experiments and engineering notes. Public documentation will focus on design decisions and lessons without exposing private network details or security-sensitive configuration.",
+      "Infrastructure security, isolation, access boundaries, and maintainability in a personal lab.",
+    caseStudy: {
+      overview: {
+        paragraphs: [
+          "The scope covers infrastructure experiments, access boundaries, and maintainability. Specific systems, configurations, and engineering decisions are not yet documented publicly.",
+        ],
+      },
+    },
     technologies: [],
     featured: true,
     visibility: "public",

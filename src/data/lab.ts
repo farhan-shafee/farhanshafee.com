@@ -10,12 +10,18 @@ export type LabEntry = {
   category: string;
 };
 
-/** Add dates and links only when a specific, shareable experiment exists. */
+/**
+ * These are investigation topics, not claims of implemented systems.
+ * Evidence tasks for the associated projects live in project-evidence.ts.
+ * TODO: For the AI topic, confirm a specific implemented workflow, human review
+ * boundary, evaluation evidence, and publication-safe examples before claiming results.
+ * Add dates and links only when a specific, shareable experiment exists.
+ */
 export const labEntries: LabEntry[] = [
   {
     title: "AI agents in security workflows",
     description:
-      "Where can an agent reduce repetitive work, and where should a human remain in control? An exploration of useful boundaries for security automation.",
+      "Which security workflow steps can be automated, and which require human review? A research topic on the boundary between model output and operational decisions.",
     status: "Exploring",
     technologies: [],
     category: "AI / Automation",
@@ -23,7 +29,7 @@ export const labEntries: LabEntry[] = [
   {
     title: "Detection engineering",
     description:
-      "Investigating the relationship between system visibility, useful security signals, and the context needed to interpret them.",
+      "Research into system visibility, detection signals, and the context needed to interpret security events. Specific experiments and results are not yet published.",
     status: "Exploring",
     technologies: [],
     category: "Security",
@@ -32,7 +38,7 @@ export const labEntries: LabEntry[] = [
   {
     title: "Secure infrastructure",
     description:
-      "Examining isolation, access boundaries, and maintainability in a personal lab environment.",
+      "Research into workload isolation, management access, and maintenance in a personal lab. Specific topology and control details are not yet documented here.",
     status: "Exploring",
     technologies: [],
     category: "Infrastructure",

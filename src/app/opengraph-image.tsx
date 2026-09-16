@@ -31,7 +31,7 @@ export default function OpenGraphImage() {
         }}
       >
         <span>farhanshafee.com</span>
-        <span>ENGINEERING / SYSTEMS / NOTES</span>
+        <span>SECURITY / AUTOMATION / SYSTEMS</span>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div
@@ -65,8 +65,7 @@ export default function OpenGraphImage() {
           color: "#b7bcc6",
         }}
       >
-        Building security tools, automation systems, and technical
-        infrastructure.
+        Security tooling, workflow automation, and backend financial systems.
       </div>
     </div>,
     size,

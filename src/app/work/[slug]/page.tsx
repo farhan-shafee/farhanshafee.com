@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
+import { ProjectCaseStudy } from "@/components/project-case-study";
 import { PageIntro, TextLink } from "@/components/ui";
 import {
   getProjectBySlug,
@@ -33,21 +34,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  const sections = [
-    { title: "Problem", text: project.problem },
-    { title: "Approach", text: project.approach },
-    { title: "Outcome", text: project.outcome },
-  ].filter((section) => section.text);
-  const links = [
-    ...(project.website
-      ? [{ label: "Visit website", href: project.website }]
-      : []),
-    ...(project.github
-      ? [{ label: "View source on GitHub", href: project.github }]
-      : []),
-    ...(project.links ?? []),
-  ];
-
   return (
     <div className="page-shell">
       <JsonLd
@@ -75,7 +61,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         title={project.title}
         description={project.description}
       >
-        <TextLink href="/work">All work</TextLink>
+        <div className="inline-links">
+          <TextLink href="/work">All work</TextLink>
+          {project.website && (
+            <TextLink href={project.website} external>
+              Visit {project.title}
+            </TextLink>
+          )}
+        </div>
       </PageIntro>
       <div className="split-layout section">
         <aside aria-label="Project details">
@@ -104,29 +97,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             )}
           </dl>
         </aside>
-        <div className="prose">
-          <h2>Overview</h2>
-          <p>{project.longDescription ?? project.description}</p>
-          {sections.map((section) => (
-            <section key={section.title}>
-              <h2>{section.title}</h2>
-              <p>{section.text}</p>
-            </section>
-          ))}
-          {links.length > 0 && (
-            <div className="inline-links">
-              {links.map((link) => (
-                <TextLink
-                  href={link.href}
-                  key={link.href}
-                  external={link.href.startsWith("https://")}
-                >
-                  {link.label}
-                </TextLink>
-              ))}
-            </div>
-          )}
-        </div>
+        <ProjectCaseStudy project={project} />
       </div>
     </div>
   );

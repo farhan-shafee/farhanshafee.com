@@ -30,12 +30,15 @@ export const metadata = {
 const disciplines = [
   {
     name: "Security engineering",
-    description: "Practical tooling. Observable systems.",
+    description: "Security tooling, detection, and infrastructure security.",
   },
-  { name: "AI & automation", description: "Useful workflows. Human judgment." },
+  {
+    name: "AI & automation",
+    description: "AI-assisted workflows and human review.",
+  },
   {
     name: "Fintech systems",
-    description: "Backend engineering. Financial infrastructure.",
+    description: "Backend financial systems, APIs, and test automation.",
   },
 ];
 
@@ -47,7 +50,7 @@ export default function HomePage() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span className="small-rule" /> Engineering / Systems / Notes
+            <span className="small-rule" /> Security / Automation / Systems
           </p>
           <h1 id="hero-title">
             Farhan Shafee<span className="accent">.</span>
@@ -57,10 +60,7 @@ export default function HomePage() {
             <br className="hero-break" /> AI Automation <span>×</span> Fintech
             Systems
           </p>
-          <p className="hero-description">
-            I build security tools, automation systems, and infrastructure at
-            the intersection of cybersecurity, AI, and financial technology.
-          </p>
+          <p className="hero-description">{siteConfig.description}</p>
           <div className="hero-actions">
             <Link className="button-primary" href="/work">
               Explore my work
@@ -98,7 +98,9 @@ export default function HomePage() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">01 / Selected work</p>
-            <h2 id="selected-heading">Systems, from idea to practice.</h2>
+            <h2 id="selected-heading">
+              Security products, automation, and labs.
+            </h2>
           </div>
           <TextLink href="/work">All work</TextLink>
         </div>
@@ -114,10 +116,10 @@ export default function HomePage() {
       >
         <div className="exploration-intro">
           <p className="eyebrow">02 / In the lab</p>
-          <h2 id="exploration-heading">Following the useful questions.</h2>
+          <h2 id="exploration-heading">Questions behind the lab work.</h2>
           <p>
-            Explorations in security, automation, and the systems underneath
-            them.
+            Detection signals, infrastructure boundaries, and human review in
+            AI-assisted workflows.
           </p>
           <TextLink href="/lab">Open the notebook</TextLink>
         </div>
@@ -169,10 +171,10 @@ export default function HomePage() {
               <span />
             </div>
             <div>
-              <h3>Good notes take real work.</h3>
+              <h3>Technical writing in progress.</h3>
               <p>
-                Technical write-ups are in progress. This space will hold the
-                decisions, tradeoffs, and lessons behind the systems.
+                Articles on security engineering, automation, and infrastructure
+                are being prepared for review.
               </p>
             </div>
             <a className="text-link" href="/rss.xml">
@@ -187,11 +189,12 @@ export default function HomePage() {
           cb<span>.</span>
         </div>
         <div>
-          <p className="eyebrow">A focused part of the bigger picture</p>
-          <h2 id="cyberbit-heading">Building CyberBit Solutions.</h2>
+          <p className="eyebrow">Cybersecurity tools & services</p>
+          <h2 id="cyberbit-heading">CyberBit Solutions.</h2>
           <p>
-            Practical cybersecurity tools and services for businesses.
-            <br />A place to turn security engineering into useful products.
+            I created CyberBit Solutions to develop cybersecurity tools
+            <br />
+            and services primarily for businesses.
           </p>
         </div>
         <TextLink href={siteConfig.cyberbit} external>

@@ -50,6 +50,14 @@ for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
           path: `.artifacts/home-${width}.png`,
           fullPage: true,
         });
+      if (
+        (route === "/work" || route.startsWith("/work/")) &&
+        [375, 1440].includes(width)
+      )
+        await page.screenshot({
+          path: `.artifacts/evidence-${route === "/work" ? "work-index" : route.split("/").at(-1)}-${width}.png`,
+          fullPage: true,
+        });
     }
     expect(errors).toEqual([]);
   });
@@ -114,6 +122,11 @@ test("metadata, internal links, security headers and feeds are valid", async ({
   const titles = new Set<string>();
   for (const route of routes) {
     const response = await page.goto(route);
+    // Check the full response, including metadata and React's serialized output.
+    expect(
+      await response!.text(),
+      `No editorial TODOs on ${route}`,
+    ).not.toMatch(/\bTODO\b|projectEvidenceBacklog/);
     const headers = response!.headers();
     expect(headers["x-content-type-options"]).toBe("nosniff");
     expect(headers["content-security-policy"]).toContain(
@@ -152,8 +165,15 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     "/robots.txt",
     "/llms.txt",
     "/opengraph-image",
-  ])
-    expect((await request.get(path)).status(), path).toBe(200);
+  ]) {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(200);
+    if (path !== "/opengraph-image")
+      expect(
+        await response.text(),
+        `No editorial TODOs in ${path}`,
+      ).not.toMatch(/\bTODO\b/);
+  }
   const articles = getPublishedArticles();
   const rss = await (await request.get("/rss.xml")).text();
   expect(rss.match(/<item>/g)?.length ?? 0).toBe(articles.length);

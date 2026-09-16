@@ -42,18 +42,19 @@ Use `npm run format:check` to check formatting or `npm run format` to apply it. 
 
 Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, and system fonts. Pages use React Server Components; small client components provide navigation, theme switching, and copyable article heading links. Content is local and rendered at build time. There is no database, authentication, CMS, or external font request.
 
-| Location               | Purpose                                                                |
-| ---------------------- | ---------------------------------------------------------------------- |
-| `src/app/`             | Pages, metadata, RSS, sitemap, robots, and `llms.txt`                  |
-| `src/components/`      | Shared interface and article rendering                                 |
-| `src/config/site.ts`   | Public identity, canonical domain, social links, contact address       |
-| `src/data/projects.ts` | Projects and case study records                                        |
-| `src/data/lab.ts`      | Lab notebook entries                                                   |
-| `src/data/uses.ts`     | Confirmed tooling and empty categories                                 |
-| `src/data/now.ts`      | All `/now` content and its reviewed date                               |
-| `src/lib/writing.ts`   | Front matter validation, publication filtering, tags, and reading time |
-| `content/writing/`     | Trusted local MDX articles and draft outlines                          |
-| `tests/`               | Automated content and browser checks                                   |
+| Location                       | Purpose                                                                          |
+| ------------------------------ | -------------------------------------------------------------------------------- |
+| `src/app/`                     | Pages, metadata, RSS, sitemap, robots, and `llms.txt`                            |
+| `src/components/`              | Shared interface and article rendering                                           |
+| `src/config/site.ts`           | Public identity, canonical domain, social links, contact address                 |
+| `src/data/projects.ts`         | Projects and case study records                                                  |
+| `src/data/project-evidence.ts` | Source-only evidence requests and status rationale; never imported into the site |
+| `src/data/lab.ts`              | Lab notebook entries                                                             |
+| `src/data/uses.ts`             | Confirmed tooling and empty categories                                           |
+| `src/data/now.ts`              | All `/now` content and its reviewed date                                         |
+| `src/lib/writing.ts`           | Front matter validation, publication filtering, tags, and reading time           |
+| `content/writing/`             | Trusted local MDX articles and draft outlines                                    |
+| `tests/`                       | Automated content and browser checks                                             |
 
 Public routes: `/`, `/about`, `/work`, `/work/[slug]`, `/writing`, `/writing/[slug]`, `/writing/tag/[tag]`, `/lab`, `/uses`, `/now`, `/contact`, `/rss.xml`, `/llms.txt`, `/sitemap.xml`, and `/robots.txt`. Article and tag routes exist only for published content.
 
@@ -63,7 +64,15 @@ Public routes: `/`, `/about`, `/work`, `/work/[slug]`, `/writing`, `/writing/[sl
 
 Add a typed record in `src/data/projects.ts` with a unique lowercase slug. Set `kind` to `business`, `personal`, or `lab`, choose an honest `status`, and set `visibility: "public"` to include it in `/work`, its detail route, and the sitemap. `featured: true` also includes it on the homepage. Private records have no public detail route.
 
-The project type supports descriptions, technologies, problem, approach, outcome, external links, year, and an optional image record for future presentation. Leave unverified details absent. Use public HTTPS links and do not add invented outcomes or performance claims. Project data in the repository is not a secret store, even when marked private.
+Project statuses use one vocabulary: `Active` (ongoing work, without a deployment claim), `Production` (verified operation), `Completed` (a finished scope), `Exploring` (investigation), and `Archived` (no longer current). CyberBit is Active based on the existing current-work record. The other entries remain Exploring until their implementation and operational state are confirmed. A website URL, a draft article title, or a project name is not production evidence.
+
+The optional `caseStudy` object supports `overview`, `problem`, `system`, `architecture`, `whatIBuilt`, `engineeringDecisions`, `securityPrivacy`, `lessonsConstraints`, and `currentState`. Each section accepts `paragraphs` and/or `bullets`. Only populated sections render; omit unanswered sections rather than adding placeholder prose. The previous flat overview/problem/approach/outcome fields have been replaced by this structured object. Describe outcomes and limitations under the relevant verified section.
+
+`technicalHighlights` and `technologies` accept verified project-specific lists. `screenshots` and `architectureDiagrams` accept reviewed local image records with `src`, meaningful `alt`, intrinsic `width`/`height`, and a factual `caption`. Store assets under `public/`, redact sensitive information, and only add a record after the file exists. Empty evidence arrays render nothing. The detail page uses the existing typography and layout; adding evidence does not require a new page template. `website`, `github`, and labeled `links` provide public references, with the primary website link also shown beside the page introduction.
+
+Maintain unanswered questions in `src/data/project-evidence.ts`. It contains structured TODOs for both flagship projects and the labs, plus the repository sources that support their current scope and status. These prompts ask whether components exist; they do not assert that payments, CRM, email, integrations, or any other architecture has been implemented. The module is deliberately separate from renderable project data and must not be imported by app routes, components, or public content loaders. After Farhan verifies a detail against code, configuration, or an approved artifact, write the factual account into `projects.ts` and resolve its evidence task. Keep unresolved TODOs out of public fields, metadata, and image captions.
+
+There are currently no verified per-project stacks, screenshots, diagrams, or implementation outcomes in this repository. General language experience and this website's Next.js stack must not be used to infer another project's technology choices. Use public HTTPS links and do not add invented outcomes or performance claims. Source-only evidence notes and private project records are not secret stores; never put credentials or sensitive infrastructure details in them.
 
 Edit `src/data/lab.ts` for experiments and `src/data/uses.ts` for tools. Empty tooling categories are intentional until products are confirmed. Edit `src/data/now.ts` to update `/now`; change its `updated` date only when reviewing that content. Do not publish private infrastructure details.
 

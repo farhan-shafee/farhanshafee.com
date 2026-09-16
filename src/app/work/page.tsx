@@ -16,7 +16,7 @@ export default function WorkPage() {
     <div className="page-shell">
       <PageIntro
         eyebrow="Work / Systems & projects"
-        title="Built around real problems."
+        title="Systems, projects, and engineering notes."
         description="Business systems, personal engineering, and experiments across security, automation, and infrastructure."
       />
       {Object.entries(projectKinds).map(([kind, title]) => {

@@ -6,7 +6,7 @@ export const now = {
   sections: [
     {
       title: "Building",
-      text: "CyberBit Solutions: practical cybersecurity tools and services for businesses.",
+      text: "CyberBit Solutions: cybersecurity tools and services primarily for businesses.",
       link: {
         label: "Visit CyberBit Solutions",
         href: siteConfig.cyberbit,

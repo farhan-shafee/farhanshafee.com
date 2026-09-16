@@ -13,7 +13,7 @@ export default function ContactPage() {
     <div className="page-shell">
       <PageIntro
         eyebrow="Contact / Start a conversation"
-        title="Interesting systems. Useful conversations."
+        title="Engineering opportunities and collaboration."
         description="For engineering opportunities, security and automation collaboration, technical partnerships, or a systems problem worth thinking through."
       />
       <div className="contact-grid section">
