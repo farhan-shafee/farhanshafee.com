@@ -1,6 +1,6 @@
 ---
-title: "How I Built the Job Intelligence Engine"
-description: "Draft outline for the problem, boundaries, and engineering decisions behind a personal job intelligence system."
+title: "Building a Job Intelligence Engine for Multi-Source Job Discovery and Application Workflows"
+description: "The architecture of a personal system for normalized job discovery, career-evidence matching, application preparation, and user-controlled tracking."
 date: "2026-09-16"
 slug: "how-i-built-an-ai-job-intelligence-engine"
 tags: ["workflow-automation", "systems-engineering"]
@@ -8,40 +8,92 @@ draft: true
 featured: false
 ---
 
-> Working outline. The public project name is Job Intelligence Engine; confirm the implementation and every experience claim before publication. This is a personal engineering project, with no implied commercial users or traction.
+I built the Job Intelligence Engine for my own job-search workflow. It brings discovery, career evidence, application preparation, and progress tracking into one system.
 
-## The problem worth solving
+The problem spans several steps. Opportunities arrive through different job sources and messages. Evaluating them repeats the work of comparing requirements with experience. Preparing an application repeats the work of turning that experience into a résumé, recruiter message, or screening answer. Those steps need a shared record of the opportunity and the evidence behind an application.
 
-- TODO: Describe the actual manual discovery, comparison, or tracking problem that motivated the project.
-- TODO: Define what counts as a useful opportunity and which decisions remain human.
-- Evidence needed: a redacted example of the original workflow. Do not include application histories, employer correspondence, or other personal data.
+The current implementation uses deterministic matching and evidence-backed templates. It does not call a language model. Its engineering work is in collecting and organizing inputs, preserving their context, and connecting preparation to decisions that remain with the user.
 
-## Boundaries and data flow
+## Architecture and data flow
 
-- TODO: Identify the sources actually used, their access permissions, and the information retained.
-- TODO: Diagram the implemented flow from collection through normalization, scoring, review, and tracking.
-- Claims to validate: which of discovery, scoring, deduplication, workflow automation, and application intelligence are implemented today.
+The application uses React and TypeScript, with Next.js-style App Router conventions through vinext and Vite. Tailwind CSS supplies the interface styling. The deployment configuration targets Cloudflare Workers; Cloudflare D1 and Drizzle support persistence for jobs, career evidence, assessments, and tracking.
 
-## Deterministic scoring and application templates
+At a conceptual level, the main path is:
 
-- TODO: Explain the verified scoring rules and how application templates use career evidence. Do not describe deterministic templates as model-generated output.
-- TODO: Show a synthetic or fully redacted example, explicitly labeled as such.
-- Questions to answer: how are ambiguous roles, unsupported claims, and stale listings handled?
+1. Collect a job through an import, configured source, or Outlook discovery.
+2. Normalize it, handle duplicates, and retain provenance.
+3. Compare requirements with structured career evidence.
+4. Select a job for application preparation and review.
+5. Track progress, including a user-confirmed external submission.
 
-## Reliability and human review
+Outlook has an additional role: it can produce workflow suggestions for review. Discovery and tracking are related, but a discovered message does not establish that an application stage should advance automatically.
 
-- TODO: Document implemented retries, duplicate prevention, provenance, and error handling.
-- TODO: Identify the human approval boundary for any external action. Do not imply that applications are submitted automatically unless that behavior is verified and appropriate to discuss.
-- Evidence needed: reviewed code excerpts and an example of a failure handled by the system.
+This is a description of the implemented workflow and source configuration. It does not establish the current state of a live deployment or provider account. The [project case study](/work/ai-job-intelligence-engine) includes a conceptual diagram of these relationships.
 
-## What I learned
+## Source adapters with defined boundaries
 
-- TODO: Record actual tradeoffs, a decision that changed, and remaining limitations.
-- Claims to validate: any time savings or accuracy statements need a defined measurement method and supporting data. Omit them if unavailable.
+The system supports several acquisition paths:
 
-## Publication checklist
+| Input                        | Implemented support                                                                    |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
+| Greenhouse, Lever, and Ashby | Adapters for public job feeds                                                          |
+| Pages with JSON-LD job data  | Extraction of structured JobPosting data                                               |
+| LinkedIn                     | Public-page parsing and user-submitted URL imports                                     |
+| Manual imports               | User-selected job inputs                                                               |
+| Outlook                      | Discovery of relevant job, recruiter, and application messages through Microsoft Graph |
 
-- Verify the project title, current state, and architecture against the implementation.
-- Replace every TODO with reviewed evidence or remove the unsupported section.
-- Remove tokens, personal records, organization names, and private endpoints from screenshots and code.
-- Set an accurate publication date and change `draft` only after editorial review.
+These capabilities operate on selected inputs and configured sources. An adapter is not evidence of unrestricted crawling, authenticated access to a job platform, or automation of a user's account. In particular, the LinkedIn support described here is public-page and import parsing.
+
+Keeping acquisition explicit also makes the limits understandable: each source has a defined way into the system, while downstream work uses normalized job records.
+
+## Normalization, duplicates, and provenance
+
+Normalization, deduplication, and provenance handling precede matching. This gives the matching workflow a common record to work with across several acquisition paths while retaining source context.
+
+Those responsibilities serve different purposes. Normalization makes source data usable by the application. Deduplication addresses repeated opportunities. Provenance preserves the connection to the input that produced a record. A match assessment and its source context can then be considered together during review.
+
+The implementation supports these stages, but that alone does not establish perfect coverage or duplicate detection. I am not reporting a measured extraction success rate, a deduplication accuracy figure, or a guarantee that every source remains available. Those would require separate evaluation evidence.
+
+## Career evidence as a separate input
+
+The Career Truth Vault stores structured career facts, source references, and verification states. Requirement matching and application drafts use that evidence.
+
+This distinguishes the two inputs to a match: the job describes what an employer asks for, while the vault records the experience available to support an application. The system maps requirements to evidence and retains gaps alongside the resulting assessment.
+
+A source reference or verification state is useful context for review; it does not make every possible wording of an application claim valid. The application workflow still includes review and verification. Personal career records and application correspondence are not reproduced in this write-up.
+
+## Deterministic matching and application templates
+
+Matching produces requirement-level evidence, scores, gaps, and recommendations using deterministic rules. The useful output is more than a score: it includes the evidence relationship and the unresolved requirements a user needs to consider.
+
+A deterministic score is not a measured probability of an interview, offer, or successful application. This project has no published predictive-accuracy result. It supports evaluation of an opportunity against the available career evidence.
+
+Application preparation follows the same evidence boundary. The current code produces recruiter-message templates, optional cover-letter templates, screening-answer assistance, and résumé/application packets. It assembles this material through deterministic templates rather than model inference.
+
+Unresolved personal screening questions remain for the user to answer. The workflow does not fill an unknown personal decision with an invented response.
+
+## Preparation, approval, and tracking
+
+Selecting a job leads into application preparation. Résumé tooling includes review, verification, and DOCX export. Approved résumé versions are immutable, and approval/export paths include review and verification gates.
+
+The tracker records stages, notes, follow-ups, outcomes, and event history. Application submission remains external to the engine. Before a record can be marked Applied, the user must confirm an external submission.
+
+These are distinct states: having discovered a job, having prepared material, and having submitted an application. The implemented confirmation boundary keeps the final status tied to a user-reported action outside the system. Preparing a packet does not itself submit it.
+
+## Outlook permissions and review
+
+The Outlook connector requests Microsoft Graph `Mail.Read` access. The application identifies relevant job, recruiter, and application messages and can produce workflow suggestions for review.
+
+`Mail.Read` is broader than job-related email. Relevance filtering occurs in the application; the permission is not limited by Microsoft Graph to messages about a job search. Read-only access describes the connector's requested mail capability, not a restriction on which mailbox subjects it can read.
+
+That distinction matters when explaining the integration. Discovery from mail does not establish automatic submission, automatic stage advancement, or permission to send messages. The workflow keeps application actions and tracker suggestions subject to user control.
+
+The source review confirmed the integration code and requested scope. It did not exercise live tenant consent or a discovery run, so this article makes no claim about current mailbox connectivity or the results of a live synchronization.
+
+## What would strengthen the next iteration
+
+A useful next step would be a publication-safe evaluation set covering source extraction, normalization, duplicate handling, and requirement-to-evidence matching. Manually reviewed expected outputs could make failures and limitations easier to describe. Such an evaluation would need a documented method before supporting any accuracy or time-saving claim.
+
+Another evaluation could follow a selected opportunity through preparation, résumé review, external submission confirmation, and tracker history. That would examine the transitions between parts of the system, including cases that must remain unresolved until the user supplies information.
+
+These are prospective evaluation ideas, not completed results or committed features. The current system is a personal engineering project with implemented discovery, evidence matching, preparation, and tracking. Its documented boundary remains assistive: the user reviews the material and controls the application workflow.

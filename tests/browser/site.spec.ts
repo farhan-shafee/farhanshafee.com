@@ -8,6 +8,7 @@ import {
   parseArticle,
 } from "../../src/lib/writing";
 import sitemap from "../../src/app/sitemap";
+import { siteConfig } from "../../src/config/site";
 
 const coreRoutes = [
   "/",
@@ -235,6 +236,21 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     await expect(
       page.locator('link[type="application/rss+xml"]'),
     ).toHaveAttribute("href", `${canonicalOrigin}/rss.xml`);
+    const verificationTag = page.locator(
+      'meta[name="google-site-verification"]',
+    );
+    if (siteConfig.googleSiteVerification)
+      await expect(verificationTag).toHaveAttribute(
+        "content",
+        siteConfig.googleSiteVerification,
+      );
+    else await expect(verificationTag).toHaveCount(0);
+    const linkedInLinks = page.locator('a[href*="linkedin.com"]');
+    if (siteConfig.linkedin) {
+      expect(await linkedInLinks.count()).toBeGreaterThan(0);
+      for (const link of await linkedInLinks.all())
+        await expect(link).toHaveAttribute("href", siteConfig.linkedin);
+    } else await expect(linkedInLinks).toHaveCount(0);
     const structuredData = await page
       .locator('script[type="application/ld+json"]')
       .evaluateAll((scripts) =>
@@ -250,6 +266,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       expect(person).toMatchObject({
         "@id": `${canonicalOrigin}/#person`,
         url: canonicalOrigin,
+        sameAs: [siteConfig.github, siteConfig.linkedin].filter(Boolean),
       });
     }
     if (route === "/about") {
@@ -262,6 +279,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         mainEntity: {
           "@id": `${canonicalOrigin}/#person`,
           url: canonicalOrigin,
+          sameAs: [siteConfig.github, siteConfig.linkedin].filter(Boolean),
         },
       });
     }

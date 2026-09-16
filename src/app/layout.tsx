@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   applicationName: siteConfig.name,
   referrer: "strict-origin-when-cross-origin",
+  verification: siteConfig.googleSiteVerification
+    ? { google: siteConfig.googleSiteVerification }
+    : undefined,
   robots:
     process.env.VERCEL_ENV === "preview"
       ? { index: false, follow: false }

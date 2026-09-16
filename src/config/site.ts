@@ -7,6 +7,7 @@ export const siteConfig = {
   url: "https://farhan-shafee.com",
   github: "https://github.com/farhan-shafee",
   linkedin: "", // TODO: Add the verified, full LinkedIn profile URL.
+  googleSiteVerification: "", // Only the exact HTML-tag token supplied by the site owner.
   email: "", // TODO: Add a public professional contact address, never a private address.
   cyberbit: "https://cyberbitsolutions.com",
   ogImage: "/opengraph-image",

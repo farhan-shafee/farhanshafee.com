@@ -113,15 +113,19 @@ Publishing checklist:
 
 Draft status defaults to true when omitted. Drafts and articles whose publication date has not arrived are excluded from every public article query, index, tag route, sitemap, RSS feed, and article route, including local development and Vercel previews. There is no public draft-preview bypass. Review drafts in your editor; to inspect the final page locally, temporarily set `draft: false` with a current date, then restore draft status before committing if it is not ready. Dates use UTC. Pages are statically rendered, including on-demand paths; rebuild on the publication date to refresh indexes, feeds, and sitemap together. A directly requested article path may become available on or after its date, so a future date is not a private draft mechanism: keep unreviewed writing `draft: true`.
 
-The five initial MDX files are draft outlines only. They include evidence TODOs and claims to validate; none is published.
+All five MDX files remain unpublished drafts. `content/writing/how-i-built-an-ai-job-intelligence-engine.mdx` now contains the first full technical draft, “Building a Job Intelligence Engine for Multi-Source Job Discovery and Application Workflows.” Its historical filename/slug is preserved, and `draft: true` keeps it out of routes, indexes, tags, feeds, and the sitemap. [Article evidence notes](docs/article-evidence-review.md) map its implementation claims to the reviewed project evidence. The other four files remain outlines with evidence TODOs and claims to validate.
 
 ### Social and contact links
 
 Edit `src/config/site.ts`. GitHub, CyberBit Solutions, the production domain, and shared metadata live here. `linkedin` and `email` intentionally start empty and are not rendered. Add a verified LinkedIn URL and a public professional contact address when available. Never add a private email address or secret to this file. No contact form or email service is required.
 
+Only set `linkedin` after Farhan supplies the exact verified profile URL. The existing header, footer, About, Contact, `llms.txt`, and Person/ProfilePage `sameAs` references use that central value. [Post-launch integration notes](docs/post-launch-integration.md) list the outstanding profile information, screenshot capture paths, and Search Console steps.
+
 ## SEO, privacy, and deployment
 
 Pages have distinct metadata and production canonical URLs, with OpenGraph/Twitter cards, Person/ProfilePage and article structured data where applicable, breadcrumbs, RSS, sitemap, and a factual `llms.txt`. Sitemap modification dates come only from article dates and the reviewed `/now` date. Published content supplies tags; drafts cannot create public tag pages.
+
+`siteConfig.googleSiteVerification` is an optional, empty configuration point for the exact Google Search Console HTML-tag token supplied by Farhan. The root metadata emits `google-site-verification` only when that value is set. Supply the tag's content value, not the whole HTML tag or a DNS record. Rebuild and deploy after setting it, then complete verification in Search Console. HTML-tag verification applies to a URL-prefix property; a Domain property requires DNS verification. No ownership verification or sitemap submission is performed by this repository.
 
 Security headers live in `next.config.ts`: CSP, content-type protection, framing protection, referrer and permissions policies, and production HSTS. The static App Router rendering and initial theme script require inline scripts, so CSP permits `unsafe-inline` for scripts and styles. This is a deliberate limitation: it is not a strict nonce-based CSP. Production does not allow `unsafe-eval`; development permits it for tooling. MDX is executable content and must come only from trusted, reviewed repository files, never user submissions or remote input. JSON-LD is safely serialized.
 
