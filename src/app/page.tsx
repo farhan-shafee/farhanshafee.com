@@ -9,7 +9,10 @@ import { getPublishedArticles } from "@/lib/writing";
 import { personSchema } from "@/lib/seo";
 
 export const metadata = {
-  alternates: { canonical: siteConfig.url },
+  alternates: {
+    canonical: siteConfig.url,
+    types: { "application/rss+xml": `${siteConfig.url}/rss.xml` },
+  },
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,

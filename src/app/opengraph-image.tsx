@@ -30,7 +30,7 @@ export default function OpenGraphImage() {
           fontSize: 22,
         }}
       >
-        <span>farhanshafee.com</span>
+        <span>{new URL(siteConfig.url).hostname}</span>
         <span>SECURITY / AUTOMATION / SYSTEMS</span>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>

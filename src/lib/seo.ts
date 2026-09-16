@@ -14,7 +14,10 @@ export function pageMetadata(
   return {
     title,
     description,
-    alternates: { canonical: absoluteUrl(path) },
+    alternates: {
+      canonical: absoluteUrl(path),
+      types: { "application/rss+xml": absoluteUrl("/rss.xml") },
+    },
     openGraph: {
       title: fullTitle,
       description,

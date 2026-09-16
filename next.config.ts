@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { siteConfig } from "./src/config/site";
 
 const production = process.env.NODE_ENV === "production";
 // Static App Router pages need inline hydration scripts. See README for the
@@ -19,6 +20,24 @@ const csp = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: `www.${new URL(siteConfig.url).hostname}`.replace(
+              /\./g,
+              "\\.",
+            ),
+          },
+        ],
+        destination: `${siteConfig.url}/:path*`,
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

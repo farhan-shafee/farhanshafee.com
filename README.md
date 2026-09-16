@@ -1,4 +1,4 @@
-# FarhanShafee.com
+# farhan-shafee.com
 
 Farhan Shafee's personal authority hub for security engineering, AI automation, and fintech systems. Built around factual project records and reviewed technical writing, with no fabricated metrics or filler articles.
 
@@ -127,6 +127,10 @@ Security headers live in `next.config.ts`: CSP, content-type protection, framing
 
 There are no analytics, tracking cookies, third-party scripts, or runtime service credentials. The theme follows the system preference until changed; only the chosen theme is stored in the browser under `fs-theme`. Do not commit secrets, private contact information, or sensitive network configuration.
 
-The repository is ready for Vercel's Next.js preset with this repository as the root directory. Use `npm run build`; no secrets or service setup are required. Keep `https://farhanshafee.com` as the canonical production domain and configure the domain in Vercel when deployment is authorized. Vercel preview deployments receive `noindex, nofollow` metadata and an `X-Robots-Tag` header, and their `robots.txt` disallows crawling. These are indexing controls, not access restrictions. A protected preview should use Vercel's deployment protection.
+The repository is ready for Vercel's Next.js preset with this repository as the root directory. Use `npm run build`; no secrets or service setup are required. The canonical production domain is `https://farhan-shafee.com`, defined in `src/config/site.ts`. All site URLs in metadata, structured data, feeds, and discovery files derive from that setting.
+
+When deploying, associate both `farhan-shafee.com` and `www.farhan-shafee.com` with the hosting project and configure their DNS and HTTPS certificates. The host-specific rule in `next.config.ts` permanently redirects `https://www.farhan-shafee.com` to `https://farhan-shafee.com` with HTTP 308, preserving the path and query string. Other hosts, including local and preview hosts, do not match this rule. Repository configuration alone does not configure DNS or bind domains to a hosting project.
+
+Vercel preview deployments receive `noindex, nofollow` metadata and an `X-Robots-Tag` header, and their `robots.txt` disallows crawling. These are indexing controls, not access restrictions. A protected preview should use Vercel's deployment protection.
 
 No deployment is part of this initial implementation. Headers require a Next.js-capable host; a generic static file host will not apply `next.config.ts` headers automatically.

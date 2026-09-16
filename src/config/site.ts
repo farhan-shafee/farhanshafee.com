@@ -4,7 +4,7 @@ export const siteConfig = {
   title: "Farhan Shafee — Security Engineering, AI Automation & Fintech",
   description:
     "I build security tools and automation systems, with a background in fintech software engineering, test automation, and backend financial systems.",
-  url: "https://farhanshafee.com",
+  url: "https://farhan-shafee.com",
   github: "https://github.com/farhan-shafee",
   linkedin: "", // TODO: Add the verified, full LinkedIn profile URL.
   email: "", // TODO: Add a public professional contact address, never a private address.

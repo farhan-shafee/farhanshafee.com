@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderToReadableStream, renderToStaticMarkup } from "react-dom/server";
 import { ArticleBody } from "../src/components/article-body";
 import ArticlePage, {
   dynamic,
@@ -209,6 +209,83 @@ test("RSS text escapes markup and quoted characters", () => {
     escapeXml("R&D <systems> \"quoted\" 'text'"),
     "R&amp;D &lt;systems&gt; &quot;quoted&quot; &apos;text&apos;",
   );
+});
+
+test("published article metadata, schema, RSS, and sitemap use the canonical domain", async (t) => {
+  const origin = "https://farhan-shafee.com";
+  const slug = "domain-regression-fixture";
+  const directory = path.resolve("content", "writing");
+  const filename = path.join(directory, `${slug}.mdx`);
+  const articleSource = source({ slug, draft: false, date: "2000-01-02" });
+  const readDirectory = fs.readdirSync;
+  const readFile = fs.readFileSync;
+
+  // In-memory content only: no fixture is ever written to the public content tree.
+  // The test context restores these filesystem methods when the test finishes.
+  t.mock.method(fs, "readdirSync", (...args: unknown[]) => {
+    if (args[0] === directory)
+      return [{ name: `${slug}.mdx`, isFile: () => true }];
+    return Reflect.apply(readDirectory, fs, args);
+  });
+  t.mock.method(fs, "readFileSync", (...args: unknown[]) => {
+    if (args[0] === filename) return articleSource;
+    return Reflect.apply(readFile, fs, args);
+  });
+
+  const url = `${origin}/writing/${slug}`;
+  const props = { params: Promise.resolve({ slug }) };
+  const metadata = await generateMetadata(props);
+  assert.equal(metadata.alternates?.canonical, url);
+  assert.equal(metadata.openGraph?.url, url);
+  assert.deepEqual(metadata.authors, [
+    { name: "Farhan Shafee", url: `${origin}/about` },
+  ]);
+  assert.ok(
+    JSON.stringify(metadata.openGraph?.images).includes(
+      `${origin}/opengraph-image`,
+    ),
+  );
+  assert.ok(
+    JSON.stringify(metadata.twitter?.images).includes(
+      `${origin}/opengraph-image`,
+    ),
+  );
+
+  const html = await new Response(
+    await renderToReadableStream(await ArticlePage(props)),
+  ).text();
+  const script = html.match(
+    /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/s,
+  );
+  assert.ok(script, "Published articles must emit structured data");
+  const graph = JSON.parse(script[1])["@graph"];
+  const article = graph.find(
+    (entry: { "@type": string }) => entry["@type"] === "BlogPosting",
+  );
+  assert.ok(article);
+  assert.equal(article["@id"], `${url}#article`);
+  assert.equal(article.url, url);
+  assert.equal(article.mainEntityOfPage, url);
+  assert.equal(article.author["@id"], `${origin}/#person`);
+  assert.equal(article.author.url, `${origin}/about`);
+  const breadcrumbs = graph.find(
+    (entry: { "@type": string }) => entry["@type"] === "BreadcrumbList",
+  );
+  assert.deepEqual(
+    breadcrumbs.itemListElement.map((entry: { item: string }) => entry.item),
+    [origin, `${origin}/writing`, url],
+  );
+  const rss = await getRss().text();
+  assert.ok(rss.includes(`<link>${url}</link>`));
+  assert.ok(rss.includes(`<guid isPermaLink="true">${url}</guid>`));
+  assert.ok(sitemap().some((entry) => entry.url === url));
+  for (const output of [
+    JSON.stringify(metadata),
+    html,
+    rss,
+    JSON.stringify(sitemap()),
+  ])
+    assert.doesNotMatch(output, /https?:\/\/(?:www\.)?farhanshafee\.com\b/i);
 });
 
 test("trusted local MDX renders highlighted code, tables, and copy-link headings", async () => {

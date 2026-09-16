@@ -28,6 +28,8 @@ const flagshipSlugs = ["cyberbit-solutions", "ai-job-intelligence-engine"];
 const jobEngineTitle = "Job Intelligence Engine";
 const jobEngineRoute = "/work/ai-job-intelligence-engine";
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
+const canonicalOrigin = "https://farhan-shafee.com";
+const oldOrigin = /https?:\/\/(?:www\.)?farhanshafee\.com\b/i;
 
 async function expectProjectImages(page: Page, project: Project) {
   const assets = [
@@ -197,6 +199,9 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     expect(html, `No stale project name on ${route}`).not.toMatch(
       oldJobEngineTitle,
     );
+    expect(html, `No links to the unowned old domain on ${route}`).not.toMatch(
+      oldOrigin,
+    );
     const headers = response!.headers();
     expect(headers["x-content-type-options"]).toBe("nosniff");
     expect(headers["content-security-policy"]).toContain(
@@ -213,12 +218,53 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      `https://farhanshafee.com${route === "/" ? "" : route}`,
+      `${canonicalOrigin}${route === "/" ? "" : route}`,
+    );
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      "content",
+      `${canonicalOrigin}${route === "/" ? "" : route}`,
     );
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
-      /https:\/\/farhanshafee.com\/opengraph-image/,
+      `${canonicalOrigin}/opengraph-image`,
     );
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+      "content",
+      `${canonicalOrigin}/opengraph-image`,
+    );
+    await expect(
+      page.locator('link[type="application/rss+xml"]'),
+    ).toHaveAttribute("href", `${canonicalOrigin}/rss.xml`);
+    const structuredData = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((scripts) =>
+        scripts.flatMap((script) => {
+          const schema = JSON.parse(script.textContent ?? "{}");
+          return schema["@graph"] ?? [schema];
+        }),
+      );
+    if (route === "/") {
+      const person = structuredData.find(
+        (schema) => schema["@type"] === "Person",
+      );
+      expect(person).toMatchObject({
+        "@id": `${canonicalOrigin}/#person`,
+        url: canonicalOrigin,
+      });
+    }
+    if (route === "/about") {
+      const profile = structuredData.find(
+        (schema) => schema["@type"] === "ProfilePage",
+      );
+      expect(profile).toMatchObject({
+        "@id": `${canonicalOrigin}/about#profile`,
+        url: `${canonicalOrigin}/about`,
+        mainEntity: {
+          "@id": `${canonicalOrigin}/#person`,
+          url: canonicalOrigin,
+        },
+      });
+    }
     if (route === "/" || route === "/work") {
       await expect(
         page.getByRole("heading", { name: jobEngineTitle, exact: true }),
@@ -252,13 +298,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         );
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
         "content",
-        `https://farhanshafee.com${jobEngineRoute}`,
+        `${canonicalOrigin}${jobEngineRoute}`,
       );
-      const structuredData = await page
-        .locator('script[type="application/ld+json"]')
-        .evaluateAll((scripts) =>
-          scripts.map((script) => JSON.parse(script.textContent ?? "{}")),
-        );
       const breadcrumbs = structuredData.find(
         (schema) => schema["@type"] === "BreadcrumbList",
       );
@@ -267,7 +308,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         "@type": "ListItem",
         position: 2,
         name: jobEngineTitle,
-        item: `https://farhanshafee.com${jobEngineRoute}`,
+        item: `${canonicalOrigin}${jobEngineRoute}`,
       });
     }
     for (const href of await page
@@ -295,18 +336,30 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       expect(body, `No stale project name in ${path}`).not.toMatch(
         oldJobEngineTitle,
       );
+      expect(body, `No old canonical domain in ${path}`).not.toMatch(oldOrigin);
+      if (path === "/robots.txt")
+        expect(body).toContain(`Sitemap: ${canonicalOrigin}/sitemap.xml`);
+      if (path === "/llms.txt") {
+        expect(body).toContain(`](${canonicalOrigin}/about)`);
+        expect(body).toContain(`](${canonicalOrigin}/rss.xml)`);
+        expect(body).toContain(`](${canonicalOrigin}/sitemap.xml)`);
+      }
     }
   }
   const articles = getPublishedArticles();
   const rss = await (await request.get("/rss.xml")).text();
   expect(rss.match(/<item>/g)?.length ?? 0).toBe(articles.length);
+  expect(rss).toContain(`<link>${canonicalOrigin}/writing</link>`);
+  expect(rss).toContain(`href="${canonicalOrigin}/rss.xml"`);
   const sitemapXml = await (await request.get("/sitemap.xml")).text();
   expect(sitemapXml.match(/<loc>/g)?.length).toBe(sitemap().length);
+  for (const [, url] of sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g))
+    expect(new URL(url).origin).toBe(canonicalOrigin);
   expect(sitemapXml).toContain(
-    `<loc>https://farhanshafee.com${jobEngineRoute}</loc>`,
+    `<loc>${canonicalOrigin}${jobEngineRoute}</loc>`,
   );
   expect(sitemapXml).not.toContain(
-    "<loc>https://farhanshafee.com/work/job-intelligence-engine</loc>",
+    `<loc>${canonicalOrigin}/work/job-intelligence-engine</loc>`,
   );
   for (const file of readdirSync("content/writing").filter((f) =>
     f.endsWith(".mdx"),
@@ -328,4 +381,43 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     ).toBe(404);
   expect((await request.get("/work/unpublished-project")).status()).toBe(404);
   expect((await request.get("/not-a-page")).status()).toBe(404);
+});
+
+test("www redirects permanently while preserving paths and queries without redirecting local or other hosts", async ({
+  request,
+}) => {
+  const paths = [
+    "/",
+    `${jobEngineRoute}?source=domain-check&return=%2Fwork%3Fview%3Dall`,
+  ];
+  for (const route of paths) {
+    const response = await request.get(route, {
+      headers: { host: "www.farhan-shafee.com" },
+      maxRedirects: 0,
+    });
+    expect(response.status()).toBe(308);
+    const destination = new URL(response.headers().location);
+    const expected = new URL(route, canonicalOrigin);
+    expect(destination.origin).toBe(canonicalOrigin);
+    expect(destination.pathname).toBe(expected.pathname);
+    expect([...destination.searchParams]).toEqual([...expected.searchParams]);
+
+    const localResponse = await request.get(route, { maxRedirects: 0 });
+    expect(localResponse.status()).toBe(200);
+    expect(localResponse.headers().location).toBeUndefined();
+  }
+  for (const host of [
+    "farhan-shafee.com",
+    "farhanshafee.com",
+    "www.farhanshafee.com",
+    "preview.example",
+    "wwwXfarhan-shafeeXcom",
+  ]) {
+    const response = await request.get("/", {
+      headers: { host },
+      maxRedirects: 0,
+    });
+    expect(response.status(), host).toBe(200);
+    expect(response.headers().location, host).toBeUndefined();
+  }
 });

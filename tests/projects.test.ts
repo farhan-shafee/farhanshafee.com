@@ -332,15 +332,20 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
     assert.equal(metadata.twitter?.description, project.description);
     assert.equal(
       metadata.alternates?.canonical,
-      `https://farhanshafee.com/work/${project.slug}`,
+      `https://farhan-shafee.com/work/${project.slug}`,
     );
     assert.equal(
       metadata.openGraph?.url,
-      `https://farhanshafee.com/work/${project.slug}`,
+      `https://farhan-shafee.com/work/${project.slug}`,
     );
     assert.doesNotMatch(JSON.stringify(metadata), oldJobEngineTitle);
+    assert.doesNotMatch(
+      JSON.stringify(metadata),
+      /https?:\/\/farhanshafee\.com\b/i,
+    );
     const html = renderToStaticMarkup(await ProjectPage(props));
     assert.doesNotMatch(html, oldJobEngineTitle);
+    assert.doesNotMatch(html, /https?:\/\/farhanshafee\.com\b/i);
     const structuredData = [
       ...html.matchAll(
         /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs,
@@ -354,7 +359,7 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
       "@type": "ListItem",
       position: 2,
       name: project.title,
-      item: `https://farhanshafee.com/work/${project.slug}`,
+      item: `https://farhan-shafee.com/work/${project.slug}`,
     });
     assert.match(html, /class="split-layout section"/);
     assert.match(html, /id="overview">Overview<\/h2>/);
