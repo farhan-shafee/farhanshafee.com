@@ -1,29 +1,34 @@
 # AegisGraph technical article plan
 
-This is an internal editorial plan, not an article or a publication announcement.
-No MDX article, public route, feed item, or publication date was created.
+Farhan approved the article's editorial judgments and explicitly authorized
+publication on September 17, 2026. Its publication configuration is now
+`draft: false`, `featured: true`, and `date: "2026-09-17"`. This internal plan
+retains the earlier planning context; [the article evidence review](aegisgraph-article-evidence-review.md)
+maps the reviewed article to the inspected implementation and distinguishes
+historical draft checks from publication validation.
 
-- Working title: **Building an Evidence-Grounded AI Security Investigation System**
-- Proposed slug: `building-an-evidence-grounded-ai-security-investigation-system`
-- Intended source file, when a substantive draft is ready: `content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx`
-- Initial publication state must be `draft: true` and `featured: false`.
-- The article should explain the engineering boundary between model suggestions,
-  validated evidence, and analyst authority. It should complement the case study
-  rather than repeat its feature list.
+- Title: **Building an Evidence-Grounded AI Security Investigation System**
+- Slug: `building-an-evidence-grounded-ai-security-investigation-system`
+- Source file: `content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx`
+- Public route: `/writing/building-an-evidence-grounded-ai-security-investigation-system`
+- The collection now has one published article and five remaining drafts.
+- The article explains the engineering boundary between model suggestions,
+  validated evidence, and analyst authority, complementing the case study.
 
 ## Existing publication architecture
 
 `src/lib/writing.ts` already requires filename/slug agreement and valid frontmatter.
 Publication requires explicit `draft: false` and a non-future date. The shared
 published-article reader controls article lookup and the writing index; sitemap,
-RSS, and `llms.txt` also use that reader. No architecture change or placeholder
-article is needed to reserve this topic.
+RSS, and `llms.txt` also use that reader. The existing architecture supports the
+article through the existing publication policy, without a bypass or placeholder.
 
 ## Evidence-led outline
 
-Source paths in the table are relative to the AegisGraph repository. They are
-editorial references, not public links. Recheck the source revision and validation
-record before drafting or publishing.
+The original planning outline below is retained for editorial context. Source
+paths are relative to the AegisGraph repository. The article evidence review
+contains the reviewed section map. Future substantive revisions should recheck
+the source revision and validation record.
 
 | Proposed section                             | Argument and source material                                                                                                                                                                                                                                                                                            |
 | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -37,7 +42,11 @@ record before drafting or publishing.
 | Keep decisions with the analyst              | Explain separate findings, annotations, explicit report approval, stale-report invalidation, and the limits of ordinary event/audit mutation guards. Sources: `README.md` (Report review; Data model), `docs/INTERVIEW_NOTES.md`.                                                                                       |
 | State the production gap                     | Cover real authentication, case entitlements, tenant isolation, ingestion and operational controls, stronger independent evidence/audit retention, and repeated live-model evaluation. Sources: `docs/PORTFOLIO_SUMMARY.md` (Implemented versus future work), `docs/INTERVIEW_NOTES.md` (What changes for production?). |
 
-## Publication review
+## Publication and maintenance review
+
+Author approval is complete. Publication validation is tracked separately in the
+article evidence review; the previous draft-exclusion checks do not establish
+correct published behavior.
 
 - Use only reviewed synthetic-data images. Identify the provider shown in each
   screenshot; deterministic output is not evidence of live-model success.
@@ -49,5 +58,6 @@ record before drafting or publishing.
   certification, production readiness, or a guarantee of future behavior.
 - Verify any public repository link and hosted CI claim against the corresponding
   revision before including it. Do not expose workstation paths or configuration.
-- Keep the draft excluded from public routes, feeds, sitemap, and `llms.txt` until
-  the user explicitly authorizes publication after substantive editorial review.
+- Verify this approved article appears through the shared published-content reader
+  while the five remaining drafts stay excluded from routes, indexes, tags, feeds,
+  sitemap, and `llms.txt`.

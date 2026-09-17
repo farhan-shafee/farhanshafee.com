@@ -1,0 +1,237 @@
+---
+title: "Building an Evidence-Grounded AI Security Investigation System"
+description: "The engineering decisions behind AegisGraph: deterministic incident scope, bounded AI claims, server-side evidence validation, and human-controlled case decisions."
+date: "2026-09-17"
+slug: "building-an-evidence-grounded-ai-security-investigation-system"
+tags: ["security-engineering", "ai-systems", "systems-engineering"]
+draft: false
+featured: true
+ogImage: "/opengraph-image"
+---
+
+## The question I wanted to answer
+
+I wanted to explore a specific problem: how can an AI assistant help investigate a security incident without becoming the authority on what actually happened?
+
+AegisGraph is the system I built around that question. It takes synthetic telemetry from a simulated fintech application through detection, incident correlation, evidence inspection, and AI-assisted analysis. It is a local engineering demonstration, not a production SOC deployment.
+
+The failure I wanted to avoid was straightforward: put logs into a model, receive a confident narrative, and leave the analyst to work out whether the evidence supports it. Adding citations does not resolve that problem. An application-access event might support “this account read a sensitive resource.” The same event cannot establish “an attacker stole customer data,” even if the answer cites its real ID. Attribution, intent, and a transfer outcome have been added without evidence.
+
+That gave me the central design constraint: evidence remains the system of record. The model can propose interpretations, but application code must validate their support before displaying them as factual findings. I made that contract deliberately narrow: typed claims, bounded evidence, and human-controlled case changes. The interesting engineering work was defining those boundaries precisely enough to test them.
+
+## Start with a case I can reproduce
+
+I used the simulated Atlas Trading Platform to give the investigation a concrete sequence and a repeatable baseline. Its four sources cover different parts of the activity:
+
+| Source            | Role in the environment                          |
+| ----------------- | ------------------------------------------------ |
+| Identity          | Authentication, MFA, and role activity           |
+| API gateway       | Requests and internal endpoint access            |
+| Endpoint          | Device and endpoint observations                 |
+| Atlas application | Application activity and account-resource access |
+
+The seeded dataset contains 4,026 events: 4,000 baseline observations and 26 scenario observations. A fixed seed makes the fixture reproducible. The baseline is necessary context: calling an authentication unfamiliar requires earlier activity to compare it with.
+
+The scenario starts with recognized activity from an engineer account. An unfamiliar source/device then appears, MFA succeeds, and a privileged role is assigned. Internal API enumeration follows, then sensitive-resource access and abnormal access volume. Another unusual session adds context before the privileged role is reverted. A login or a role grant alone can be ambiguous; the related sequence gives an analyst a more useful question to investigate. It still does not identify an attacker or establish malware, exfiltration, or financial loss.
+
+To reason across these sources, I normalize them before detection. Four adapters translate source-specific fields into a canonical event: ID, timezone-aware timestamp, source, event type, action, outcome, actor, target, network, device, session, and bounded attributes. Pydantic checks timestamps, IP addresses, and metadata size and nesting. Each rule can then use a shared vocabulary instead of understanding four source formats.
+
+The adapters retain an allowlisted synthetic source-reference object, not an arbitrary original-log archive. This distinction matters later: normalization establishes a usable structure, but it cannot establish that an observation is true. The [schema and adapters](https://github.com/farhan-shafee/aegisgraph/tree/c95afa6f5ec0a8024364740659569678cf7738a1/apps/api/aegisgraph) define what the application accepts as input, not what an investigator must believe.
+
+## An alert and an incident are different abstractions
+
+I separated detection from correlation because they answer different questions. Detection asks whether observations satisfy a rule. Correlation asks whether several alerts belong in one investigation. Combining them would make every individual detection carry a decision about case scope.
+
+The catalog contains ten rules, with explicit thresholds and source-event references. For example, internal endpoint enumeration requires at least twelve distinct internal endpoints requested by one user/session within five minutes. The detector counts endpoints from the observations; it does not trust a metadata field claiming how many were accessed. A cooldown prevents repeated alerts for that rule/user/session during the window. Another rule links MFA acceptance to an earlier unfamiliar successful authentication on the same session within five minutes. The [rule definitions](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/packages/detections/rules.json) are versioned in Git and checked with fixtures. Their thresholds are synthetic policy examples, not calibrated production detectors.
+
+I kept incident correlation deterministic and placed the model after the application had established the case and its evidence. V1 groups alerts for the same principal and requires at least three distinct rule IDs across at least two rule families within thirty minutes of the first alert. That first alert anchors the window; a chain of nearby alerts cannot extend it indefinitely. Device, session, and IP relationships remain investigation context rather than extra grouping predicates.
+
+In the default fixture, ten alerts from nine distinct rules across five families span twenty-two minutes and form one incident. The workspace displays those actual counts, times, and thresholds. The explanation comes from linked alerts, so I can inspect why the case exists without asking a model to justify its own grouping.
+
+Correlation also selects evidence: the principal's observations from five minutes before the first alert through the last alert, plus events cited by the alerts. That produces the 26-item case and preserves the earlier familiar authentication. I want an investigation to include explanatory context, including benign activity, rather than becoming a collection of suspicious-looking rows.
+
+The tradeoff is explicit in [ADR-007](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/adr/ADR-007.md): reproducible grouping can still miss unencoded patterns or combine unrelated activity. Determinism makes that policy testable; it does not make the policy correct for every dataset.
+
+## Make the evidence inspectable and keep decisions separate
+
+Once a case exists, the analyst needs to move between its explanation and its observations. The Next.js/TypeScript workspace presents the timeline, source evidence, entity relationships, alerts, findings, notes, audit history, and reports. FastAPI supplies the application services, with SQLAlchemy and Alembic managing persistence and schema changes.
+
+The entity view is derived from bounded case evidence. Its edges carry evidence IDs so a relationship can be followed back to an observation. A shared IP or device is a useful lead; an edge is not proof of who operated an account.
+
+<figure>
+  <img
+    src="/projects/aegisgraph/incident-workspace.png"
+    alt="Synthetic Atlas incident in AegisGraph, showing the deterministic correlation explanation, evidence timeline, and read-only Evidence Analyst panel."
+    width="1600"
+    height="1050"
+    loading="lazy"
+    style={{ width: "100%", height: "auto" }}
+  />
+  <figcaption>
+    The synthetic incident workspace puts the measured correlation rationale
+    above the evidence timeline.{" "}
+    <a href="/projects/aegisgraph/incident-workspace.png">
+      View full-size screenshot
+    </a>
+    .
+  </figcaption>
+</figure>
+
+I kept source observations separate from analyst annotations. Marking an event benign changes its relevance to the case, not the source record. ORM guards protect source events; migrated database triggers reject ordinary event and audit updates or deletes. A privileged database owner can remove those protections, so this is not tamper-proof storage.
+
+I applied the same separation to decisions. The provider has no database handle or incident-mutation tools. The application can persist an analysis result and audit entry, but saving a finding, changing a case, or approving a report requires a separate human action. Human-written findings receive citation-membership checks, not a general semantic truth check.
+
+Reports use deterministic templates over case evidence, workflow state, and approved findings. A later case change marks an existing report stale and clears its approval. The analyst must regenerate and review it before approval can resume. Only the current report and lifecycle audit events are retained; historical report versions are still a production requirement.
+
+## Decide what the model can see before calling it
+
+The model never decides whether evidence belongs to a case. The application resolves the incident, then retrieves its earliest fifty evidence rows ordered by event timestamp and ID. The analyst boundary independently checks scope and unique IDs, enforces an eighty-row input cap, and limits serialized projected context to 64,000 UTF-8 bytes.
+
+Those numbers describe different things: twenty-six is the default fixture, fifty is the application's retrieval policy, and eighty is the boundary's maximum supplied row count. I kept these constraints explicit because a small successful demo can otherwise conceal an assumption that the model saw the whole investigation.
+
+Analyst-marked benign observations are excluded before provider context and supported claim candidates are assembled. Their exclusion count is reported, and later rows are not fetched to replace them. That is a real limitation of V1: a larger case can lose relevant context while every accepted citation remains valid.
+
+Case membership is checked before provider execution. Foreign incident evidence fails that input check; output citations must belong to the exact context supplied for this analysis. A real ID from another incident, a nonexistent ID, or a current-case ID omitted by bounded retrieval is inadmissible.
+
+I use the same output boundary for a credential-free deterministic provider and the real OpenAI provider. Each receives a copy of the context while validation uses the original, preventing provider-side object mutation from changing the acceptance criteria. This case scoping is distinct from user authorization: the demo's fixed local analyst can access all local cases. Authenticated case permissions and tenant isolation remain future work.
+
+## A structured claim still has to earn its citation
+
+I chose a small claim language so the application could check support directly. The provider selects observations from supported candidates rather than writing arbitrary factual prose. This is the actual claim shape in `analyst.py`:
+
+```python
+class ProposedClaim(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True, frozen=True)
+
+    claim_type: ClaimType
+    evidence_ids: list[str] = Field(min_length=1, max_length=8)
+```
+
+`ClaimType` includes observations such as MFA acceptance, privilege assignment, and sensitive access, plus a constrained suspicious sequence. The full draft has a disposition, up to twelve claims, enumerated missing-evidence categories, and enumerated next steps. It contains no free-form factual statement or summary field.
+
+The schema only establishes the shape of a proposal. Application predicates build the supported candidates before the model runs. The sequence hypothesis, for example, requires unfamiliar authentication, privilege assignment, and sensitive access for the same account, in chronological order within thirty minutes. Even then, possible account misuse remains a hypothesis.
+
+The [server-side validator](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/apps/api/aegisgraph/analyst.py) then:
+
+1. Parses the strict response schema, rejecting unknown fields and invalid values.
+2. Requires each cited ID to belong to the actual bounded context.
+3. Matches the claim type and exact evidence-ID tuple to a supported candidate.
+4. Rejects duplicate claims, repeated IDs within a claim, and contradictory dispositions.
+5. Rejects the whole answer if any claim fails, before rendering factual findings.
+
+I do not perform an unrestricted database lookup to rescue a citation that was absent from the request context. Its existence somewhere in storage is insufficient. After acceptance, server templates produce the statements and derive the summary from accepted findings and citations.
+
+This is the main expressiveness tradeoff: adding a factual answer type requires a claim definition, support predicate, template, and tests. Changing a prompt cannot expand the factual output language. The boundary is intentionally narrower than general-purpose natural-language fact checking.
+
+## What the live provider actually demonstrated
+
+The live OpenAI check asked, “What most likely happened?” It returned a structured response that passed the application's checks and produced ten supported findings with thirteen citation references from twenty-six supplied evidence rows. The references were checked against case and bounded-context membership and the support required for each claim. Thirteen references does not necessarily mean thirteen distinct observations.
+
+That result matters to me because it exercises the full path: the live provider proposes claims, the application validates them, and the analyst can open their source evidence. A fluent response alone would not demonstrate that path.
+
+<figure>
+  <img
+    src="/projects/aegisgraph/grounded-ai-answer.png"
+    alt="Recorded OpenAI response in the synthetic AegisGraph investigation, showing ten findings rendered with evidence citations and explicit review actions."
+    width="1600"
+    height="1050"
+    loading="lazy"
+    style={{ width: "100%", height: "auto" }}
+  />
+  <figcaption>
+    The recorded OpenAI investigation response: supported statements rendered by
+    server templates, with citations into the synthetic case.{" "}
+    <a href="/projects/aegisgraph/grounded-ai-answer.png">
+      View full-size screenshot
+    </a>
+    .
+  </figcaption>
+</figure>
+
+I also wanted a question that invited a plausible but unsupported conclusion: “What malware family was used?” The case contains suspicious authentication and access behavior, but no evidence establishing a malware family. Recorded live validation returned `insufficient_evidence`, zero factual findings, and a missing endpoint-evidence explanation. The useful outcome was identifying that specific evidentiary gap instead of filling it with a malware name.
+
+There are limits to how the application recognizes such questions. Response validation applies a conservative phrase-based guard for known unsupported topics; on the live path it runs after the provider call. It is not a general entailment classifier. Provider abstention is also supported, and typed claim validation remains necessary when novel wording escapes the phrase guard.
+
+I keep provider failure separate from insufficient evidence. A transport failure is reported as unavailable, without silently substituting a deterministic answer presented as OpenAI output. The interface's qualitative confidence label is likewise not a measured probability of compromise.
+
+## Telemetry does not become instructions
+
+I treat telemetry and the analyst's question as untrusted inputs. The model receives an allowlisted projection that omits raw free text, notes, user-agent strings, endpoint strings, and free-form metadata. Typed observations and derived signals supply the supported claim candidates.
+
+The telemetry-injection fixture tests that boundary with instruction-like content in untrusted fields. Its malicious free text was excluded before the external model call. Accepted findings remained grounded, and case state did not change.
+
+This single test does not prove universal prompt-injection resistance. In particular, it does not demonstrate a model resisting instructions it never received. It demonstrates the projection and output boundaries exercised by that fixture. The [threat model](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/threat-model/THREAT_MODEL.md) still includes false source telemetry and incomplete selections of supported facts as residual risks.
+
+## Evaluate the contract, not the appearance of an answer
+
+I wanted model behavior to be testable rather than judged from a few impressive-looking responses. That meant separating repeatable application checks from observations about an external provider.
+
+The twenty-eight deterministic evaluation cases cover structured output, citation validity, false premises, case isolation, context limits, the injection fixture, and mutation boundaries. They can exercise rejected answers and malformed proposals without depending on an API credential or an external model behaving badly on demand. They test application enforcement, not live-model reliability.
+
+The [live record](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/evaluations/LIVE_VALIDATION.md) retains failures as well as successful examples. Three named scenarios eventually succeeded across six harness requests, including three earlier HTTP 429 responses. Two additional browser requests succeeded. The cause of the 429s was not established. Five local boundary checks bundled with the live report used test doubles; they were not five more external calls. This small sample does not support an accuracy, availability, or injection-resistance percentage.
+
+For reproducibility, the September 17, 2026 UTC [public release review](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/PUBLIC_RELEASE_REVIEW.md) records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluations. The [release-preparation CI run](https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463) passed backend, frontend, and browser jobs using deterministic providers. It did not rerun live OpenAI scenarios. The counts describe dated coverage; the useful evidence is which behavior each check exercised.
+
+## PostgreSQL was enough for V1
+
+I needed indexed event queries, joins between evidence and findings, and transactional case changes over a bounded dataset. PostgreSQL covered those requirements in one persistence system, with SQLite available for lightweight local runs and tests. The purpose was to validate the investigation architecture, not simulate hyperscale infrastructure.
+
+Elasticsearch would have added another storage model and synchronization path before I had a measured search requirement. The graph view also did not justify Neo4j: it derives relationships from bounded case evidence already available to the application. These are scope decisions, not comparative performance benchmarks. [ADR-001](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/adr/ADR-001.md) records why specialized search can wait for a demonstrated need.
+
+I left Kafka out for the same reason. V1 processes a finite synthetic dataset synchronously. A broker could later provide durable buffering, backpressure, replay, and independent consumers, but adding one would not define correct idempotency, event ordering, late-arrival handling, or alert semantics.
+
+At materially larger scale, I would measure ingestion rates, retention, query patterns, and case sizes, then separate durable ingestion, source retention, rule processing, and derived search indexes where justified. PostgreSQL could remain the transactional case store without retaining every raw event indefinitely. None of that is a measured capability of the current system.
+
+## What production would require
+
+The current boundaries are useful for a local demo, but I would need to change who can use them and how their state is protected before handling real investigations.
+
+I would start with real authentication, case authorization, and tenant-aware evidence associations. Retrieval and every write action would need trusted subject/tenant scope and independent isolation tests. The fixed local analyst and host/origin restrictions do not provide those controls.
+
+Evidence and audit protection would need restricted database roles, independent append-only retention, and tested recovery. V1 rejects ordinary updates and deletes, but a privileged owner can disable its triggers. I would also retain report versions so an approved artifact could be traced to its original evidence and review state.
+
+Streaming ingestion would require authenticated sources, quotas, and explicit ordering, idempotency, late-arrival, and replay semantics. Rule lifecycle would need more than today's Git-versioned JSON: alerts should retain their exact rule revision, effective configuration, schema version, and evidence references. Existing positive/negative fixtures and temporal boundary tests provide a starting point; production would also need shadow runs and rollout/rollback policies. Persisted rule revisions and a production release process remain future work.
+
+For model changes, I would version the provider/model identifier, prompts, output schema, claim predicates, and dataset together. Deterministic regressions would run first, followed by broader repeated live trials and human assessment of useful or incomplete answers. Rejections, failures, latency, and cost would remain visible. Real case data would also require provider privacy, retention, and residency review.
+
+Operationally, request IDs and structured local logs are a starting point. Production would need monitoring of ingestion and audit-delivery gaps, resource limits, provider failures, and recovery behavior. The [interview notes](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/INTERVIEW_NOTES.md) discuss these prospective changes. V1 does not implement a production replay system, streaming-scale ingestion, authenticated multi-tenancy, or autonomous response.
+
+## What worked, and the lesson I would keep
+
+The most useful design choice was giving the model a contract I could inspect independently. A rendered finding leads to a typed claim, an exact supporting evidence tuple, and case observations. I can test that path with invalid citations without waiting for a live model to invent one. Evidence IDs make an answer inspectable; support predicates determine what those IDs can justify.
+
+Separating detection from correlation also made the reasoning clearer: a rule explains an alert, while a different policy explains the case. Reproducible synthetic data gives those policies a stable fixture for tests and demonstrations. Explicit insufficient-evidence behavior preserves a useful outcome when the available observations cannot answer the question.
+
+The costs remain visible. The claim vocabulary is narrow. Earliest-fifty retrieval can omit important context, and valid source fields can contain false facts. A model can select an incomplete subset of supported candidates. Human narratives and approvals introduce judgment the validator cannot prove correct. I would keep those limits attached to the design rather than treating a successful response as evidence that they disappeared.
+
+The flow below, adapted from the [system architecture](https://github.com/farhan-shafee/aegisgraph/blob/c95afa6f5ec0a8024364740659569678cf7738a1/docs/architecture/SYSTEM.md), captures where I put each decision:
+
+```text
+Synthetic telemetry: identity / gateway / endpoint / Atlas
+                          |
+               Adapters + canonical validation
+                          |
+                Persisted source observations
+                          |
+           Detection -> alerts -> correlation
+                          |
+                  Incident evidence
+                          |
+               Bounded, projected context
+                          |
+            Deterministic or OpenAI provider
+                          |
+                 Structured proposals
+                          |
+         Schema + citation + typed-support checks
+                          |
+                Server-rendered findings
+                          |
+                    Analyst review
+                          |
+      Explicit finding / workflow / report actions
+```
+
+For AegisGraph, AI was useful after application code had established the case, selected its evidence, and defined which claims that evidence could support. The provider could help select an interpretation within that scope. It could not expand the evidence set, validate its own citations, or authorize a case change. That separation is the engineering lesson I would carry forward.
+
+The [AegisGraph source](https://github.com/farhan-shafee/aegisgraph) includes the implementation, decision records, threat model, and evaluations. The [case study](/work/aegisgraph) shows the investigation interfaces and summarizes the project.

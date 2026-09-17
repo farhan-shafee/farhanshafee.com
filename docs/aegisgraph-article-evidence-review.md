@@ -1,0 +1,56 @@
+# AegisGraph article evidence review
+
+The article is `content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx`, with the matching slug and title **Building an Evidence-Grounded AI Security Investigation System**. Farhan approved its first-person judgments and explicitly authorized publication with `draft: false`, `featured: true`, and publication date `2026-09-17`. The collection now contains one published article and five remaining drafts. This internal review is not imported by public routes; historical draft validation below is retained as a separate record.
+
+Read-only source inspection used AegisGraph revision `c95afa6f5ec0a8024364740659569678cf7738a1`. No AegisGraph files, databases, tests, or model calls were changed or run. References identify that revision; unprefixed Python filenames below are under `apps/api/aegisgraph/`. [The project evidence review](aegisgraph-evidence-review.md) retains source, CI, and historical validation provenance.
+
+## Revised section map
+
+1. **The question I wanted to answer.** ADR-003/004 and `docs/INTERVIEW_NOTES.md` support the separation of model proposals, validated support, and human authority. Farhan has endorsed the first-person motivation and design judgments; source inspection alone cannot establish private intent.
+
+2. **Start with a case I can reproduce.** `generator.py:13`, `schema.py:53`, `adapters.py:8`, README Demo scenario, and `docs/DEMO.md` establish four adapters, 4,000 baseline plus 26 scenario observations, and bounded canonical fields. The adapters retain synthetic provenance rather than arbitrary original logs. Neither normalization nor fixture counts establish authenticity or detection quality.
+
+3. **An alert and an incident are different abstractions.** `packages/detections/rules.json`, `detection.py:29`, `correlation.py:26` and line 86, ADR-002/007, and `tests/backend/test_domain_review.py` support the example detections and separate correlation policy. Correlation requires one principal, at least three distinct rules across at least two families, and thirty minutes anchored at the first alert. Selection adds earlier principal context and alert-cited events. The prose describes architectural ordering, not independently verified development chronology. The earlier JSON excerpt has been removed.
+
+4. **Make the evidence inspectable and keep decisions separate.** `services.py:106`, line 155 (`graph`), line 251 (`invalidate_report`), line 315, line 349, line 387, line 468, and line 543; `models.py`; ADR-008/009; `apps/api/migrations/versions/003_immutable_events.py`. The graph derives edges from bounded case evidence. Source-event ORM guards and event/audit triggers have a privileged-owner limit. Findings, annotations, and stale-report approval remain explicit workflows; human narrative is not generally fact-checked by citation membership.
+
+5. **Decide what the model can see before calling it.** `services.py:393` and `analyst.py:498` distinguish the 26-item fixture, earliest-fifty retrieval, and independent eighty-row/64,000-byte boundary. Benign rows are excluded without replacement. `analyst.py:766` passes a deep copy to the provider while validating against the original. Scope checks do not provide authenticated user or tenant authorization.
+
+6. **A structured claim still has to earn its citation.** `analyst.py:64` (`ProposedClaim`) matches the retained Python excerpt. Lines 71, 450, 461, and 692 establish the draft shape, supported candidates, temporal hypothesis, and whole-answer validator. Duplicate evidence IDs are rejected within a claim; one observation may support different valid findings. Accepted statements and their cited summary use server templates.
+
+7. **What the live provider actually demonstrated.** `docs/evaluations/LIVE_VALIDATION.md:23`, `analyst.py:246`, line 692, and line 766 support ten findings, thirteen citation references from twenty-six supplied rows, malware-question abstention, and separate unavailable results. References need not identify thirteen unique observations. On the live path, the phrase guard runs during response validation after the provider call; it is not a general entailment classifier.
+
+8. **Telemetry does not become instructions.** ADR-005, `analyst.py:295`, the live record, and `docs/threat-model/THREAT_MODEL.md:46` establish the tested projection boundary. Instruction-like free text was excluded before the external call. This does not establish universal injection resistance or a model resisting text it never received.
+
+9. **Evaluate the contract, not the appearance of an answer.** `docs/evaluations/README.md`, the live record, `docs/PUBLIC_RELEASE_REVIEW.md:128`, and `.github/workflows/ci.yml:15` distinguish 28 deterministic cases, six harness requests including three earlier 429s, five local boundary checks, and two additional live browser successes. Release coverage is 146 backend/25 frontend/13 browser tests. CI run `35179396463` tested revision `534679eac4a04ee0298fe6f35d1422fa63a4fe90` deterministically, without rerunning live scenarios or establishing success for later revisions.
+
+10. **PostgreSQL was enough for V1.** ADR-001/006 and `docs/INTERVIEW_NOTES.md` support transactional storage and a bounded relational graph. Its Kafka discussion at line 177 states that V1 processes a finite synthetic dataset synchronously; buffering, backpressure, replay, and independent consumers are prospective reasons for a broker. Larger-scale storage separation is proposed, not implemented or benchmarked.
+
+11. **What production would require.** `docs/INTERVIEW_NOTES.md:130`, line 138, line 222, line 232, and line 241 cover ingestion, model regression, audit retention, replay, and rule lifecycle; `docs/threat-model/THREAT_MODEL.md:94` records production gates. Git-versioned rules and positive/negative and temporal-boundary tests exist today. Persisted rule/configuration/schema provenance, shadow runs, and production rollout/rollback remain future work. Versioning provider/model identifiers, prompts, schemas, predicates, and datasets together is a proposed regression discipline. Request IDs and structured local logs are implemented in `main.py:31` (`BoundaryMiddleware`) and `analyst.py:825`; production monitoring, audit-delivery checks, and recovery are separate future controls.
+
+12. **What worked, and the lesson I would keep.** The synthesis follows ADR-002/003/004/007 and the threat model's residual risks: narrow claims, incomplete context or selection, false telemetry, and human judgment. The text diagram simplifies `docs/architecture/SYSTEM.md`; it introduces no new service, transport, autonomous action, or measured execution claim. Farhan has endorsed the concluding assessment as an author judgment.
+
+## Existing interface evidence
+
+The article reuses two reviewed 1600 × 1050 portfolio images:
+
+- `public/projects/aegisgraph/incident-workspace.png`, originally `docs/screenshots/02-incident.png`: synthetic Atlas workspace with correlation rationale and evidence timeline.
+- `public/projects/aegisgraph/grounded-ai-answer.png`, originally `docs/screenshots/05-grounded-answer.png`: recorded OpenAI response with ten findings and evidence citations, not a deterministic-provider screenshot.
+
+The earlier project evidence review records individual source/copy inspection, synthetic content, absence of visible secrets or workstation information, and lossless compression. No new screenshot or live session was created for this rewrite. Captions retain synthetic/recorded context; intrinsic dimensions, lazy loading, descriptive alternatives, and full-size links remain present. The Python excerpt and conceptual text diagram are the only code blocks.
+
+## Historical validation for the editorial rewrite
+
+Before publication was authorized, the reviewed draft had twelve H2 sections and 3,074 prose words, including headings and captions, plus 65 words in the Python excerpt and text diagram: 3,139 total. Parsed-MDX counts exclude frontmatter, link destinations, and JSX attributes and must be refreshed if the body changes.
+
+The rewritten body compiled through the site's `ArticleBody` renderer, and reader-level draft-exclusion checks passed. Fresh lint, typecheck, all 27 unit tests including 11 content tests, and the production build passed. Built-site HTTP checks returned 200 for Home, Writing, RSS, sitemap, and `llms.txt`, with neither draft title nor slug exposed. The direct draft URL returned 404 with `noindex` and no article body. `draft: true` and `featured: false` remained set.
+
+The repository formatting check passed for that editorial pass. Earlier draft counts and validation results applied to the preceding text and were not reused as proof for the rewrite. Ignored private reader artifacts were editorial aids, not a redesign or publication bypass. No commit, push, or publication occurred during that pass. AegisGraph remained clean and unchanged at the inspected revision; the personal-site draft and review changes were left uncommitted.
+
+## Authorized publication
+
+Farhan's approval covers the first-person motivation, tradeoff judgments, lessons, and ordering of future priorities. These remain author judgments, not an assertion that the source proves private intent or that a production roadmap has been implemented. Publication changes the article's frontmatter and visibility through the existing policy; it does not change the reviewed implementation evidence.
+
+The approved public route is `/writing/building-an-evidence-grounded-ai-security-investigation-system`. Fresh publication checks must confirm the featured article's route, indexes, tags, metadata, structured data, RSS, sitemap, and `llms.txt`, while preserving exclusion of the five remaining drafts. Review the article's images and responsive presentation with its limitations intact. The historical draft checks above do not establish these published results.
+
+Publication validation passed against the local production build: formatting, lint, typecheck, all 28 unit tests (including 12 content tests), the production build, and all 24 browser tests. Browser checks passed after correcting missing scoped article reading styles, code overflow at 320 pixels, caption wrapping, and light-theme syntax contrast. Visual review covered 1440, 768, 430, 375, and 320 pixels in both themes. The article returned HTTP 200 with index/follow metadata and the correct production canonical URL; Home, Writing, and tag pages exposed it through normal discovery. BlogPosting date, author, and image fields and BreadcrumbList entries were verified; sitemap, RSS, and `llms.txt` included the article. All five other drafts remained excluded and returned 404 with noindex. Both existing images loaded with their aspect ratios preserved. Heading links, clipboard behavior, horizontal keyboard code scrolling, and internal links passed, with no console errors; all 12 external article links returned HTTP 200. The approved prose remained unchanged at 3,074 prose words plus 65 code/diagram words (3,139 total), with a 17-minute reading estimate. OpenGraph explicitly uses the existing `/opengraph-image`. These results record pre-commit local validation. Production deployment is verified separately after pushing.

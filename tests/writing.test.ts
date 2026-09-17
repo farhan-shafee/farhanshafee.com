@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import test from "node:test";
 import { renderToReadableStream, renderToStaticMarkup } from "react-dom/server";
 import { ArticleBody } from "../src/components/article-body";
+import HomePage from "../src/app/page";
+import WritingPage from "../src/app/writing/page";
 import ArticlePage, {
   dynamic,
   dynamicParams,
@@ -16,17 +19,24 @@ import WritingTagPage, {
   generateMetadata as generateTagMetadata,
 } from "../src/app/writing/tag/[tag]/page";
 import { GET as getRss } from "../src/app/rss.xml/route";
+import { GET as getLlms } from "../src/app/llms.txt/route";
 import sitemap from "../src/app/sitemap";
 import {
   escapeXml,
   estimateReadingTime,
   filterPublishedArticles,
   formatArticleDate,
+  getArticle,
   getArticleTags,
   getPublishedArticles,
+  getRelatedArticles,
   getTableOfContents,
   parseArticle,
 } from "../src/lib/writing";
+
+// Match Next's CommonJS interop while rendering the homepage's real images in Node.
+const imageModule = createRequire(import.meta.url)("next/image");
+if (imageModule.default) Object.assign(imageModule, imageModule.default);
 
 function source(
   overrides: Record<string, unknown> = {},
@@ -307,7 +317,60 @@ test("trusted local MDX renders highlighted code, tables, and copy-link headings
   assert.match(html, /--shiki-dark/);
 });
 
-test("actual draft content has no public route, metadata, feed item, or sitemap entry", async () => {
+test("the reviewed AegisGraph article is published, featured, and discoverable", async () => {
+  const slug = "building-an-evidence-grounded-ai-security-investigation-system";
+  const route = `/writing/${slug}`;
+  const url = `https://farhan-shafee.com${route}`;
+  const article = getArticle(slug);
+  assert.ok(article, "The reviewed article must pass the publication gate");
+  assert.equal(article.draft, false);
+  assert.equal(article.featured, true);
+  assert.equal(article.date, "2026-09-17");
+  assert.ok(generateStaticParams().some((entry) => entry.slug === slug));
+
+  for (const html of [
+    renderToStaticMarkup(HomePage()),
+    renderToStaticMarkup(WritingPage()),
+    ...(await Promise.all(
+      article.tags.map(async (tag) =>
+        renderToStaticMarkup(
+          await WritingTagPage({ params: Promise.resolve({ tag }) }),
+        ),
+      ),
+    )),
+  ])
+    assert.ok(
+      html.includes(`href="${route}"`),
+      "Publication discovery links must resolve to the article",
+    );
+
+  const props = { params: Promise.resolve({ slug }) };
+  const metadata = await generateMetadata(props);
+  assert.equal(metadata.alternates?.canonical, url);
+  assert.equal(metadata.openGraph?.url, url);
+  const html = await new Response(
+    await renderToReadableStream(await ArticlePage(props)),
+  ).text();
+  assert.match(html, /data-language="python"/);
+  assert.equal((html.match(/<figcaption>/g) ?? []).length, 2);
+  const script = html.match(
+    /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/s,
+  );
+  assert.ok(script);
+  const schema = JSON.parse(script[1])["@graph"].find(
+    (entry: { "@type": string }) => entry["@type"] === "BlogPosting",
+  );
+  assert.equal(schema.datePublished, article.date);
+  assert.equal(schema.url, url);
+  assert.equal(schema.image, "https://farhan-shafee.com/opengraph-image");
+  assert.ok(
+    (await getRss().text()).includes(`<guid isPermaLink="true">${url}</guid>`),
+  );
+  assert.ok((await getLlms().text()).includes(`](${url})`));
+  assert.ok(sitemap().some((entry) => entry.url === url));
+});
+
+test("actual drafts stay excluded from discovery, routes, metadata, and feeds", async () => {
   const directory = path.join(process.cwd(), "content", "writing");
   const today = new Date().toISOString().slice(0, 10);
   const unpublished = fs
@@ -319,6 +382,11 @@ test("actual draft content has no public route, metadata, feed item, or sitemap 
     .filter((article) => article.draft || article.date > today);
   const generated = generateStaticParams().map(({ slug }) => slug);
   const rss = await getRss().text();
+  const llms = await getLlms().text();
+  const discovery = [
+    renderToStaticMarkup(HomePage()),
+    renderToStaticMarkup(WritingPage()),
+  ];
   const sitemapUrls = sitemap().map(({ url }) => url);
   const published = getPublishedArticles();
   for (const tag of getArticleTags()) {
@@ -326,9 +394,23 @@ test("actual draft content has no public route, metadata, feed item, or sitemap 
   }
   assert.equal(dynamic, "force-static");
   assert.equal(dynamicParams, true);
+  assert.ok(
+    unpublished.length > 0,
+    "Keep exercising actual unpublished content",
+  );
   for (const article of unpublished) {
     assert.ok(!generated.includes(article.slug));
     assert.ok(!rss.includes(`/writing/${article.slug}`));
+    assert.ok(!llms.includes(`/writing/${article.slug}`));
+    assert.equal(getArticle(article.slug), undefined);
+    for (const html of discovery)
+      assert.ok(!html.includes(`/writing/${article.slug}`));
+    for (const publicArticle of published)
+      assert.ok(
+        !getRelatedArticles(publicArticle).some(
+          (related) => related.slug === article.slug,
+        ),
+      );
     assert.ok(
       !sitemapUrls.some((url) => url.endsWith(`/writing/${article.slug}`)),
     );

@@ -5,6 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import {
   getPublishedArticles,
   getArticleTags,
+  getTableOfContents,
   parseArticle,
 } from "../../src/lib/writing";
 import sitemap from "../../src/app/sitemap";
@@ -24,7 +25,15 @@ const publicProjects = getPublicProjects();
 const projectsByRoute = new Map(
   publicProjects.map((project) => [`/work/${project.slug}`, project]),
 );
-const routes = [...coreRoutes, ...projectsByRoute.keys()];
+const publishedArticles = getPublishedArticles();
+const articlesByRoute = new Map(
+  publishedArticles.map((article) => [`/writing/${article.slug}`, article]),
+);
+const routes = [
+  ...coreRoutes,
+  ...projectsByRoute.keys(),
+  ...articlesByRoute.keys(),
+];
 const engineeringCaseSlugs = [
   "aegisgraph",
   "cyberbit-solutions",
@@ -33,6 +42,8 @@ const engineeringCaseSlugs = [
 const aegisgraphRoute = "/work/aegisgraph";
 const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
 const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35179396463`;
+const aegisgraphArticleRoute =
+  "/writing/building-an-evidence-grounded-ai-security-investigation-system";
 const jobEngineTitle = "Job Intelligence Engine";
 const jobEngineRoute = "/work/ai-job-intelligence-engine";
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
@@ -46,7 +57,8 @@ const projectOrder = [
   "Secure Infrastructure & Homelab",
 ];
 
-function imagesForRoute(route: string): ProjectImage[] {
+function imagesForRoute(route: string): ProjectImage[] | undefined {
+  if (articlesByRoute.has(route)) return undefined;
   if (route === "/" || route === "/work") {
     return [aegisgraphRoute, "/work/cyberbit-solutions"].map((projectRoute) => {
       const preview = projectsByRoute.get(projectRoute)?.screenshots?.[0];
@@ -62,7 +74,24 @@ function imagesForRoute(route: string): ProjectImage[] {
   ];
 }
 
-async function expectImages(page: Page, assets: ProjectImage[]) {
+type ImageEvidence = Pick<ProjectImage, "alt" | "width" | "height"> & {
+  src: string;
+};
+
+async function expectImages(page: Page, assets: ImageEvidence[] | undefined) {
+  // Article figures are authored in MDX. Verify their declared dimensions against
+  // actual loaded images without copying editorial alt text into the test.
+  assets ??= await page.locator("main img").evaluateAll((nodes) =>
+    nodes.map((node) => {
+      const image = node as HTMLImageElement;
+      return {
+        src: image.getAttribute("src") ?? "",
+        alt: image.alt,
+        width: Number(image.getAttribute("width")),
+        height: Number(image.getAttribute("height")),
+      };
+    }),
+  );
   await expect(page.locator("main img")).toHaveCount(assets.length);
   for (const asset of assets) {
     const image = page.getByRole("img", { name: asset.alt, exact: true });
@@ -156,9 +185,7 @@ for (const theme of ["light", "dark"] as const) {
 }
 
 for (const theme of ["light", "dark"] as const) {
-  test(`core and project routes pass axe in ${theme} theme`, async ({
-    page,
-  }) => {
+  test(`public routes pass axe in ${theme} theme`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme });
     for (const route of routes) {
       await page.goto(route);
@@ -335,6 +362,55 @@ test("keyboard navigation, persisted theme, and mobile links work", async ({
     .click();
   await expect(page).toHaveURL(/\/work\/cyberbit-solutions$/);
   await expect(page.locator("h1")).toHaveText("CyberBit Solutions");
+
+  await page.goto(aegisgraphArticleRoute);
+  await page.setViewportSize({ width: 320, height: 812 });
+  const codeBlocks = page.getByRole("region", {
+    name: "Code example",
+    exact: true,
+  });
+  expect(await codeBlocks.count()).toBeGreaterThanOrEqual(2);
+  for (const block of await codeBlocks.all()) {
+    await expect(block).toHaveAttribute("tabindex", "0");
+    await block.focus();
+    await expect(block).toBeFocused();
+    const dimensions = await block.evaluate((node) => ({
+      content: node.scrollWidth,
+      container: node.clientWidth,
+      document: document.documentElement.scrollWidth,
+      viewport: innerWidth,
+    }));
+    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+    if (dimensions.content > dimensions.container) {
+      await block.press("ArrowRight");
+      await expect
+        .poll(() => block.evaluate((node) => node.scrollLeft))
+        .toBeGreaterThan(0);
+    }
+  }
+
+  const tocLink = page
+    .getByRole("navigation", { name: "On this page" })
+    .getByRole("link")
+    .first();
+  const fragment = await tocLink.getAttribute("href");
+  expect(fragment).toMatch(/^#.+/);
+  const sectionUrl = new URL(fragment!, page.url()).href;
+  await tocLink.click();
+  await expect(page).toHaveURL(sectionUrl);
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"], {
+    origin: new URL(page.url()).origin,
+  });
+  const headingLink = page.locator(".prose a.heading-anchor").first();
+  await headingLink.focus();
+  await expect(headingLink).toBeFocused();
+  await headingLink.press("Enter");
+  await expect(page.locator(".prose").getByRole("status")).toHaveText(
+    "Section link copied to clipboard.",
+  );
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    sectionUrl,
+  );
 });
 
 test("metadata, internal links, security headers and feeds are valid", async ({
@@ -343,6 +419,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
 }) => {
   const links = new Set<string>();
   const titles = new Set<string>();
+  const publicHtml = new Map<string, string>();
   const publicHtmlRoutes = new Set([
     ...routes,
     ...sitemap().map(({ url }) => new URL(url).pathname),
@@ -351,6 +428,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     const response = await page.goto(route);
     // Check the full response, including metadata and React's serialized output.
     const html = await response!.text();
+    publicHtml.set(route, html);
     expect(html, `No editorial TODOs on ${route}`).not.toMatch(
       /\bTODO\b|projectEvidenceBacklog/,
     );
@@ -423,6 +501,92 @@ test("metadata, internal links, security headers and feeds are valid", async ({
           return schema["@graph"] ?? [schema];
         }),
       );
+    if (route === "/" || route === "/writing") {
+      const article = articlesByRoute.get(aegisgraphArticleRoute);
+      expect(
+        article,
+        "The reviewed AegisGraph article is public",
+      ).toBeDefined();
+      await expect(
+        page
+          .locator("main")
+          .getByRole("link", { name: article!.title, exact: true }),
+      ).toHaveAttribute("href", aegisgraphArticleRoute);
+      if (route === "/writing")
+        await expect(
+          page.getByRole("article", { name: article!.title, exact: true }),
+        ).toBeVisible();
+    }
+    const article = articlesByRoute.get(route);
+    if (article) {
+      expect(response?.status()).toBe(200);
+      await expect(page.locator("h1")).toHaveText(article.title);
+      await expect(page.locator('meta[name="robots"]')).not.toHaveAttribute(
+        "content",
+        /noindex/,
+      );
+      await expect(page.locator('meta[property="og:type"]')).toHaveAttribute(
+        "content",
+        "article",
+      );
+      await expect(
+        page.locator('meta[property="article:published_time"]'),
+      ).toHaveAttribute("content", article.date);
+      for (const selector of [
+        'meta[name="description"]',
+        'meta[property="og:description"]',
+        'meta[name="twitter:description"]',
+      ])
+        await expect(page.locator(selector)).toHaveAttribute(
+          "content",
+          article.description,
+        );
+      const schema = structuredData.find(
+        (entry) => entry["@type"] === "BlogPosting",
+      );
+      expect(schema).toMatchObject({
+        "@id": `${canonicalOrigin}${route}#article`,
+        headline: article.title,
+        description: article.description,
+        datePublished: article.date,
+        dateModified: article.updated ?? article.date,
+        url: `${canonicalOrigin}${route}`,
+        mainEntityOfPage: `${canonicalOrigin}${route}`,
+        author: { "@id": `${canonicalOrigin}/#person`, name: siteConfig.name },
+      });
+      if (article.ogImage)
+        expect(schema.image).toBe(
+          new URL(article.ogImage, canonicalOrigin).toString(),
+        );
+      const breadcrumbs = structuredData.find(
+        (entry) => entry["@type"] === "BreadcrumbList",
+      );
+      expect(
+        breadcrumbs.itemListElement.map(
+          (entry: { item: string }) => entry.item,
+        ),
+      ).toEqual([
+        canonicalOrigin,
+        `${canonicalOrigin}/writing`,
+        `${canonicalOrigin}${route}`,
+      ]);
+      const headings = getTableOfContents(article.body);
+      const toc = page.getByRole("navigation", { name: "On this page" });
+      await expect(toc.getByRole("link")).toHaveCount(headings.length);
+      for (const heading of headings) {
+        await expect(
+          toc.getByRole("link", { name: heading.title, exact: true }),
+        ).toHaveAttribute("href", `#${heading.id}`);
+        await expect(page.locator(`[id="${heading.id}"]`)).toHaveCount(1);
+      }
+      if (route === aegisgraphArticleRoute) {
+        await expect(page.locator("main figure img")).toHaveCount(2);
+        for (const caption of await page
+          .locator("main figure figcaption")
+          .all())
+          await expect(caption).toContainText(/\S/);
+      }
+    }
     if (route === "/") {
       const person = structuredData.find(
         (schema) => schema["@type"] === "Person",
@@ -620,6 +784,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
   }
   const articles = getPublishedArticles();
   const rss = await (await request.get("/rss.xml")).text();
+  const llms = await (await request.get("/llms.txt")).text();
   expect(rss.match(/<item>/g)?.length ?? 0).toBe(articles.length);
   expect(rss).toContain(`<link>${canonicalOrigin}/writing</link>`);
   expect(rss).toContain(`href="${canonicalOrigin}/rss.xml"`);
@@ -627,6 +792,17 @@ test("metadata, internal links, security headers and feeds are valid", async ({
   expect(sitemapXml.match(/<loc>/g)?.length).toBe(sitemap().length);
   for (const [, url] of sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g))
     expect(new URL(url).origin).toBe(canonicalOrigin);
+  for (const article of articles) {
+    const url = `${canonicalOrigin}/writing/${article.slug}`;
+    expect(rss).toContain(`<guid isPermaLink="true">${url}</guid>`);
+    expect(sitemapXml).toContain(`<loc>${url}</loc>`);
+    expect(llms).toContain(`](${url})`);
+    for (const tag of article.tags) {
+      const tagPage = await request.get(`/writing/tag/${tag}`);
+      expect(tagPage.status()).toBe(200);
+      expect(await tagPage.text()).toContain(`href="/writing/${article.slug}"`);
+    }
+  }
   for (const route of [aegisgraphRoute, jobEngineRoute])
     expect(sitemapXml).toContain(`<loc>${canonicalOrigin}${route}</loc>`);
   expect(sitemapXml).not.toContain(
@@ -642,6 +818,12 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     if (articles.some((published) => published.slug === article.slug)) continue;
     const slug = article.slug;
     expect(sitemapXml).not.toContain(`/writing/${slug}`);
+    expect(rss).not.toContain(`/writing/${slug}`);
+    expect(llms).not.toContain(`/writing/${slug}`);
+    for (const [route, html] of publicHtml)
+      expect(html, `No draft link on ${route}`).not.toContain(
+        `/writing/${slug}`,
+      );
     const response = await request.get(`/writing/${slug}`);
     expect(response.status(), slug).toBe(404);
     expect(await response.text()).toContain('name="robots" content="noindex"');
