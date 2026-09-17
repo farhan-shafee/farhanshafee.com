@@ -4,9 +4,9 @@ Reviewed on 2026-09-16 for `https://farhan-shafee.com`. This is a maintenance re
 
 ## Profiles
 
-GitHub and CyberBit Solutions remain the verified public links already configured. Both destinations returned HTTP 200 during this pass. LinkedIn is unset because the owner has not supplied an exact verified profile URL. No profile was inferred from a name or search result.
+GitHub and CyberBit Solutions remain the verified public links already configured. Both destinations returned HTTP 200 during this pass. LinkedIn is centrally configured with Farhan's owner-provided verified profile, `https://www.linkedin.com/in/farhanshafee/`. No profile was inferred from a name or search result.
 
-Set `siteConfig.linkedin` in `src/config/site.ts` only after Farhan supplies that URL. The existing header, footer, About, Contact, `llms.txt`, homepage Person schema, and About ProfilePage schema already consume the central setting. An empty value produces no link or `sameAs` entry.
+`siteConfig.linkedin` in `src/config/site.ts` stores that verified URL. The existing header, footer, About, Contact, `llms.txt`, homepage Person schema, and About ProfilePage schema consume the central setting.
 
 ## Real screenshot evidence
 
@@ -45,7 +45,7 @@ No Search Console account action, DNS change, or sitemap submission was made dur
 
 ## First technical draft
 
-`content/writing/how-i-built-an-ai-job-intelligence-engine.mdx` contains “Building a Job Intelligence Engine for Multi-Source Job Discovery and Application Workflows.” The existing filename and slug are retained. `draft: true` and `featured: false` keep it unpublished.
+`content/writing/building-a-job-intelligence-engine.mdx` contains “Building a Job Intelligence Engine for Multi-Source Job Discovery and Application Workflows.” Its filename and matching slug `building-a-job-intelligence-engine` remove unsupported AI branding from this unpublished article. The title, body, and date remain unchanged, and `draft: true` and `featured: false` keep it unpublished. The published project URL `/work/ai-job-intelligence-engine` is preserved.
 
 The draft uses the previously reviewed Job Engine implementation findings, including vinext/Vite, source adapters, normalization/provenance, Career Truth Vault, deterministic scoring/templates, Microsoft Graph scope boundaries, résumé review, and user-confirmed tracking. [Article evidence notes](article-evidence-review.md) map claims to that evidence. Proposed evaluation work is explicitly prospective. No metrics, users, successful provider operations, or model-backed functionality are invented.
 

@@ -6,7 +6,7 @@ export const siteConfig = {
     "I build security tools and automation systems, with a background in fintech software engineering, test automation, and backend financial systems.",
   url: "https://farhan-shafee.com",
   github: "https://github.com/farhan-shafee",
-  linkedin: "", // TODO: Add the verified, full LinkedIn profile URL.
+  linkedin: "https://www.linkedin.com/in/farhanshafee/",
   googleSiteVerification: "", // Only the exact HTML-tag token supplied by the site owner.
   email: "", // TODO: Add a public professional contact address, never a private address.
   cyberbit: "https://cyberbitsolutions.com",

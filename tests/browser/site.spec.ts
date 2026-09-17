@@ -247,7 +247,14 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     else await expect(verificationTag).toHaveCount(0);
     const linkedInLinks = page.locator('a[href*="linkedin.com"]');
     if (siteConfig.linkedin) {
-      expect(await linkedInLinks.count()).toBeGreaterThan(0);
+      for (const scope of ["header", "footer"])
+        await expect(
+          page.locator(`${scope} a[href*="linkedin.com"]`),
+        ).toHaveAttribute("href", siteConfig.linkedin);
+      if (route === "/about" || route === "/contact")
+        await expect(
+          page.locator('main a[href*="linkedin.com"]'),
+        ).toHaveAttribute("href", siteConfig.linkedin);
       for (const link of await linkedInLinks.all())
         await expect(link).toHaveAttribute("href", siteConfig.linkedin);
     } else await expect(linkedInLinks).toHaveCount(0);
@@ -358,6 +365,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       if (path === "/robots.txt")
         expect(body).toContain(`Sitemap: ${canonicalOrigin}/sitemap.xml`);
       if (path === "/llms.txt") {
+        if (siteConfig.linkedin)
+          expect(body).toContain(`[LinkedIn](${siteConfig.linkedin})`);
         expect(body).toContain(`](${canonicalOrigin}/about)`);
         expect(body).toContain(`](${canonicalOrigin}/rss.xml)`);
         expect(body).toContain(`](${canonicalOrigin}/sitemap.xml)`);
