@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Now",
-  "What Farhan Shafee is building, learning, and investigating across security engineering and AI-assisted automation.",
+  "What Farhan Shafee is building, studying, and investigating: AegisGraph, CyberBit Solutions, and the evidence boundaries of security automation.",
   "/now",
 );
 
@@ -31,18 +31,24 @@ export default function NowPage() {
             <h2>{section.title}</h2>
             <div>
               <p>{section.text}</p>
-              {section.link && (
-                <TextLink href={section.link.href} external>
-                  {section.link.label}
-                </TextLink>
-              )}
+              <div className="editorial-inline-links">
+                {section.links.map((link) => (
+                  <TextLink
+                    href={link.href}
+                    external={link.external}
+                    key={link.href}
+                  >
+                    {link.label}
+                  </TextLink>
+                ))}
+              </div>
             </div>
           </section>
         ))}
       </div>
       <nav className="editorial-context-links" aria-label="Related notes">
-        <TextLink href="/lab">Lab notebook</TextLink>
-        <TextLink href="/uses">Tooling notes</TextLink>
+        <TextLink href="/writing">Engineering notes</TextLink>
+        <TextLink href="/about">Background & approach</TextLink>
       </nav>
     </div>
   );

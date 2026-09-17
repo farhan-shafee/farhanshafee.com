@@ -41,6 +41,12 @@ export type ProjectImage = {
   caption: string;
 };
 
+export type ProjectEvidenceLink = {
+  label: string;
+  href: string;
+  featured?: boolean;
+};
+
 /**
  * Public project records. Add evidence before adding implementation details,
  * dates, technologies, or outcomes. Private records never receive public routes.
@@ -54,6 +60,11 @@ export type Project = {
   kind: "business" | "personal" | "lab";
   description: string;
   technologies: string[];
+  inspection?: {
+    summary: string;
+    links: ProjectEvidenceLink[];
+    facts: { label: string; value: string }[];
+  };
   caseStudy?: ProjectCaseStudy;
   technicalHighlights?: string[];
   screenshots?: ProjectImage[];
@@ -80,6 +91,73 @@ export const projects: Project[] = [
     kind: "personal",
     description:
       "A security investigation platform for synthetic fintech telemetry, connecting deterministic detection and correlation with bounded AI analysis and validated evidence citations.",
+    inspection: {
+      summary:
+        "A synthetic fintech investigation environment, not a production SOC deployment. Explore the read-only demo or inspect the implementation and its evidence.",
+      links: [
+        {
+          label: "Live demo",
+          href: "https://aegisgraph.farhan-shafee.com",
+          featured: true,
+        },
+        {
+          label: "View source",
+          href: "https://github.com/farhan-shafee/aegisgraph",
+          featured: true,
+        },
+        {
+          label: "Architecture",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/architecture/SYSTEM.md",
+        },
+        {
+          label: "Threat model",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/threat-model/THREAT_MODEL.md",
+        },
+        {
+          label: "ADRs",
+          href: "https://github.com/farhan-shafee/aegisgraph/tree/main/docs/adr",
+        },
+        {
+          label: "Evaluations",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/evaluations/README.md",
+        },
+        {
+          label: "CI",
+          href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/35251887304",
+        },
+        {
+          label: "Engineering article",
+          href: "/writing/building-an-evidence-grounded-ai-security-investigation-system",
+          featured: true,
+        },
+      ],
+      facts: [
+        {
+          label: "System",
+          value:
+            "Next.js / TypeScript, FastAPI, PostgreSQL, SQLAlchemy, and Alembic.",
+        },
+        {
+          label: "Security flow",
+          value:
+            "Synthetic telemetry → normalization → detection → correlation → incident evidence → bounded AI → validation → analyst review.",
+        },
+        {
+          label: "Public demo",
+          value:
+            "Read-only, with two deterministic questions. No live OpenAI calls or saved answers.",
+        },
+        {
+          label: "Local/interview mode",
+          value:
+            "Analyst annotations, findings, report review, and optional OpenAI analysis.",
+        },
+        {
+          label: "Hosting",
+          value: "Vercel frontend; Railway API and PostgreSQL.",
+        },
+      ],
+    },
     caseStudy: {
       overview: {
         paragraphs: [
@@ -94,7 +172,7 @@ export const projects: Project[] = [
       system: {
         paragraphs: [
           "The investigation follows one explicit path: synthetic fintech telemetry → normalization → detection → correlation → incident → evidence → bounded AI analysis → schema validation → citation and claim-support validation → analyst review.",
-          "Source observations and persisted case records remain authoritative. The provider proposes structured findings; human actions control annotations, workflow changes, finding approval, and report review.",
+          "Source observations and persisted case records remain authoritative. The provider proposes structured findings; in local/interview mode, human actions control annotations, workflow changes, finding approval, and report review. The hosted public demo makes the synthetic investigation available read-only.",
         ],
       },
       demoScenario: {
@@ -105,7 +183,7 @@ export const projects: Project[] = [
       },
       architecture: {
         paragraphs: [
-          "A Next.js/TypeScript workspace uses a FastAPI backend with Pydantic validation. SQLAlchemy and Alembic manage persistence and schema changes in PostgreSQL. SQLite supports lightweight local demonstrations and isolated tests.",
+          "A Next.js/TypeScript workspace uses a FastAPI backend with Pydantic validation. SQLAlchemy and Alembic manage persistence and schema changes in PostgreSQL. The public demo requires PostgreSQL; SQLite supports lightweight local demonstrations and isolated tests.",
           "Four adapters normalize identity, API gateway, endpoint, and Atlas application telemetry into one canonical event model: timestamp, source, event type, action, outcome, actor, target, network, device, session, bounded attributes, and a synthetic source reference. A seeded generator makes the dataset reproducible.",
         ],
       },
@@ -124,9 +202,9 @@ export const projects: Project[] = [
       },
       aiGrounding: {
         paragraphs: [
-          "A provider interface supports credential-free deterministic testing and a real OpenAI provider. Both use the same validation boundary. Application retrieval selects the earliest 50 incident evidence rows in event-time order; a separate boundary limits projected context and excludes analyst-marked benign observations.",
+          "A provider interface supports credential-free deterministic testing and optional OpenAI analysis in local/interview mode. Both use the same validation boundary. The public demo forces the deterministic provider for two curated questions and does not persist answers. Application retrieval selects the earliest 50 incident evidence rows in event-time order; a separate boundary limits projected context and excludes analyst-marked benign observations.",
           "The provider selects typed claim candidates and exact evidence references, rather than writing unrestricted factual prose. Server-side checks enforce the output schema, evidence existence, incident membership, inclusion in the actual bounded context, and support for the proposed claim. Fixed templates render accepted findings and their cited summary. One invalid claim rejects the entire answer, including any otherwise valid subset.",
-          "In recorded live OpenAI validation, “What most likely happened?” returned ten supported findings with 13 citation references from 26 supplied evidence rows. “What malware family was used?” produced insufficient evidence and no invented malware attribution. The provider has no database connection, retrieval tools, or incident-mutation authority.",
+          "In recorded local live OpenAI validation, “What most likely happened?” returned ten supported findings with 13 citation references from 26 supplied evidence rows. “What malware family was used?” produced insufficient evidence and no invented malware attribution. The provider has no database connection, retrieval tools, or incident-mutation authority.",
         ],
       },
       engineeringDecisions: {
@@ -140,20 +218,20 @@ export const projects: Project[] = [
       securityPrivacy: {
         paragraphs: [
           "Telemetry is untrusted data. In a tested telemetry-injection fixture, free text was excluded before the live model call; accepted output remained evidence-grounded and case state stayed unchanged. This validates that fixture's projection and output boundaries, not universal prompt-injection resistance.",
-          "Local boundary checks rejected foreign-case input, nonexistent citations, cross-incident citations, and current-case citations omitted from bounded context. Case scoping is separate from user authorization: the demo uses one fixed local analyst. Database triggers reject ordinary event and audit edits or deletes, but a privileged database owner can remove those protections.",
+          "Local boundary checks rejected foreign-case input, nonexistent citations, cross-incident citations, and current-case citations omitted from bounded context. Case scoping is separate from user authorization: local/interview mode uses one fixed analyst, and the public demo denies persistent API writes. Database triggers reject ordinary event and audit edits or deletes, but a privileged database owner can remove those protections.",
         ],
       },
       validation: {
         paragraphs: [
-          "The September 17, 2026 UTC public release review records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases passing, alongside PostgreSQL/SQLite checks and a production build. Dependency audits reported no known vulnerabilities at that time. These describe validation coverage, not proof of production security.",
+          "The September 17, 2026 UTC public release review at revision c95afa6 records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases passing, alongside PostgreSQL/SQLite checks and a production build. Dependency audits reported no known vulnerabilities at that time. These describe historical validation coverage, not proof of production security.",
           "Live-provider results are recorded separately: three named scenarios eventually passed across six harness requests, with three earlier HTTP 429 failures retained. Two additional browser requests succeeded. This small sample verifies specific behavior; broader repeated live-model evaluation remains necessary.",
-          "The public repository includes the threat model, architecture decision records, detection rules, evaluation harness, validation documentation, and CI workflow. The linked September 17, 2026 UTC run passed backend, frontend, and browser validation using deterministic providers, without live-model calls.",
+          "The inspection links expose the architecture, threat model, decisions, evaluations, and CI. The linked September 17, 2026 UTC CI run at revision 1670ca4 passed backend, frontend, and browser validation, including PostgreSQL public initialization and the public production-build workflow. It used deterministic providers without live-model calls.",
         ],
       },
       lessonsConstraints: {
         paragraphs: [
           "Bounded evidence can omit relevant observations, and a supported finding can still be incomplete. Typed telemetry is not proof that a source is truthful. The narrow claim language trades open-ended narrative for inspectable support; human review remains necessary.",
-          "Production work includes authenticated identities, case and tenant authorization, multi-tenancy, authenticated streaming-scale ingestion, broader repeated live-model evaluation, and stronger independently retained evidence and audit protections. The current system is synchronous and local, with no autonomous response or production SOC deployment claim.",
+          "Production work includes authenticated identities, case and tenant authorization, multi-tenancy, authenticated streaming-scale ingestion, broader repeated live-model evaluation, and stronger independently retained evidence and audit protections. The synchronous system now has a hosted read-only demo alongside its local/interview workflow. Neither is a production SOC deployment or an autonomous response system.",
         ],
       },
     },
@@ -188,7 +266,7 @@ export const projects: Project[] = [
         width: 1600,
         height: 1050,
         caption:
-          "A recorded OpenAI answer for the synthetic case, rendered as validated findings with evidence citations.",
+          "Recorded local OpenAI validation on the synthetic case, with validated findings and citations. The hosted public demo uses deterministic answers instead.",
       },
       {
         src: "/projects/aegisgraph/entity-relationships.png",
@@ -209,13 +287,7 @@ export const projects: Project[] = [
     ],
     website: "https://aegisgraph.farhan-shafee.com",
     github: "https://github.com/farhan-shafee/aegisgraph",
-    links: [
-      {
-        label: "CI validation run",
-        href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463",
-      },
-      { label: "Discuss this project", href: "/contact" },
-    ],
+    links: [{ label: "Discuss this project", href: "/contact" }],
     featured: true,
     visibility: "public",
   },
@@ -227,6 +299,50 @@ export const projects: Project[] = [
     kind: "business",
     description:
       "Public security checks, human-reviewed reporting, and paid digital workflows for small businesses.",
+    inspection: {
+      summary:
+        "Inspect the public tools, methodology, and reporting format. The sample Snapshot uses a fictional business and findings; it is not a client assessment.",
+      links: [
+        { label: "Product", href: siteConfig.cyberbit, featured: true },
+        {
+          label: "Free security check",
+          href: `${siteConfig.cyberbit}/free-scan`,
+        },
+        {
+          label: "Methodology",
+          href: `${siteConfig.cyberbit}/methodology`,
+        },
+        {
+          label: "Sample Snapshot (fictional)",
+          href: `${siteConfig.cyberbit}/sample-report`,
+        },
+      ],
+      facts: [
+        {
+          label: "Public tools",
+          value: "Website, email, and domain checks with defined scope.",
+        },
+        {
+          label: "Snapshot",
+          value: "Intake, admin report preparation, and human review.",
+        },
+        {
+          label: "Paid Brief",
+          value:
+            "Automated reporting from eligible checks, with Stripe checkout and paid access.",
+        },
+        {
+          label: "Operations",
+          value:
+            "Admin/report tooling, service records, and transactional email.",
+        },
+        {
+          label: "Scope",
+          value:
+            "Public checks and the Snapshot use nonintrusive signals; neither guarantees security.",
+        },
+      ],
+    },
     caseStudy: {
       overview: {
         paragraphs: [

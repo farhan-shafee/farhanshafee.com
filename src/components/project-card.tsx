@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowIcon } from "@/components/ui";
+import { EvidenceLinks } from "@/components/evidence-links";
 import type { Project } from "@/data/projects";
 
 export function ProjectCard({
@@ -55,6 +56,14 @@ export function ProjectCard({
             </ul>
           )}
         </div>
+        {(variant === "primary" || variant === "flagship") && (
+          <EvidenceLinks
+            links={
+              project.inspection?.links.filter((link) => link.featured) ?? []
+            }
+            label={`${project.title} selected evidence`}
+          />
+        )}
       </div>
       {preview && (
         <figure className="project-entry-preview">

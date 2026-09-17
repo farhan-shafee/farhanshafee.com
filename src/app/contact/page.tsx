@@ -1,5 +1,6 @@
 import { PageIntro, TextLink } from "@/components/ui";
 import { siteConfig } from "@/config/site";
+import { getProjectBySlug } from "@/data/projects";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
@@ -9,17 +10,19 @@ export const metadata = pageMetadata(
 );
 
 export default function ContactPage() {
+  const aegisGraph = getProjectBySlug("aegisgraph");
+
   return (
     <div className="page-shell editorial-page editorial-contact">
       <PageIntro
         eyebrow="Contact"
         title="Engineering & collaboration."
-        description="For engineering opportunities, security and automation collaboration, and technical partnerships."
+        description="Engineering opportunities and technical discussions through LinkedIn; business security inquiries through CyberBit."
       />
       <div className="editorial-contact-list">
         {(siteConfig.email || siteConfig.linkedin) && (
           <section className="editorial-contact-row editorial-contact-lead">
-            <h2>Professional inquiries</h2>
+            <h2>Engineering opportunities</h2>
             <div>
               <div className="editorial-inline-links">
                 {siteConfig.linkedin && (
@@ -38,7 +41,8 @@ export default function ContactPage() {
                 )}
               </div>
               <p>
-                Share the problem, the context, and the work you have in mind.
+                Share the role or engineering problem, the context, and the
+                collaboration you have in mind.
               </p>
             </div>
           </section>
@@ -46,19 +50,30 @@ export default function ContactPage() {
         <section className="editorial-contact-row">
           <h2>CyberBit inquiries</h2>
           <div>
-            <p>Business cybersecurity tools and services.</p>
+            <p>
+              For business security checks, reports, and service inquiries,
+              start with CyberBit Solutions.
+            </p>
             <TextLink href={siteConfig.cyberbit} external>
               Visit CyberBit Solutions
             </TextLink>
           </div>
         </section>
         <section className="editorial-contact-row">
-          <h2>Public work</h2>
+          <h2>Technical discussion</h2>
           <div>
-            <p>Repositories and technical projects on GitHub.</p>
-            <TextLink href={siteConfig.github} external>
-              View GitHub profile
-            </TextLink>
+            <p>
+              AegisGraph connects the architecture, implementation, and
+              validation behind my security investigation work.
+            </p>
+            <div className="editorial-inline-links">
+              <TextLink href="/work/aegisgraph">Read the case study</TextLink>
+              {aegisGraph?.github && (
+                <TextLink href={aegisGraph.github} external>
+                  Inspect the source
+                </TextLink>
+              )}
+            </div>
           </div>
         </section>
       </div>

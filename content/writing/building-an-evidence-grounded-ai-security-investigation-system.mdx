@@ -13,7 +13,9 @@ ogImage: "/opengraph-image"
 
 I wanted to explore a specific problem: how can an AI assistant help investigate a security incident without becoming the authority on what actually happened?
 
-AegisGraph is the system I built around that question. It takes synthetic telemetry from a simulated fintech application through detection, incident correlation, evidence inspection, and AI-assisted analysis. It is a local engineering demonstration, not a production SOC deployment.
+AegisGraph is the system I built around that question. It takes synthetic telemetry from a simulated fintech application through detection, incident correlation, evidence inspection, and AI-assisted analysis. It is an engineering demonstration using synthetic data, not a production SOC deployment.
+
+The [public demo](https://aegisgraph.farhan-shafee.com) is now hosted on Vercel with a Railway FastAPI backend and PostgreSQL database. Its read-only mode offers deterministic analyst answers without live OpenAI calls or saved case changes. The OpenAI results and human workflows discussed below come from separate local/interview-mode validation. Explore the [source](https://github.com/farhan-shafee/aegisgraph) or the [case study](/work/aegisgraph) alongside this account of the engineering decisions.
 
 The failure I wanted to avoid was straightforward: put logs into a model, receive a confident narrative, and leave the analyst to work out whether the evidence supports it. Adding citations does not resolve that problem. An application-access event might support “this account read a sensitive resource.” The same event cannot establish “an attacker stole customer data,” even if the answer cites its real ID. Attribution, intent, and a transfer outcome have been added without evidence.
 
@@ -184,7 +186,7 @@ At materially larger scale, I would measure ingestion rates, retention, query pa
 
 ## What production would require
 
-The current boundaries are useful for a local demo, but I would need to change who can use them and how their state is protected before handling real investigations.
+The current boundaries support a synthetic demo, including the hosted read-only version, but I would need to change who can use them and how their state is protected before handling real investigations.
 
 I would start with real authentication, case authorization, and tenant-aware evidence associations. Retrieval and every write action would need trusted subject/tenant scope and independent isolation tests. The fixed local analyst and host/origin restrictions do not provide those controls.
 

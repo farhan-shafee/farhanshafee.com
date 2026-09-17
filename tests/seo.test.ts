@@ -69,6 +69,10 @@ test("sitemap, RSS, and machine-readable resources advertise the canonical origi
   assert.ok(rss.includes(`<link>${origin}/writing</link>`));
   assert.ok(rss.includes(`href="${origin}/rss.xml"`));
   const llms = await getLlms().text();
+  assert.ok(llms.includes("https://aegisgraph.farhan-shafee.com"));
+  assert.match(llms, /read-only/i);
+  assert.match(llms, /deterministic/i);
+  assert.doesNotMatch(llms, /It is a local engineering demonstration/i);
   for (const route of [
     "about",
     "work",

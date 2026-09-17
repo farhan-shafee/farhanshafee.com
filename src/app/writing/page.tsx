@@ -25,11 +25,11 @@ export default function WritingPage() {
       <PageIntro
         eyebrow="Writing"
         title="Engineering notes."
-        description="Security engineering, automation, and financial systems. Implementation decisions, constraints, and lessons from the work."
+        description="How I build security systems: the decisions, evidence, and limitations behind the implementation."
       >
         <TextLink href="/rss.xml">Subscribe via RSS</TextLink>
       </PageIntro>
-      <WritingTags tags={getArticleTags()} />
+      {articles.length > 1 && <WritingTags tags={getArticleTags()} />}
       {articles.length > 0 ? (
         <>
           {featured && (

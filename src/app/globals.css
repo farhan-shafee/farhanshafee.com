@@ -393,6 +393,35 @@ ul {
   padding-top: 36px;
   padding-bottom: 32px;
 }
+.home-proof {
+  border-top: 1px solid var(--line);
+  padding: 22px 0;
+}
+.home-proof > .eyebrow {
+  font-size: 10px;
+  margin-bottom: 10px;
+}
+.home-proof ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px 32px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.home-proof .text-link {
+  min-height: 44px;
+}
+.home-proof li p {
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .home-proof ul {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
 .selected-projects {
   min-width: 0;
 }

@@ -21,7 +21,7 @@ export default function WorkPage() {
       <PageIntro
         eyebrow="Work / Systems & projects"
         title="Systems and engineering work."
-        description="Evidence-grounded security investigation, cybersecurity products, and supporting systems work."
+        description="AegisGraph explores security investigation and bounded AI. CyberBit connects security tools to business workflows. Inspect the systems, then follow the decisions behind them."
       />
       {flagships.length > 0 && (
         <section

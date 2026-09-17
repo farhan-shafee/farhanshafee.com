@@ -29,6 +29,8 @@ const {
 const { ProjectCaseStudy } =
   await import("../src/components/project-case-study");
 const { ProjectCard } = await import("../src/components/project-card");
+const { ProjectInspection } =
+  await import("../src/components/project-inspection");
 const { default: WorkPage } = await import("../src/app/work/page");
 
 function fixture(overrides: Partial<Project> = {}): Project {
@@ -214,10 +216,71 @@ test("an architecture diagram can provide evidence without filler prose", () => 
   assert.doesNotMatch(html, /<p>|Overview|Selected interfaces/);
 });
 
+test("project inspection renders reviewed facts and links without empty modules", () => {
+  for (const project of [
+    fixture(),
+    fixture({
+      inspection: {
+        summary: " ",
+        links: [
+          { label: " ", href: " " },
+          { label: "Unsupported scheme", href: "javascript:void(0)" },
+          { label: "Protocol-relative URL", href: "//example.com" },
+        ],
+        facts: [{ label: " ", value: " " }],
+      },
+    }),
+  ])
+    assert.equal(
+      renderToStaticMarkup(createElement(ProjectInspection, { project })),
+      "",
+    );
+
+  const project = fixture({
+    inspection: {
+      summary: "A reviewed system summary.",
+      links: [
+        { label: "Source", href: "https://example.com/source" },
+        { label: "Technical article", href: "/writing" },
+      ],
+      facts: [{ label: "Mode", value: "Read-only example" }],
+    },
+  });
+  const html = renderToStaticMarkup(
+    createElement(ProjectInspection, { project }),
+  );
+  assert.match(html, /Inspect the system/);
+  assert.match(html, /A reviewed system summary\./);
+  assert.match(html, /<dt[^>]*>Mode<\/dt>/);
+  assert.match(html, /<dd[^>]*>Read-only example<\/dd>/);
+  for (const { href } of project.inspection!.links) {
+    const anchor = [...html.matchAll(/<a\s[^>]*>/g)].find(([tag]) =>
+      tag.includes(`href="${href}"`),
+    )?.[0];
+    assert.ok(anchor, `${href} must be inspectable`);
+    if (href.startsWith("https://")) {
+      assert.match(anchor, /target="_blank"/);
+      assert.match(anchor, /rel="noopener noreferrer"/);
+    } else assert.doesNotMatch(anchor, /target="_blank"/);
+  }
+});
+
 test("project presentation distinguishes primary and second flagships from supporting work", () => {
   const project = fixture({
     screenshots: [imageFixture],
     technicalHighlights: ["A reviewed technical statement."],
+    inspection: {
+      summary: "Reviewed inspection summary.",
+      links: [
+        {
+          label: "Featured evidence",
+          href: "https://example.com/source",
+          featured: true,
+        },
+        { label: "Further evidence", href: "https://example.com/details" },
+      ],
+      facts: [{ label: "Mode", value: "Test-only" }],
+    },
   });
   const primary = renderToStaticMarkup(
     createElement(ProjectCard, {
@@ -239,6 +302,11 @@ test("project presentation distinguishes primary and second flagships from suppo
   assert.match(flagship, /alt="Test-only interface description"/);
   assert.match(flagship, /<figcaption>Test-only caption\.<\/figcaption>/);
   assert.doesNotMatch(flagship, /A reviewed technical statement\./);
+  for (const html of [primary, flagship]) {
+    assert.match(html, /href="https:\/\/example.com\/source"/);
+    assert.doesNotMatch(html, /href="https:\/\/example.com\/details"/);
+    assert.match(html, /href="\/work\/test-only-project"/);
+  }
   for (const variant of ["secondary", "supporting"] as const) {
     const html = renderToStaticMarkup(
       createElement(ProjectCard, {
@@ -250,6 +318,7 @@ test("project presentation distinguishes primary and second flagships from suppo
     assert.doesNotMatch(html, /<img\b|<figure\b/);
     assert.match(html, /<h2\b/);
     assert.match(html, /Exploring/);
+    assert.doesNotMatch(html, /evidence-links|https:\/\/example.com\/source/);
   }
 });
 
@@ -276,6 +345,73 @@ test("Work puts AegisGraph and CyberBit previews before the supporting engineeri
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project?.screenshots?.[0]);
     assert.ok(html.includes(project.screenshots[0].src.replace(/\//g, "%2F")));
+  }
+});
+
+test("flagship inspection separates public evidence from local capabilities and reviewed samples", () => {
+  const aegisgraph = getPublicProjects().find(
+    ({ slug }) => slug === "aegisgraph",
+  );
+  const cyberbit = getPublicProjects().find(
+    ({ slug }) => slug === "cyberbit-solutions",
+  );
+  assert.ok(aegisgraph?.inspection);
+  assert.ok(cyberbit?.inspection);
+  const source = "https://github.com/farhan-shafee/aegisgraph";
+  const aegisLinks = aegisgraph.inspection.links.map(({ href }) => href);
+  for (const href of [
+    "https://aegisgraph.farhan-shafee.com",
+    source,
+    `${source}/blob/main/docs/architecture/SYSTEM.md`,
+    `${source}/blob/main/docs/threat-model/THREAT_MODEL.md`,
+    `${source}/tree/main/docs/adr`,
+    `${source}/blob/main/docs/evaluations/README.md`,
+    `${source}/actions/runs/35251887304`,
+    "/writing/building-an-evidence-grounded-ai-security-investigation-system",
+  ])
+    assert.ok(
+      aegisLinks.includes(href),
+      `Missing reviewed AegisGraph evidence: ${href}`,
+    );
+  const modes = new Map(
+    aegisgraph.inspection.facts.map(({ label, value }) => [label, value]),
+  );
+  assert.match(modes.get("Public demo") ?? "", /read-only/i);
+  assert.match(modes.get("Public demo") ?? "", /deterministic/i);
+  assert.match(modes.get("Public demo") ?? "", /no live OpenAI/i);
+  assert.match(modes.get("Local/interview mode") ?? "", /optional OpenAI/i);
+  assert.match(modes.get("Hosting") ?? "", /Vercel.*Railway/i);
+
+  assert.deepEqual(
+    new Set(cyberbit.inspection.links.map(({ href }) => href)),
+    new Set([
+      "https://cyberbitsolutions.com",
+      "https://cyberbitsolutions.com/free-scan",
+      "https://cyberbitsolutions.com/methodology",
+      "https://cyberbitsolutions.com/sample-report",
+    ]),
+  );
+  assert.match(cyberbit.inspection.summary, /fictional/i);
+  assert.match(cyberbit.inspection.summary, /not a client assessment/i);
+  const workflows = new Map(
+    cyberbit.inspection.facts.map(({ label, value }) => [label, value]),
+  );
+  assert.match(workflows.get("Snapshot") ?? "", /human review/i);
+  assert.match(workflows.get("Paid Brief") ?? "", /automated.*Stripe/i);
+  for (const project of [aegisgraph, cyberbit]) {
+    const links = project.inspection!.links;
+    assert.equal(new Set(links.map(({ href }) => href)).size, links.length);
+    assert.ok(
+      links.every(
+        ({ label, href }) =>
+          label.trim() && /^(?:https:\/\/|\/(?!\/))/.test(href),
+      ),
+    );
+    assert.ok(
+      project.inspection!.facts.every(
+        ({ label, value }) => label.trim() && value.trim(),
+      ),
+    );
   }
 });
 
@@ -367,7 +503,7 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
 
   for (const distinction of [
     /deterministic testing/i,
-    /real OpenAI provider/i,
+    /optional OpenAI analysis in local\/interview mode/i,
     /output schema/i,
     /evidence existence/i,
     /incident membership/i,
@@ -399,6 +535,10 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
     JSON.stringify(project),
     /autonomous SOC|enterprise SIEM|AI SOC replacement|immune to prompt injection|prompt-injection proof|fully secure against prompt injection/i,
   );
+  assert.doesNotMatch(
+    JSON.stringify(project),
+    /It is a local engineering demonstration|The synchronous system remains a local engineering demonstration/i,
+  );
 
   const screenshots = project.screenshots ?? [];
   assert.equal(screenshots.length, 4);
@@ -410,10 +550,9 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
     src.endsWith("grounded-ai-answer.png"),
   );
   assert.ok(answer);
-  assert.match(
-    answer.caption,
-    /OpenAI.*validated findings with evidence citations/i,
-  );
+  assert.match(answer.caption, /recorded local OpenAI/i);
+  assert.match(answer.caption, /validated findings.*citations/i);
+  assert.match(answer.caption, /hosted public demo.*deterministic/i);
   const evaluation = screenshots.find(({ src }) =>
     src.endsWith("evaluation-dashboard.png"),
   );
@@ -434,6 +573,7 @@ test("unverified labs retain their conservative scope", () => {
     assert.equal(project.screenshots, undefined);
     assert.equal(project.architectureDiagrams, undefined);
     assert.equal(project.technicalHighlights, undefined);
+    assert.equal(project.inspection, undefined);
     assert.deepEqual(Object.keys(project.caseStudy ?? {}), ["overview"]);
   }
 });
@@ -555,7 +695,31 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
       name: project.title,
       item: `https://farhan-shafee.com/work/${project.slug}`,
     });
+    const work = structuredData.find(
+      (schema) => schema["@type"] === "CreativeWork",
+    );
+    if (project.github) {
+      assert.ok(work);
+      assert.equal(work.url, `https://farhan-shafee.com/work/${project.slug}`);
+      assert.equal(work.author["@id"], "https://farhan-shafee.com/#person");
+      assert.equal(work.about["@type"], "SoftwareSourceCode");
+      assert.equal(work.about.codeRepository, project.github);
+      assert.equal(work.about.url, project.website);
+    } else assert.equal(work, undefined);
     assert.match(html, /<dl[^>]*aria-label="Project details"/);
+    const inspectionPosition = html.indexOf("Inspect the system");
+    if (project.inspection) {
+      assert.ok(
+        inspectionPosition >= 0,
+        `${project.slug} exposes its inspection block`,
+      );
+      assert.ok(
+        inspectionPosition < html.indexOf('aria-label="Project details"'),
+        "Evidence is available before the long project metadata on mobile",
+      );
+      for (const { href } of project.inspection.links)
+        assert.ok(html.includes(`href="${href}"`));
+    } else assert.equal(inspectionPosition, -1);
     assert.match(html, /id="overview">Overview<\/h2>/);
     const imageCount =
       (project.screenshots?.length ?? 0) +

@@ -192,6 +192,14 @@
   font-size: 15px;
   line-height: 1.8;
 }
+.editorial-notebook-entry article > p + p,
+.editorial-narrative-section p + p {
+  margin-top: 12px;
+}
+.editorial-inline-links .text-link,
+.editorial-context-links .text-link {
+  min-height: 44px;
+}
 
 .editorial-notebook-entry .editorial-inline-links {
   margin-top: 16px;

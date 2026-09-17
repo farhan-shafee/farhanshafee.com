@@ -1,10 +1,11 @@
 import { PageIntro, TextLink } from "@/components/ui";
 import { usesCategories } from "@/data/uses";
+import { getProjectBySlug } from "@/data/projects";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Uses",
-  "An evolving reference for Farhan Shafee's engineering tools, software, infrastructure, and hardware. Tooling notes are being documented.",
+  "Verified technology stacks from Farhan Shafee's projects. Personal tooling notes have not yet been published.",
   "/uses",
 );
 
@@ -12,12 +13,19 @@ export default function UsesPage() {
   const categories = usesCategories.filter(
     (category) => category.items.length > 0,
   );
+  const documentedProjects = ["aegisgraph", "cyberbit-solutions"]
+    .map(getProjectBySlug)
+    .filter((project) => project !== undefined);
   return (
     <div className="page-shell editorial-page editorial-compact">
       <PageIntro
         eyebrow="Uses / Tools & working environment"
         title="Tools & working environment."
-        description="Software, infrastructure, and hardware behind the work."
+        description={
+          categories.length > 0
+            ? "Personal notes on software, infrastructure, and hardware."
+            : "Personal tooling notes are not published yet. These case studies document the software used in my projects."
+        }
       />
       {categories.length > 0 ? (
         <div className="editorial-tooling">
@@ -50,12 +58,20 @@ export default function UsesPage() {
           ))}
         </div>
       ) : (
-        <div className="editorial-publication-note">
-          <p>
-            Personal tooling notes are not published yet. The project case
-            studies include their verified technology stacks.
-          </p>
-          <TextLink href="/work">Explore the systems</TextLink>
+        <div className="editorial-tooling" aria-label="Verified project stacks">
+          {documentedProjects.map((project) => (
+            <section className="editorial-tooling-category" key={project.slug}>
+              <h2>{project.title}</h2>
+              <div>
+                <p>{project.technologies.join(" · ")}</p>
+                <div className="editorial-inline-links">
+                  <TextLink href={`/work/${project.slug}`}>
+                    Implementation & decisions
+                  </TextLink>
+                </div>
+              </div>
+            </section>
+          ))}
         </div>
       )}
     </div>

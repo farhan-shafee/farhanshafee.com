@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { ProjectCaseStudy } from "@/components/project-case-study";
+import { ProjectInspection } from "@/components/project-inspection";
 import { PageIntro, TextLink } from "@/components/ui";
 import {
   getProjectBySlug,
@@ -9,6 +10,7 @@ import {
   projectKinds,
 } from "@/data/projects";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
+import { siteConfig } from "@/config/site";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
@@ -56,6 +58,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           ],
         }}
       />
+      {project.github && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            "@id": absoluteUrl(`/work/${slug}#case-study`),
+            name: `${project.title} case study`,
+            url: absoluteUrl(`/work/${slug}`),
+            description: project.description,
+            author: { "@id": `${siteConfig.url}/#person` },
+            about: {
+              "@type": "SoftwareSourceCode",
+              name: project.title,
+              codeRepository: project.github,
+              ...(project.website ? { url: project.website } : {}),
+            },
+          }}
+        />
+      )}
       <PageIntro
         eyebrow={project.category}
         title={project.title}
@@ -63,18 +84,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       >
         <div className="inline-links">
           <TextLink href="/work">All work</TextLink>
-          {project.github && (
+          {!project.inspection && project.github && (
             <TextLink href={project.github} external>
               View source
             </TextLink>
           )}
-          {project.website && (
+          {!project.inspection && project.website && (
             <TextLink href={project.website} external>
               Visit {project.title}
             </TextLink>
           )}
         </div>
       </PageIntro>
+      <ProjectInspection project={project} />
       <div className="case-study-layout">
         <dl className="case-metadata" aria-label="Project details">
           <div className="case-metadata-item">
@@ -91,7 +113,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <dd>{project.year}</dd>
             </div>
           )}
-          {project.technologies.length > 0 && (
+          {!project.inspection && project.technologies.length > 0 && (
             <div className="case-metadata-item case-metadata-technologies">
               <dt>Technologies</dt>
               <dd>

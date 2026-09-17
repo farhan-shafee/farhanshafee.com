@@ -26,6 +26,11 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
         supports:
           "Read-only review at source revision 7293c515d47178405df6fcf93feeeadac067cf64 supports the synthetic investigation architecture, deterministic correlation, bounded providers, citation/support validation, and production limitations. The September 17, 2026 UTC follow-up verifies public source availability, MIT licensing at inspected main c95afa6, and successful backend/frontend/browser CI run 35179396463 at 534679eac4a04ee0298fe6f35d1422fa63a4fe90. That deterministic run makes no live OpenAI calls and does not establish success for later revisions. The linked release record documents 146 backend, 25 frontend, 13 browser, and 28 deterministic checks, preserving the historical 23-frontend-test hardening result separately.",
       },
+      {
+        path: "docs/proof-density-audit.md",
+        supports:
+          "September 17 hosted-demo review: public runtime reports read-only deterministic mode; source revision 1670ca4 and CI run 35251887304 support the public/local boundary. Vercel frontend and Railway FastAPI/PostgreSQL topology is owner-confirmed. The reviewed engineering article is now published and linked from the case study.",
+      },
     ],
     statusReview: {
       status: "Active",
@@ -37,11 +42,6 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
         area: "repeated-live-evaluation",
         prompt:
           "TODO: Add separately recorded repeated live-model trials before making broader provider-quality claims; retain availability failures and distinguish application-boundary fixtures from model behavior.",
-      },
-      {
-        area: "future-technical-article",
-        prompt:
-          "TODO: Develop Building an Evidence-Grounded AI Security Investigation System from the reviewed implementation evidence. Keep any future article draft true until its prose and evidence have been reviewed; do not publish an outline as an article.",
       },
     ],
   },

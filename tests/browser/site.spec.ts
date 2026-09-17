@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { getPublicProjects, type ProjectImage } from "../../src/data/projects";
 import { readdirSync, readFileSync } from "node:fs";
@@ -41,7 +41,8 @@ const engineeringCaseSlugs = [
 ];
 const aegisgraphRoute = "/work/aegisgraph";
 const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
-const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35179396463`;
+const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35251887304`;
+const aegisgraphDemo = "https://aegisgraph.farhan-shafee.com";
 const aegisgraphArticleRoute =
   "/writing/building-an-evidence-grounded-ai-security-investigation-system";
 const jobEngineTitle = "Job Intelligence Engine";
@@ -56,6 +57,16 @@ const projectOrder = [
   "Detection & Security Engineering Lab",
   "Secure Infrastructure & Homelab",
 ];
+
+async function expectEvidenceLink(link: Locator, href: string) {
+  await expect(link).toBeVisible();
+  await expect(link).toHaveAttribute("href", href);
+  if (href.startsWith("https://")) {
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
+    await expect(link).toHaveAttribute("rel", /\bnoreferrer\b/);
+  } else await expect(link).not.toHaveAttribute("target", "_blank");
+}
 
 function imagesForRoute(route: string): ProjectImage[] | undefined {
   if (articlesByRoute.has(route)) return undefined;
@@ -363,6 +374,19 @@ test("keyboard navigation, persisted theme, and mobile links work", async ({
   await expect(page).toHaveURL(/\/work\/cyberbit-solutions$/);
   await expect(page.locator("h1")).toHaveText("CyberBit Solutions");
 
+  for (const route of ["/work/cyberbit-solutions", aegisgraphRoute]) {
+    await page.goto(route);
+    const links = page
+      .getByRole("region", { name: "Inspect the system", exact: true })
+      .locator(".evidence-links a");
+    expect(await links.count()).toBeGreaterThan(0);
+    await links.first().focus();
+    for (let index = 0; index < (await links.count()); index++) {
+      await expect(links.nth(index)).toBeFocused();
+      if (index + 1 < (await links.count())) await page.keyboard.press("Tab");
+    }
+  }
+
   await page.goto(aegisgraphArticleRoute);
   await page.setViewportSize({ width: 320, height: 812 });
   const codeBlocks = page.getByRole("region", {
@@ -585,9 +609,31 @@ test("metadata, internal links, security headers and feeds are valid", async ({
           .locator("main figure figcaption")
           .all())
           await expect(caption).toContainText(/\S/);
+        for (const href of [
+          aegisgraphDemo,
+          aegisgraphRepository,
+          aegisgraphRoute,
+        ])
+          await expect(
+            page.locator(`main a[href="${href}"]`).first(),
+          ).toBeVisible();
+        expect(await page.locator("main").innerText()).not.toContain(
+          "It is a local engineering demonstration",
+        );
       }
     }
     if (route === "/") {
+      const proof = page.getByRole("navigation", {
+        name: "Selected evidence",
+        exact: true,
+      });
+      await expect(proof).toBeVisible();
+      for (const href of [
+        `${aegisgraphRepository}/blob/main/docs/threat-model/THREAT_MODEL.md`,
+        "https://cyberbitsolutions.com/methodology",
+        aegisgraphArticleRoute,
+      ])
+        await expectEvidenceLink(proof.locator(`a[href="${href}"]`), href);
       const person = structuredData.find(
         (schema) => schema["@type"] === "Person",
       );
@@ -628,6 +674,21 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       await expect(
         page.getByRole("link", { name: jobEngineTitle, exact: true }),
       ).toHaveAttribute("href", jobEngineRoute);
+      for (const project of publicProjects) {
+        const card = page.locator(".project-entry").filter({
+          has: page.getByRole("heading", { name: project.title, exact: true }),
+        });
+        const featuredLinks =
+          project.inspection?.links.filter(({ featured }) => featured) ?? [];
+        await expect(card.locator(".evidence-links a")).toHaveCount(
+          featuredLinks.length,
+        );
+        for (const { href } of featuredLinks)
+          await expectEvidenceLink(
+            card.locator(`.evidence-links a[href="${href}"]`),
+            href,
+          );
+      }
     }
     const project = projectsByRoute.get(route);
     if (project) {
@@ -642,40 +703,76 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         name: project.title,
         item: `${canonicalOrigin}${route}`,
       });
+      const work = structuredData.find(
+        (schema) => schema["@type"] === "CreativeWork",
+      );
+      if (project.github) {
+        expect(work).toMatchObject({
+          url: `${canonicalOrigin}${route}`,
+          author: { "@id": `${canonicalOrigin}/#person` },
+          about: {
+            "@type": "SoftwareSourceCode",
+            codeRepository: project.github,
+            url: project.website,
+          },
+        });
+      } else expect(work).toBeUndefined();
+      const inspection = page.getByRole("region", {
+        name: "Inspect the system",
+        exact: true,
+      });
+      if (project.inspection) {
+        await expect(inspection).toBeVisible();
+        await expect(inspection.locator(".evidence-links a")).toHaveCount(
+          project.inspection.links.length,
+        );
+        for (const { href } of project.inspection.links)
+          await expectEvidenceLink(
+            inspection.locator(`a[href="${href}"]`),
+            href,
+          );
+        for (const { label, value } of project.inspection.facts) {
+          await expect(
+            inspection.locator("dt").filter({ hasText: label }),
+          ).toHaveCount(1);
+          await expect(
+            inspection.locator("dd").filter({ hasText: value }),
+          ).toHaveCount(1);
+        }
+        expect(
+          await inspection.evaluate((node) => {
+            const details = document.querySelector(
+              '[aria-label="Project details"]',
+            );
+            return Boolean(
+              details &&
+              node.compareDocumentPosition(details) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+            );
+          }),
+        ).toBe(true);
+      } else await expect(inspection).toHaveCount(0);
     }
     if (route === aegisgraphRoute) {
       expect(response?.status()).toBe(200);
       expect(title).toBe("AegisGraph | Farhan Shafee");
-      const projectLinks = page.getByRole("region", {
-        name: "Links",
+      const inspection = page.getByRole("region", {
+        name: "Inspect the system",
         exact: true,
       });
-      for (const [link, href] of [
-        [
-          page.locator("main header").getByRole("link", {
-            name: /^View source\b/,
-          }),
-          aegisgraphRepository,
-        ],
-        [
-          projectLinks.getByRole("link", {
-            name: /^View source on GitHub\b/,
-          }),
-          aegisgraphRepository,
-        ],
-        [
-          projectLinks.getByRole("link", {
-            name: /^CI validation run\b/,
-          }),
-          aegisgraphCiRun,
-        ],
-      ] as const) {
-        await expect(link).toBeVisible();
-        await expect(link).toHaveAttribute("href", href);
-        await expect(link).toHaveAttribute("target", "_blank");
-        await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
-        await expect(link).toHaveAttribute("rel", /\bnoreferrer\b/);
-      }
+      for (const href of [
+        aegisgraphRepository,
+        aegisgraphDemo,
+        aegisgraphCiRun,
+        aegisgraphArticleRoute,
+      ])
+        await expectEvidenceLink(inspection.locator(`a[href="${href}"]`), href);
+      await expect(inspection).toContainText(/read-only/i);
+      await expect(inspection).toContainText(/deterministic/i);
+      await expect(inspection).toContainText(/no live OpenAI/i);
+      expect(await page.locator("main").innerText()).not.toContain(
+        "It is a local engineering demonstration",
+      );
       for (const selector of [
         'meta[name="description"]',
         'meta[property="og:description"]',
@@ -778,7 +875,16 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         expect(body).toContain(
           `[AegisGraph](${canonicalOrigin}${aegisgraphRoute})`,
         );
-        expect(body).toContain(`[Public source](${aegisgraphRepository})`);
+        expect(body).toContain(`](${aegisgraphRepository})`);
+        for (const { href } of projectsByRoute.get(aegisgraphRoute)!.inspection!
+          .links)
+          expect(body).toContain(
+            `](${new URL(href, canonicalOrigin).toString()})`,
+          );
+        expect(body).toContain(aegisgraphDemo);
+        expect(body).toMatch(/read-only/i);
+        expect(body).toMatch(/deterministic/i);
+        expect(body).not.toContain("It is a local engineering demonstration");
       }
     }
   }

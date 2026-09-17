@@ -14,7 +14,7 @@ export default function LabPage() {
       <PageIntro
         eyebrow="Lab / An engineering notebook"
         title="The engineering notebook."
-        description="Investigation topics in security, automation, and infrastructure. Detailed experiments and results are not yet published."
+        description="Questions under investigation, the implementation evidence available, and what remains untested. These topics are exploratory."
       />
       <ol className="editorial-notebook">
         {labEntries.map((entry, index) => (
@@ -36,6 +36,14 @@ export default function LabPage() {
                 </div>
               </header>
               <p>{entry.description}</p>
+              <p>
+                <strong>Evidence: </strong>
+                {entry.evidence}
+              </p>
+              <p>
+                <strong>Open question: </strong>
+                {entry.openQuestion}
+              </p>
               {entry.technologies.length > 0 && (
                 <ul
                   className="editorial-writing-topics"
@@ -46,7 +54,10 @@ export default function LabPage() {
                   ))}
                 </ul>
               )}
-              {(entry.repository || entry.writeup || entry.demo) && (
+              {(entry.repository ||
+                entry.writeup ||
+                entry.demo ||
+                Boolean(entry.related?.length)) && (
                 <div className="editorial-inline-links">
                   {entry.repository && (
                     <TextLink href={entry.repository} external>
@@ -61,6 +72,11 @@ export default function LabPage() {
                       Demo
                     </TextLink>
                   )}
+                  {entry.related?.map((link) => (
+                    <TextLink href={link.href} key={link.href}>
+                      {link.label}
+                    </TextLink>
+                  ))}
                 </div>
               )}
             </article>

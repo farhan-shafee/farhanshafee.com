@@ -19,19 +19,19 @@ ${siteConfig.name} builds security tools, automation systems, and technical infr
 - [About](${absoluteUrl("/about")}): Professional background and technical focus.
 - [Work](${absoluteUrl("/work")}): Business systems, personal engineering projects, and labs. Each entry distinguishes its status and type; unverified implementation details and outcomes are omitted.
 - [Writing](${absoluteUrl("/writing")}): Published technical articles. Draft outlines are not public.
-- [Lab](${absoluteUrl("/lab")}): Investigation topics covering detection signals, human review in AI-assisted workflows, and infrastructure access boundaries. Detailed experiments and results are not yet published.
-- [Now](${absoluteUrl("/now")}): Current building, learning, and investigation priorities.
-- [Uses](${absoluteUrl("/uses")}): Engineering tools, organized by category. Specific products are listed only when confirmed.
+- [Lab](${absoluteUrl("/lab")}): Exploratory questions, related implementation evidence, and unverified areas in detection, AI-assisted investigation, and infrastructure. Standalone lab results are not yet published.
+- [Now](${absoluteUrl("/now")}): Current building, studying, and investigation priorities.
+- [Uses](${absoluteUrl("/uses")}): Verified project stacks; personal tooling notes are not yet published.
 - [Contact](${absoluteUrl("/contact")}): Professional contact paths.
 
 ## AegisGraph
 
-[AegisGraph](${absoluteUrl("/work/aegisgraph")}) is an evidence-grounded security investigation application for a synthetic fintech environment. Deterministic detection and correlation establish incident evidence before bounded AI analysis. The application validates structured findings, evidence citations, and claim support outside the model; analyst actions remain authoritative. It is a local engineering demonstration, not a production SOC deployment. Production authentication, tenant authorization, multi-tenancy, streaming ingestion, broader live-model evaluation, and stronger evidence/audit protections remain future work.
-${aegisgraph?.github ? `\n[Public source](${aegisgraph.github}): Threat model, architecture decision records, detection rules, evaluation harness, validation documentation, and CI workflow.\n` : ""}
+[AegisGraph](${absoluteUrl("/work/aegisgraph")}) is an evidence-grounded security investigation application for a synthetic fintech environment. Deterministic detection and correlation establish incident evidence before bounded AI analysis. The application validates structured findings, evidence citations, and claim support outside the model; analyst actions remain authoritative. The hosted public demo is read-only with deterministic analyst answers and no live OpenAI calls. It uses a Vercel frontend, Railway FastAPI backend, and Railway PostgreSQL. Optional real OpenAI analysis and human-controlled workflow changes belong to separate local/interview mode; recorded live-provider results are not public-demo behavior. This is not a production SOC deployment. Production authentication, tenant authorization, multi-tenancy, streaming ingestion, broader live-model evaluation, and stronger evidence/audit protections remain future work.
+${aegisgraph?.inspection ? `\n${aegisgraph.inspection.links.map((link) => `- [${link.label}](${absoluteUrl(link.href)})`).join("\n")}\n` : ""}
 
 ## CyberBit Solutions
 
-${siteConfig.name} created [CyberBit Solutions](${siteConfig.cyberbit}), which develops cybersecurity tools and services primarily for businesses. This personal site also covers his automation projects, security labs, and financial systems background.
+${siteConfig.name} created [CyberBit Solutions](${siteConfig.cyberbit}), which connects public security checks, a human-reviewed Snapshot, and a separate automated paid Brief. The [case study](${absoluteUrl("/work/cyberbit-solutions")}) links public methodology and an explicitly fictional sample report, and documents reporting, Stripe, transactional email, and admin workflows. Public checks do not guarantee security.
 
 ## Profiles and feeds
 

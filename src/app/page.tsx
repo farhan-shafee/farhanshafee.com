@@ -45,6 +45,24 @@ const disciplines = [
   },
 ];
 
+const selectedEvidence = [
+  {
+    label: "AegisGraph threat model",
+    href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/threat-model/THREAT_MODEL.md",
+    description: "Trust boundaries and residual risks.",
+  },
+  {
+    label: "CyberBit methodology",
+    href: "https://cyberbitsolutions.com/methodology",
+    description: "Public controls and what they establish.",
+  },
+  {
+    label: "Engineering article",
+    href: "/writing/building-an-evidence-grounded-ai-security-investigation-system",
+    description: "Bounded AI, evidence, and validation.",
+  },
+];
+
 export default function HomePage() {
   const articles = getPublishedArticles().slice(0, 3);
   const projects = getFeaturedProjects();
@@ -100,6 +118,22 @@ export default function HomePage() {
           </Link>
         </aside>
       </section>
+      <nav className="home-proof" aria-label="Selected evidence">
+        <p className="eyebrow">Open for inspection</p>
+        <ul>
+          {selectedEvidence.map((item) => (
+            <li key={item.href}>
+              <TextLink
+                href={item.href}
+                external={item.href.startsWith("https://")}
+              >
+                {item.label}
+              </TextLink>
+              <p>{item.description}</p>
+            </li>
+          ))}
+        </ul>
+      </nav>
       <section
         className="section selected-work"
         aria-labelledby="selected-heading"
