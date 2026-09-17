@@ -59,7 +59,8 @@ const imageFixture: ProjectImage = {
   caption: "Test-only caption.",
 };
 
-const flagshipSlugs = [
+const engineeringCaseSlugs = [
+  "aegisgraph",
   "cyberbit-solutions",
   "ai-job-intelligence-engine",
 ] as const;
@@ -93,6 +94,10 @@ test("absent or whitespace-only content creates no empty case-study modules", ()
         overview: empty,
         problem: empty,
         system: empty,
+        demoScenario: empty,
+        detectionCorrelation: empty,
+        aiGrounding: empty,
+        validation: empty,
         architecture: empty,
         whatIBuilt: empty,
         engineeringDecisions: empty,
@@ -126,6 +131,10 @@ test("reviewed prose, lists, evidence, and links render in the reusable case stu
       overview: { paragraphs: ["A test overview.", "A second paragraph."] },
       problem: { paragraphs: ["A test problem."] },
       system: { bullets: ["A test component."] },
+      demoScenario: { paragraphs: ["A test scenario."] },
+      detectionCorrelation: { bullets: ["A test correlation boundary."] },
+      aiGrounding: { paragraphs: ["A test evidence boundary."] },
+      validation: { paragraphs: ["A test validation record."] },
       architecture: { paragraphs: ["A test architecture."] },
       whatIBuilt: { paragraphs: ["A test contribution."] },
       engineeringDecisions: { bullets: ["A test decision."] },
@@ -152,6 +161,10 @@ test("reviewed prose, lists, evidence, and links render in the reusable case stu
     "Overview",
     "Problem",
     "System",
+    "Demo scenario",
+    "Detection &amp; correlation",
+    "Evidence-grounded AI",
+    "Validation",
     "Technical highlights",
     "Architecture",
     "What I built",
@@ -201,7 +214,7 @@ test("an architecture diagram can provide evidence without filler prose", () => 
   assert.doesNotMatch(html, /<p>|Overview|Selected interfaces/);
 });
 
-test("project presentation promotes real primary evidence without adding previews to supporting work", () => {
+test("project presentation distinguishes primary and second flagships from supporting work", () => {
   const project = fixture({
     screenshots: [imageFixture],
     technicalHighlights: ["A reviewed technical statement."],
@@ -219,6 +232,13 @@ test("project presentation promotes real primary evidence without adding preview
   assert.match(primary, /A reviewed technical statement\./);
   assert.match(primary, /href="\/work\/test-only-project"/);
   assert.match(primary, /<h3\b/);
+  const flagship = renderToStaticMarkup(
+    createElement(ProjectCard, { project, variant: "flagship", index: 1 }),
+  );
+  assert.equal(flagship.match(/<img\b/g)?.length, 1);
+  assert.match(flagship, /alt="Test-only interface description"/);
+  assert.match(flagship, /<figcaption>Test-only caption\.<\/figcaption>/);
+  assert.doesNotMatch(flagship, /A reviewed technical statement\./);
   for (const variant of ["secondary", "supporting"] as const) {
     const html = renderToStaticMarkup(
       createElement(ProjectCard, {
@@ -233,25 +253,30 @@ test("project presentation promotes real primary evidence without adding preview
   }
 });
 
-test("Work presents all current projects and only the primary screenshot preview", () => {
+test("Work puts AegisGraph and CyberBit previews before the supporting engineering work", () => {
   const html = renderToStaticMarkup(WorkPage());
-  for (const project of getPublicProjects()) {
-    assert.match(html, new RegExp(`href="/work/${project.slug}"`));
+  const order = [
+    "aegisgraph",
+    "cyberbit-solutions",
+    "ai-job-intelligence-engine",
+    ...exploringLabSlugs,
+  ];
+  assert.deepEqual(
+    getPublicProjects().map(({ slug }) => slug),
+    order,
+  );
+  for (const [index, slug] of order.entries()) {
+    const position = html.indexOf(`href="/work/${slug}"`);
+    assert.ok(position >= 0, `${slug} must remain discoverable`);
+    if (index > 0)
+      assert.ok(position > html.indexOf(`href="/work/${order[index - 1]}"`));
   }
-  const primary = getPublicProjects().find(
-    ({ slug }) => slug === "cyberbit-solutions",
-  );
-  assert.ok(primary?.screenshots?.[0]);
-  assert.equal(html.match(/<img\b/g)?.length, 1);
-  assert.ok(html.includes(primary.screenshots[0].src.replace(/\//g, "%2F")));
-  assert.ok(
-    html.indexOf("/work/cyberbit-solutions") <
-      html.indexOf("/work/ai-job-intelligence-engine"),
-  );
-  assert.ok(
-    html.indexOf("/work/ai-job-intelligence-engine") <
-      html.indexOf("/work/detection-security-lab"),
-  );
+  assert.equal(html.match(/<img\b/g)?.length, 2);
+  for (const slug of order.slice(0, 2)) {
+    const project = getPublicProjects().find((entry) => entry.slug === slug);
+    assert.ok(project?.screenshots?.[0]);
+    assert.ok(html.includes(project.screenshots[0].src.replace(/\//g, "%2F")));
+  }
 });
 
 test("project statuses match the reviewed evidence boundary", () => {
@@ -267,8 +292,8 @@ test("project statuses match the reviewed evidence boundary", () => {
   }
 });
 
-test("the two flagships contain reviewed engineering content and architecture evidence", () => {
-  for (const slug of flagshipSlugs) {
+test("engineering case studies contain reviewed content and architecture evidence", () => {
+  for (const slug of engineeringCaseSlugs) {
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project, `${slug} must have a public project record`);
     assert.equal(project.featured, true);
@@ -284,7 +309,12 @@ test("the two flagships contain reviewed engineering content and architecture ev
       project.technicalHighlights?.some((highlight) => highlight.trim()),
       `${slug} needs reviewed technical highlights`,
     );
-    for (const section of ["overview", "problem", "system"] as const) {
+    for (const section of [
+      "overview",
+      "problem",
+      "system",
+      "architecture",
+    ] as const) {
       const content = project.caseStudy?.[section];
       assert.ok(
         [...(content?.paragraphs ?? []), ...(content?.bullets ?? [])].some(
@@ -293,14 +323,106 @@ test("the two flagships contain reviewed engineering content and architecture ev
         `${slug} needs a substantive ${section} section`,
       );
     }
-    assert.ok(
-      project.architectureDiagrams?.length,
-      `${slug} needs its authored conceptual architecture diagram`,
-    );
+    if (slug === "aegisgraph") {
+      assert.ok(project.screenshots);
+      assert.equal(project.screenshots.length, 4);
+      assert.ok(
+        project.screenshots.every((image) =>
+          image.src.startsWith("/projects/aegisgraph/"),
+        ),
+        "AegisGraph uses reviewed portfolio assets from the public image directory",
+      );
+    } else {
+      assert.ok(
+        project.architectureDiagrams?.length,
+        `${slug} retains its authored conceptual architecture diagram`,
+      );
+    }
     const html = render(project);
     assert.match(html, /id="architecture">Architecture<\/h2>/);
     assert.match(html, /id="technical-highlights">Technical highlights<\/h2>/);
   }
+});
+
+test("AegisGraph retains visible demo limits, evidence grounding, and narrow validation claims", () => {
+  const project = getPublicProjects().find(({ slug }) => slug === "aegisgraph");
+  assert.ok(project?.caseStudy);
+  const prose = (section: keyof NonNullable<Project["caseStudy"]>) => {
+    const content = project.caseStudy?.[section];
+    return [...(content?.paragraphs ?? []), ...(content?.bullets ?? [])].join(
+      " ",
+    );
+  };
+  assert.match(prose("overview"), /synthetic\/demo/i);
+  assert.match(prose("overview"), /not a production SOC deployment/i);
+  for (const boundary of [
+    /authenticated identities/i,
+    /tenant authorization/i,
+    /multi-tenancy/i,
+    /streaming-scale ingestion/i,
+    /repeated live-model evaluation/i,
+    /evidence and audit protections/i,
+  ])
+    assert.match(prose("lessonsConstraints"), boundary);
+
+  for (const distinction of [
+    /deterministic testing/i,
+    /real OpenAI provider/i,
+    /output schema/i,
+    /evidence existence/i,
+    /incident membership/i,
+    /actual bounded context/i,
+    /support for the proposed claim/i,
+    /invalid claim rejects the entire answer/i,
+    /insufficient evidence and no invented malware/i,
+    /no database connection, retrieval tools, or incident-mutation authority/i,
+  ])
+    assert.match(prose("aiGrounding"), distinction);
+  assert.match(
+    prose("securityPrivacy"),
+    /free text was excluded before the live model call/i,
+  );
+  assert.match(
+    prose("securityPrivacy"),
+    /not universal prompt-injection resistance/i,
+  );
+  assert.match(prose("securityPrivacy"), /cross-incident citations/i);
+  assert.match(
+    prose("validation"),
+    /146 backend tests, 23 frontend tests, 13 browser tests, and 28 deterministic evaluation cases/i,
+  );
+  assert.match(
+    prose("validation"),
+    /coverage, not proof of production security/i,
+  );
+  assert.doesNotMatch(
+    JSON.stringify(project),
+    /autonomous SOC|enterprise SIEM|AI SOC replacement|immune to prompt injection|prompt-injection proof|fully secure against prompt injection/i,
+  );
+
+  const screenshots = project.screenshots ?? [];
+  assert.equal(screenshots.length, 4);
+  for (const screenshot of screenshots) {
+    assert.match(screenshot.alt, /synthetic/i);
+    assert.match(screenshot.caption, /synthetic/i);
+  }
+  const answer = screenshots.find(({ src }) =>
+    src.endsWith("grounded-ai-answer.png"),
+  );
+  assert.ok(answer);
+  assert.match(
+    answer.caption,
+    /OpenAI.*validated findings with evidence citations/i,
+  );
+  const evaluation = screenshots.find(({ src }) =>
+    src.endsWith("evaluation-dashboard.png"),
+  );
+  assert.ok(evaluation);
+  assert.match(evaluation.caption, /deterministic.*not live-model accuracy/i);
+  assert.doesNotMatch(
+    JSON.stringify(getPublicProjects()),
+    /file:\/\/|[A-Za-z]:(?:\\\\|\/)(?:Users|Dev)(?:\\\\|\/)/i,
+  );
 });
 
 test("unverified labs retain their conservative scope", () => {
@@ -335,6 +457,20 @@ test("every declared project image names a real public asset with full context",
         `${image.alt} ${image.caption}`,
         /\bTODO\b|projectEvidenceBacklog/,
       );
+      if (path.extname(absolute).toLowerCase() === ".png") {
+        const bytes = fs.readFileSync(absolute);
+        assert.equal(bytes.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+        assert.equal(
+          bytes.readUInt32BE(16),
+          image.width,
+          `${image.src} width matches its PNG`,
+        );
+        assert.equal(
+          bytes.readUInt32BE(20),
+          image.height,
+          `${image.src} height matches its PNG`,
+        );
+      }
       if (path.extname(absolute).toLowerCase() === ".svg") {
         const svg = fs.readFileSync(absolute, "utf8");
         assert.match(svg, /<svg\b/, `${image.src} must be an SVG asset`);

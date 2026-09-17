@@ -11,52 +11,52 @@ export const metadata = pageMetadata(
 
 export default function WorkPage() {
   const projects = getPublicProjects();
-  const systems = projects.filter((project) => project.kind !== "lab");
-  const labs = projects.filter((project) => project.kind === "lab");
+  const flagships = projects.filter((project) =>
+    ["aegisgraph", "cyberbit-solutions"].includes(project.slug),
+  );
+  const supporting = projects.filter((project) => !flagships.includes(project));
 
   return (
     <div className="page-shell work-index-page">
       <PageIntro
         eyebrow="Work / Systems & projects"
         title="Systems and engineering work."
-        description="Security products, workflow automation, and supporting lab work."
+        description="Evidence-grounded security investigation, cybersecurity products, and supporting systems work."
       />
-      {systems.length > 0 && (
+      {flagships.length > 0 && (
         <section
           className="work-index-group"
           aria-labelledby="work-systems-heading"
         >
           <div className="work-index-heading">
             <h2 id="work-systems-heading">Selected systems</h2>
-            <span>Security / Automation</span>
+            <span>Security / AI / Product engineering</span>
           </div>
-          {systems.map((project) => (
+          {flagships.map((project) => (
             <ProjectCard
               key={project.slug}
               project={project}
               index={projects.indexOf(project)}
-              variant={
-                project.slug === "cyberbit-solutions" ? "primary" : "secondary"
-              }
+              variant={project.slug === "aegisgraph" ? "primary" : "flagship"}
             />
           ))}
         </section>
       )}
-      {labs.length > 0 && (
+      {supporting.length > 0 && (
         <section
           className="work-index-group"
           aria-labelledby="work-labs-heading"
         >
           <div className="work-index-heading">
-            <h2 id="work-labs-heading">Labs & investigations</h2>
-            <span>Supporting work</span>
+            <h2 id="work-labs-heading">Supporting engineering</h2>
+            <span>Workflows / Labs / Investigations</span>
           </div>
-          {labs.map((project) => (
+          {supporting.map((project) => (
             <ProjectCard
               key={project.slug}
               project={project}
               index={projects.indexOf(project)}
-              variant="supporting"
+              variant={project.kind === "lab" ? "supporting" : "secondary"}
             />
           ))}
         </section>

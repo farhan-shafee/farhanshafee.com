@@ -25,14 +25,19 @@ const projectsByRoute = new Map(
   publicProjects.map((project) => [`/work/${project.slug}`, project]),
 );
 const routes = [...coreRoutes, ...projectsByRoute.keys()];
-const flagshipSlugs = ["cyberbit-solutions", "ai-job-intelligence-engine"];
+const engineeringCaseSlugs = [
+  "aegisgraph",
+  "cyberbit-solutions",
+  "ai-job-intelligence-engine",
+];
+const aegisgraphRoute = "/work/aegisgraph";
 const jobEngineTitle = "Job Intelligence Engine";
 const jobEngineRoute = "/work/ai-job-intelligence-engine";
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
 const canonicalOrigin = "https://farhan-shafee.com";
 const oldOrigin = /https?:\/\/(?:www\.)?farhanshafee\.com\b/i;
-const excludedProject = /aegis[\s-]*graph/i;
 const projectOrder = [
+  "AegisGraph",
   "CyberBit Solutions",
   jobEngineTitle,
   "Detection & Security Engineering Lab",
@@ -41,10 +46,12 @@ const projectOrder = [
 
 function imagesForRoute(route: string): ProjectImage[] {
   if (route === "/" || route === "/work") {
-    const preview = projectsByRoute.get("/work/cyberbit-solutions")
-      ?.screenshots?.[0];
-    if (!preview) throw new Error("CyberBit needs its real preview image");
-    return [preview];
+    return [aegisgraphRoute, "/work/cyberbit-solutions"].map((projectRoute) => {
+      const preview = projectsByRoute.get(projectRoute)?.screenshots?.[0];
+      if (!preview)
+        throw new Error(`${projectRoute} needs its reviewed preview image`);
+      return preview;
+    });
   }
   const project = projectsByRoute.get(route);
   return [
@@ -96,48 +103,54 @@ async function expectImages(page: Page, assets: ProjectImage[]) {
   }
 }
 
-for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
-  test(`all pages render without overflow at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 1000 });
-    const errors: string[] = [];
-    page.on("pageerror", (error) => errors.push(error.message));
-    page.on("console", (message) => {
-      if (message.type() === "error") errors.push(message.text());
+for (const theme of ["light", "dark"] as const) {
+  for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
+    test(`all pages render without overflow in ${theme} theme at ${width}px`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+      await page.setViewportSize({ width, height: 1000 });
+      const errors: string[] = [];
+      page.on("pageerror", (error) => errors.push(error.message));
+      page.on("console", (message) => {
+        if (message.type() === "error") errors.push(message.text());
+      });
+      for (const route of routes) {
+        const response = await page.goto(route);
+        expect(response?.status(), route).toBe(200);
+        await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+        await expect(page.locator("h1"), route).toHaveCount(1);
+        await expect(page.locator("main")).toBeVisible();
+        await expectImages(page, imagesForRoute(route));
+        // Capture fixed elements from their normal viewport position after lazy images load.
+        await page.evaluate(() =>
+          window.scrollTo({ top: 0, behavior: "instant" }),
+        );
+        const dimensions = await page.evaluate(() => ({
+          document: document.documentElement.scrollWidth,
+          viewport: innerWidth,
+        }));
+        expect(
+          dimensions.document,
+          `${route} overflow in ${theme} theme at ${width}px`,
+        ).toBeLessThanOrEqual(dimensions.viewport);
+        if (route === "/")
+          await page.screenshot({
+            path: `.artifacts/home-${theme}-${width}.png`,
+            fullPage: true,
+          });
+        if (
+          (route === "/work" || route.startsWith("/work/")) &&
+          [375, 1440].includes(width)
+        )
+          await page.screenshot({
+            path: `.artifacts/evidence-${route === "/work" ? "work-index" : route.split("/").at(-1)}-${theme}-${width}.png`,
+            fullPage: true,
+          });
+      }
+      expect(errors).toEqual([]);
     });
-    for (const route of routes) {
-      const response = await page.goto(route);
-      expect(response?.status(), route).toBe(200);
-      await expect(page.locator("h1"), route).toHaveCount(1);
-      await expect(page.locator("main")).toBeVisible();
-      await expectImages(page, imagesForRoute(route));
-      // Capture fixed elements from their normal viewport position after lazy images load.
-      await page.evaluate(() =>
-        window.scrollTo({ top: 0, behavior: "instant" }),
-      );
-      const dimensions = await page.evaluate(() => ({
-        document: document.documentElement.scrollWidth,
-        viewport: innerWidth,
-      }));
-      expect(
-        dimensions.document,
-        `${route} overflow at ${width}px`,
-      ).toBeLessThanOrEqual(dimensions.viewport);
-      if (route === "/")
-        await page.screenshot({
-          path: `.artifacts/home-${width}.png`,
-          fullPage: true,
-        });
-      if (
-        (route === "/work" || route.startsWith("/work/")) &&
-        [375, 1440].includes(width)
-      )
-        await page.screenshot({
-          path: `.artifacts/evidence-${route === "/work" ? "work-index" : route.split("/").at(-1)}-${width}.png`,
-          fullPage: true,
-        });
-    }
-    expect(errors).toEqual([]);
-  });
+  }
 }
 
 for (const theme of ["light", "dark"] as const) {
@@ -165,15 +178,18 @@ for (const theme of ["light", "dark"] as const) {
   });
 
   for (const width of [375, 1440]) {
-    test(`flagship evidence loads in ${theme} theme at ${width}px`, async ({
+    test(`engineering evidence loads in ${theme} theme at ${width}px`, async ({
       page,
     }) => {
       await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
       await page.setViewportSize({ width, height: width === 375 ? 812 : 1000 });
-      for (const slug of flagshipSlugs) {
+      for (const slug of engineeringCaseSlugs) {
         const route = `/work/${slug}`;
         const project = projectsByRoute.get(route);
-        expect(project, `${slug} is a public flagship`).toBeDefined();
+        expect(
+          project,
+          `${slug} is a public engineering case study`,
+        ).toBeDefined();
         const response = await page.goto(route);
         expect(response?.status()).toBe(200);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
@@ -196,7 +212,12 @@ test("cold page loads keep image-led layouts stable", async ({
 }, testInfo) => {
   const measurements: { route: string; width: number; cls: number }[] = [];
   for (const width of [375, 1440]) {
-    for (const route of ["/", "/work", "/work/cyberbit-solutions"]) {
+    for (const route of [
+      "/",
+      "/work",
+      aegisgraphRoute,
+      "/work/cyberbit-solutions",
+    ]) {
       // A fresh browser context gives each route an empty browser cache.
       const context = await browser.newContext({
         baseURL,
@@ -334,9 +355,6 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     expect(html, `No stale project name on ${route}`).not.toMatch(
       oldJobEngineTitle,
     );
-    expect(html, `No excluded future project on ${route}`).not.toMatch(
-      excludedProject,
-    );
     expect(html, `No links to the unowned old domain on ${route}`).not.toMatch(
       oldOrigin,
     );
@@ -436,7 +454,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         headings
           .map((heading) => heading.trim())
           .filter((heading) => projectOrder.includes(heading)),
-        `${route} presents CyberBit, Job Engine, then the two labs`,
+        `${route} presents AegisGraph, CyberBit, Job Engine, then the two labs`,
       ).toEqual(projectOrder);
       await expect(
         page.getByRole("heading", { name: jobEngineTitle, exact: true }),
@@ -444,6 +462,50 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       await expect(
         page.getByRole("link", { name: jobEngineTitle, exact: true }),
       ).toHaveAttribute("href", jobEngineRoute);
+    }
+    const project = projectsByRoute.get(route);
+    if (project) {
+      await expect(page.locator("h1")).toHaveText(project.title);
+      const breadcrumbs = structuredData.find(
+        (schema) => schema["@type"] === "BreadcrumbList",
+      );
+      expect(breadcrumbs, `${route} has project breadcrumbs`).toBeDefined();
+      expect(breadcrumbs.itemListElement).toContainEqual({
+        "@type": "ListItem",
+        position: 2,
+        name: project.title,
+        item: `${canonicalOrigin}${route}`,
+      });
+    }
+    if (route === aegisgraphRoute) {
+      expect(response?.status()).toBe(200);
+      expect(title).toBe("AegisGraph | Farhan Shafee");
+      for (const selector of [
+        'meta[name="description"]',
+        'meta[property="og:description"]',
+        'meta[name="twitter:description"]',
+      ])
+        await expect(page.locator(selector)).toHaveAttribute(
+          "content",
+          project!.description,
+        );
+      for (const selector of [
+        'meta[property="og:title"]',
+        'meta[name="twitter:title"]',
+      ])
+        await expect(page.locator(selector)).toHaveAttribute(
+          "content",
+          "AegisGraph | Farhan Shafee",
+        );
+      await expect(
+        page.getByRole("heading", {
+          name: "Evidence-grounded AI",
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "Validation", exact: true }),
+      ).toBeVisible();
     }
     if (route === jobEngineRoute) {
       expect(response?.status()).toBe(200);
@@ -509,9 +571,6 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         oldJobEngineTitle,
       );
       expect(body, `No old canonical domain in ${path}`).not.toMatch(oldOrigin);
-      expect(body, `No excluded future project in ${path}`).not.toMatch(
-        excludedProject,
-      );
       if (path === "/robots.txt")
         expect(body).toContain(`Sitemap: ${canonicalOrigin}/sitemap.xml`);
       if (path === "/llms.txt") {
@@ -520,6 +579,9 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         expect(body).toContain(`](${canonicalOrigin}/about)`);
         expect(body).toContain(`](${canonicalOrigin}/rss.xml)`);
         expect(body).toContain(`](${canonicalOrigin}/sitemap.xml)`);
+        expect(body).toContain(
+          `[AegisGraph](${canonicalOrigin}${aegisgraphRoute})`,
+        );
       }
     }
   }
@@ -532,9 +594,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
   expect(sitemapXml.match(/<loc>/g)?.length).toBe(sitemap().length);
   for (const [, url] of sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g))
     expect(new URL(url).origin).toBe(canonicalOrigin);
-  expect(sitemapXml).toContain(
-    `<loc>${canonicalOrigin}${jobEngineRoute}</loc>`,
-  );
+  for (const route of [aegisgraphRoute, jobEngineRoute])
+    expect(sitemapXml).toContain(`<loc>${canonicalOrigin}${route}</loc>`);
   expect(sitemapXml).not.toContain(
     `<loc>${canonicalOrigin}/work/job-intelligence-engine</loc>`,
   );
@@ -557,9 +618,9 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       (await request.get("/writing/tag/verification-unpublished")).status(),
     ).toBe(404);
   expect((await request.get("/work/unpublished-project")).status()).toBe(404);
-  const excludedResponse = await request.get("/work/aegisgraph");
-  expect(excludedResponse.status()).toBe(404);
-  expect(await excludedResponse.text()).toContain(
+  const unknownResponse = await request.get("/work/unknown-test-only-project");
+  expect(unknownResponse.status()).toBe(404);
+  expect(await unknownResponse.text()).toContain(
     'name="robots" content="noindex"',
   );
   expect((await request.get("/not-a-page")).status()).toBe(404);

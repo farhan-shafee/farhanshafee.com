@@ -11,11 +11,14 @@ export function ProjectCard({
 }: {
   project: Project;
   index?: number;
-  variant?: "primary" | "secondary" | "supporting";
+  variant?: "primary" | "flagship" | "secondary" | "supporting";
   headingLevel?: 2 | 3;
 }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
-  const preview = variant === "primary" ? project.screenshots?.[0] : undefined;
+  const preview =
+    variant === "primary" || variant === "flagship"
+      ? project.screenshots?.[0]
+      : undefined;
   const highlights =
     variant === "primary" ? (project.technicalHighlights ?? []) : [];
 
@@ -60,7 +63,11 @@ export function ProjectCard({
             alt={preview.alt}
             width={preview.width}
             height={preview.height}
-            sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) 52vw, 610px"
+            sizes={
+              variant === "flagship"
+                ? "(max-width: 760px) calc(100vw - 40px), (max-width: 960px) 48vw, 440px"
+                : "(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) 52vw, 610px"
+            }
           />
           <figcaption>{preview.caption}</figcaption>
         </figure>

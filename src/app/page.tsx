@@ -118,11 +118,13 @@ export default function HomePage() {
               project={project}
               index={index}
               variant={
-                project.slug === "cyberbit-solutions"
+                project.slug === "aegisgraph"
                   ? "primary"
-                  : project.kind === "lab"
-                    ? "supporting"
-                    : "secondary"
+                  : project.slug === "cyberbit-solutions"
+                    ? "flagship"
+                    : project.kind === "lab"
+                      ? "supporting"
+                      : "secondary"
               }
             />
           ))}

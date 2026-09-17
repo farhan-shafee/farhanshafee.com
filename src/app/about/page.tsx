@@ -5,7 +5,7 @@ import { absoluteUrl, pageMetadata, personSchema } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "About",
-  "Farhan Shafee's work connects fintech software engineering, security engineering, and AI-assisted automation. Creator of CyberBit Solutions.",
+  "Farhan Shafee's work connects fintech software engineering, security engineering, and AI-assisted automation. Creator of AegisGraph and CyberBit Solutions.",
   "/about",
 );
 
@@ -71,11 +71,19 @@ export default function AboutPage() {
             </h2>
             <p>
               My current focus is security tooling, AI-assisted automation, and
-              infrastructure security. Alongside product work, my lab notebook
-              explores detection engineering and the boundaries of human review
-              in automated workflows.
+              infrastructure security. AegisGraph connects that work in a
+              synthetic fintech investigation environment: deterministic
+              detection and correlation establish case evidence, and the
+              application validates citations and support for bounded AI
+              findings. This local engineering demonstration keeps case
+              decisions under analyst control. Alongside product work, my lab
+              notebook explores detection engineering and the boundaries of
+              human review in automated workflows.
             </p>
-            <TextLink href="/now">Current focus</TextLink>
+            <div className="editorial-context-links">
+              <TextLink href="/work/aegisgraph">Inside AegisGraph</TextLink>
+              <TextLink href="/now">Current focus</TextLink>
+            </div>
           </div>
         </section>
       </div>

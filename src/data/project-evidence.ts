@@ -19,6 +19,37 @@ type ProjectEvidenceReview = {
  * Draft article headings and prompts are not implementation evidence.
  */
 export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
+  aegisgraph: {
+    sources: [
+      {
+        path: "docs/aegisgraph-evidence-review.md",
+        supports:
+          "Read-only review at source revision 7293c515d47178405df6fcf93feeeadac067cf64 supports the synthetic investigation architecture, deterministic correlation, bounded providers, citation/support validation, recorded test results, and explicit production limitations.",
+      },
+    ],
+    statusReview: {
+      status: "Active",
+      reason:
+        "Implemented and hardened engineering demonstration with reviewed synthetic-data interfaces and dated validation records. Active describes the project, not production SOC operation.",
+    },
+    todos: [
+      {
+        area: "public-source-and-current-ci",
+        prompt:
+          "TODO: Verify public repository visibility and the latest hosted CI result before adding source links or current hosted-run claims. The inspected validation document records the initial implementation's CI separately from local hardening results.",
+      },
+      {
+        area: "repeated-live-evaluation",
+        prompt:
+          "TODO: Add separately recorded repeated live-model trials before making broader provider-quality claims; retain availability failures and distinguish application-boundary fixtures from model behavior.",
+      },
+      {
+        area: "future-technical-article",
+        prompt:
+          "TODO: Develop Building an Evidence-Grounded AI Security Investigation System from the reviewed implementation evidence. Keep any future article draft true until its prose and evidence have been reviewed; do not publish an outline as an article.",
+      },
+    ],
+  },
   "cyberbit-solutions": {
     sources: [
       {

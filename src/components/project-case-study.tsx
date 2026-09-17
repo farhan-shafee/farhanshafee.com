@@ -74,6 +74,11 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
     { id: "problem", title: "Problem", content: study?.problem },
     { id: "system", title: "System", content: study?.system },
     {
+      id: "demo-scenario",
+      title: "Demo scenario",
+      content: study?.demoScenario,
+    },
+    {
       id: "selected-interfaces",
       title: "Selected interfaces",
       images: project.screenshots,
@@ -89,7 +94,17 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       content: study?.architecture,
       images: project.architectureDiagrams,
     },
+    {
+      id: "detection-correlation",
+      title: "Detection & correlation",
+      content: study?.detectionCorrelation,
+    },
     { id: "what-i-built", title: "What I built", content: study?.whatIBuilt },
+    {
+      id: "ai-grounding",
+      title: "Evidence-grounded AI",
+      content: study?.aiGrounding,
+    },
     {
       id: "engineering-decisions",
       title: "Engineering decisions",
@@ -99,6 +114,11 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       id: "security-privacy",
       title: "Security / privacy considerations",
       content: study?.securityPrivacy,
+    },
+    {
+      id: "validation",
+      title: "Validation",
+      content: study?.validation,
     },
     {
       id: "lessons-constraints",
