@@ -10,20 +10,25 @@ GitHub and CyberBit Solutions remain the verified public links already configure
 
 ## Real screenshot evidence
 
-`public/projects/` does not yet exist. The only project visuals are the two authored conceptual workflow diagrams under `public/diagrams/`; they are not interface screenshots. No screenshot records or placeholder assets were added.
+Two actual CyberBit interface captures were saved on 2026-09-16 and inspected from disk for safe publication. This capture session is separate from the original read-only source review and the earlier portfolio QA described below.
 
-Add reviewed captures at these exact repository-relative paths. Start with the first two for each project and add up to two more only if they show distinct technical evidence.
+| Capture                          | File                                                          | Evidence and limits                                                                                                                                                                           |
+| -------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Completed free security check    | `public/projects/cyberbit-solutions/free-security-check.png`  | A live public DNS/HTTP check of the owner's `farhan-shafee.com`; all 11 controls completed. The UI shows 8:47 PM EDT on 2026-09-16. This is a point-in-time result, not a security guarantee. |
+| Public Snapshot sample-report UI | `public/projects/cyberbit-solutions/risk-snapshot-report.png` | The real public sample layout explicitly uses fictional Harbor & Pine Dental / `harborpinedental.example` data. It is not a generated or reviewed client artifact.                            |
 
-| Project                 | Capture                             | File to add                                                        |
-| ----------------------- | ----------------------------------- | ------------------------------------------------------------------ |
-| CyberBit Solutions      | Free security check result          | `public/projects/cyberbit-solutions/free-security-check.png`       |
-| CyberBit Solutions      | Generated, reviewed Snapshot report | `public/projects/cyberbit-solutions/risk-snapshot-report.png`      |
-| CyberBit Solutions      | Sanitized admin/report builder      | `public/projects/cyberbit-solutions/admin-report-workflow.png`     |
-| CyberBit Solutions      | Paid Brief workflow                 | `public/projects/cyberbit-solutions/instant-signal-brief-flow.png` |
-| Job Intelligence Engine | Top Matches                         | `public/projects/job-intelligence-engine/top-matches.png`          |
-| Job Intelligence Engine | Job scoring and evidence detail     | `public/projects/job-intelligence-engine/job-detail-scoring.png`   |
-| Job Intelligence Engine | Resume Lab review/export            | `public/projects/job-intelligence-engine/resume-lab-review.png`    |
-| Job Intelligence Engine | Application tracker/workflow        | `public/projects/job-intelligence-engine/application-tracker.png`  |
+Only two captures are available. The planned third admin/report capture is blocked: the browser returned `ERR_BLOCKED_BY_CLIENT` at `/admin`, and Firefox was not exposed through the available browser controls. No third image or placeholder was added. The two authored conceptual workflow diagrams under `public/diagrams/` remain separate from interface evidence.
+
+Remaining CyberBit evidence is an actual generated/reviewed report, a sanitized admin/report builder, and the paid Brief experience. Use a distinct file for an actual report so it cannot be confused with the fictional public sample. These other capture paths remain recommendations, not existing assets:
+
+| Project                 | Capture                         | File to add                                                        |
+| ----------------------- | ------------------------------- | ------------------------------------------------------------------ |
+| CyberBit Solutions      | Sanitized admin/report builder  | `public/projects/cyberbit-solutions/admin-report-workflow.png`     |
+| CyberBit Solutions      | Paid Brief workflow             | `public/projects/cyberbit-solutions/instant-signal-brief-flow.png` |
+| Job Intelligence Engine | Top Matches                     | `public/projects/job-intelligence-engine/top-matches.png`          |
+| Job Intelligence Engine | Job scoring and evidence detail | `public/projects/job-intelligence-engine/job-detail-scoring.png`   |
+| Job Intelligence Engine | Resume Lab review/export        | `public/projects/job-intelligence-engine/resume-lab-review.png`    |
+| Job Intelligence Engine | Application tracker/workflow    | `public/projects/job-intelligence-engine/application-tracker.png`  |
 
 Use real captures, with customer records, career history, correspondence, payment/account details, private URLs, and tokens removed. Crop to a focused workflow while preserving the image's aspect ratio and enough context to explain it. Captions must describe the inspected screen; do not infer outcomes or production success from an interface.
 

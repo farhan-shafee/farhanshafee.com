@@ -80,23 +80,31 @@ The current public name is **Job Intelligence Engine**, with the category **Work
 5. Scoped the nonintrusive constraint to the public checks/Snapshot, not the entire business.
 6. Described Job Engine's actual vinext/Vite runtime, deterministic scoring/templates, public LinkedIn parsing, and review-controlled tracking.
 
-## Remaining visual evidence
+## Visual evidence and remaining captures
 
-No reusable interface screenshots were found in the inspected public asset inventories. CyberBit assets were branding artwork; Job Engine assets were an OpenGraph image and favicon. Ignored output directories and private records were not inspected. Neither branding artwork nor generated diagrams is presented as an interface screenshot.
+During the original source review, no reusable interface screenshots were found in the inspected public asset inventories. CyberBit assets were branding artwork; Job Engine assets were an OpenGraph image and favicon. Ignored output directories and private records were not inspected. Neither branding artwork nor generated diagrams is presented as an interface screenshot.
 
-Highest-value real captures to supply:
+In a separate browser capture session on 2026-09-16, two actual CyberBit interfaces were saved and inspected from disk for safe publication:
 
-| Project    | Capture                                                                   | Evidence it would add                                  |
-| ---------- | ------------------------------------------------------------------------- | ------------------------------------------------------ |
-| CyberBit   | Free-check results for an approved demonstration domain                   | The control summary, scope, and interpretation flow    |
-| CyberBit   | Reviewed Snapshot output                                                  | The finished reporting format and remediation guidance |
-| CyberBit   | Admin report-preparation view with a sanitized example                    | The human preparation/review workflow                  |
-| CyberBit   | Eligible Brief checkout-to-access/report flow in an approved test context | The paid digital delivery experience                   |
-| Job Engine | Top Matches using publication-approved sample records                     | Discovery, ranking, and visible explanations           |
-| Job Engine | Job detail with requirements, evidence references, and gaps               | How matching is explained                              |
-| Job Engine | Resume Lab review and verified export state                               | The evidence and review gates                          |
-| Job Engine | Tracker with a safe demonstration history                                 | User-confirmed stages and follow-up workflow           |
+| Asset                                                         | Evidence and qualification                                                                                                                                                                                                                             |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `public/projects/cyberbit-solutions/free-security-check.png`  | A completed live public DNS/HTTP check of the owner's `farhan-shafee.com`, with all 11 controls completed. The UI shows 8:47 PM EDT on 2026-09-16. This records a point-in-time result, not lasting security assurance or a measured business outcome. |
+| `public/projects/cyberbit-solutions/risk-snapshot-report.png` | The real public Snapshot sample-report UI, explicitly labeled as a sample layout with fictional Harbor & Pine Dental / `harborpinedental.example` data. It establishes the visible sample layout, not a generated or reviewed client artifact.         |
+
+The planned third admin/report capture remains blocked by `ERR_BLOCKED_BY_CLIENT` at the admin route; Firefox was not exposed through the available browser controls. No third capture was added. This follow-up does not change the original source-review provenance or establish protected admin operation, provider health, or paid delivery.
+
+Highest-value real captures still to supply:
+
+| Project    | Capture                                                                   | Evidence it would add                                       |
+| ---------- | ------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| CyberBit   | Actual generated/reviewed Snapshot output                                 | A completed report artifact beyond the public sample layout |
+| CyberBit   | Admin report-preparation view with a sanitized example                    | The human preparation/review workflow                       |
+| CyberBit   | Eligible Brief checkout-to-access/report flow in an approved test context | The paid digital delivery experience                        |
+| Job Engine | Top Matches using publication-approved sample records                     | Discovery, ranking, and visible explanations                |
+| Job Engine | Job detail with requirements, evidence references, and gaps               | How matching is explained                                   |
+| Job Engine | Resume Lab review and verified export state                               | The evidence and review gates                               |
+| Job Engine | Tracker with a safe demonstration history                                 | User-confirmed stages and follow-up workflow                |
 
 Any future capture must be reviewed for customer data, career history, correspondence, identifiers, account details, and private URLs. No placeholder screenshots are shipped. The two authored SVG diagrams summarize code-supported concepts using the existing visual palette; they contain no internal topology or operational identifiers.
 
-Remaining nonvisual gaps are live deployment/provider-state confirmation, approved interface/report examples, and any measured outcomes the owner later chooses to document. The two labs remain unchanged and Exploring.
+Remaining nonvisual gaps are live deployment/provider-state confirmation and any measured outcomes the owner later chooses to document. The outstanding interface/report evidence is listed above. The two labs remain unchanged and Exploring.

@@ -139,6 +139,24 @@ export const projects: Project[] = [
       "Resend",
       "Neon / PostgreSQL",
     ],
+    screenshots: [
+      {
+        src: "/projects/cyberbit-solutions/free-security-check.png",
+        alt: "Completed CyberBit public check for farhan-shafee.com: all 11 checks completed, with seven controls observed, one configuration concern, and three controls not observed.",
+        width: 1440,
+        height: 1000,
+        caption:
+          "Live public-check result for my own domain, with control summaries and scope limits. Captured September 16, 2026; results are point-in-time observations.",
+      },
+      {
+        src: "/projects/cyberbit-solutions/risk-snapshot-report.png",
+        alt: "CyberBit's public Snapshot sample layout with an executive summary, check statuses, and a visible disclaimer that the example business and findings are fictional.",
+        width: 1425,
+        height: 990,
+        caption:
+          "Public Snapshot sample showing the report structure and check statuses. The application labels its business and findings as fictional; this is not a client report.",
+      },
+    ],
     architectureDiagrams: [
       {
         src: "/diagrams/cyberbit-workflows.svg",

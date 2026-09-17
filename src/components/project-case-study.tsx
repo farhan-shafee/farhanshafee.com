@@ -22,7 +22,13 @@ function renderableImages(images: ProjectImage[] = []): ProjectImage[] {
   );
 }
 
-function EvidenceImages({ images }: { images: ProjectImage[] }) {
+function EvidenceImages({
+  images,
+  fullSize = false,
+}: {
+  images: ProjectImage[];
+  fullSize?: boolean;
+}) {
   return images.map((image) => (
     <figure className="mx-0" key={image.src}>
       <Image
@@ -33,7 +39,15 @@ function EvidenceImages({ images }: { images: ProjectImage[] }) {
         height={image.height}
         sizes="(max-width: 760px) 100vw, 720px"
       />
-      <figcaption className="mt-3 text-sm">{image.caption}</figcaption>
+      <figcaption className="mt-3 text-sm">
+        {image.caption}
+        {fullSize && (
+          <>
+            {" "}
+            <TextLink href={image.src}>View full-size screenshot</TextLink>
+          </>
+        )}
+      </figcaption>
     </figure>
   ));
 }
@@ -122,7 +136,10 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
                 ))}
               </ul>
             )}
-            <EvidenceImages images={assets} />
+            <EvidenceImages
+              images={assets}
+              fullSize={id === "selected-interfaces"}
+            />
           </Fragment>
         );
       })}

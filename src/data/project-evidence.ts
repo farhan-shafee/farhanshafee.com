@@ -30,6 +30,16 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
         path: "src/config/site.ts",
         supports: "The verified public CyberBit website link.",
       },
+      {
+        path: "public/projects/cyberbit-solutions/free-security-check.png",
+        supports:
+          "Reviewed capture of a completed public DNS/HTTP check of the owner's farhan-shafee.com on 2026-09-16, with all 11 controls completed. A point-in-time result, not a security guarantee.",
+      },
+      {
+        path: "public/projects/cyberbit-solutions/risk-snapshot-report.png",
+        supports:
+          "Reviewed capture of the real public Snapshot sample-report layout using explicitly fictional Harbor & Pine Dental / harborpinedental.example data. Not a generated or reviewed client artifact.",
+      },
     ],
     statusReview: {
       status: "Active",
@@ -40,7 +50,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
       {
         area: "approved-visual-evidence",
         prompt:
-          "TODO: Supply publication-approved free-check results, a reviewed report, a sanitized report-preparation view, and the paid Brief experience. No customer records or private operational details.",
+          "TODO: Supply an actual generated/reviewed report, a sanitized admin/report-preparation view, and the paid Brief experience. The public sample layout does not establish a reviewed client artifact; the admin capture remains blocked. No customer records or private operational details.",
       },
       {
         area: "deployment-provider-state",
