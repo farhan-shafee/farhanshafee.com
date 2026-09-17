@@ -221,6 +221,15 @@ for (const theme of ["light", "dark"] as const) {
     test(`engineering evidence loads in ${theme} theme at ${width}px`, async ({
       page,
     }) => {
+      const screenshotRscRequests: string[] = [];
+      page.on("request", (request) => {
+        const url = new URL(request.url());
+        if (
+          /^\/projects\/.+\.png$/i.test(url.pathname) &&
+          url.searchParams.has("_rsc")
+        )
+          screenshotRscRequests.push(request.url());
+      });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
       await page.setViewportSize({ width, height: width === 375 ? 812 : 1000 });
       for (const slug of engineeringCaseSlugs) {
@@ -241,6 +250,43 @@ for (const theme of ["light", "dark"] as const) {
           path: `.artifacts/flagship-${slug}-${theme}-${width}.png`,
           fullPage: true,
         });
+        const firstScreenshot = project?.screenshots?.[0];
+        if (firstScreenshot) {
+          const original = page
+            .getByRole("link", {
+              name: "View full-size screenshot",
+              exact: true,
+            })
+            .first();
+          await expect(original).toHaveAttribute("href", firstScreenshot.src);
+          const imageUrl = new URL(firstScreenshot.src, page.url()).href;
+          const [imageResponse] = await Promise.all([
+            page.waitForResponse(
+              (response) =>
+                response.url() === imageUrl &&
+                response.request().isNavigationRequest(),
+            ),
+            original.click(),
+          ]);
+          await expect(page).toHaveURL(imageUrl);
+          expect(imageResponse.status()).toBe(200);
+          expect(imageResponse.headers()["content-type"]).toMatch(
+            /^image\/png\b/i,
+          );
+          await expect(page.locator("img")).toHaveJSProperty("complete", true);
+          await expect(page.locator("img")).toHaveJSProperty(
+            "naturalWidth",
+            firstScreenshot.width,
+          );
+          await expect(page.locator("img")).toHaveJSProperty(
+            "naturalHeight",
+            firstScreenshot.height,
+          );
+        }
+        expect(
+          screenshotRscRequests,
+          "Original screenshots must load as images without App Router prefetch requests",
+        ).toEqual([]);
       }
     });
   }

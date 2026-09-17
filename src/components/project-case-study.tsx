@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { TextLink } from "@/components/ui";
+import { ArrowIcon, TextLink } from "@/components/ui";
 import type { CaseStudySection, Project, ProjectImage } from "@/data/projects";
 
 function nonEmpty(items: string[] = []): string[] {
@@ -49,9 +49,10 @@ function EvidenceImages({
         {fullSize && (
           <>
             {" "}
-            <TextLink href={image.src} className="case-evidence-link">
+            <a href={image.src} className="text-link case-evidence-link">
               View full-size screenshot
-            </TextLink>
+              <ArrowIcon />
+            </a>
           </>
         )}
       </figcaption>

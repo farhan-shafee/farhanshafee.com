@@ -193,7 +193,7 @@ test("reviewed prose, lists, evidence, and links render in the reusable case stu
   assert.match(html, /width="960" height="640"/);
   assert.match(
     html,
-    /<figcaption[^>]*>Test-only caption\. <a[^>]*href="\/test-only-interface\.png">View full-size screenshot/,
+    /<figcaption[^>]*>Test-only caption\. <a[^>]*href="\/test-only-interface\.png"[^>]*>View full-size screenshot/,
   );
   assert.match(
     html,
