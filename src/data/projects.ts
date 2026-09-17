@@ -207,6 +207,7 @@ export const projects: Project[] = [
           "Executed deterministic evaluations on synthetic fixtures. These test application boundaries, not live-model accuracy or universal injection resistance.",
       },
     ],
+    website: "https://aegisgraph.farhan-shafee.com",
     github: "https://github.com/farhan-shafee/aegisgraph",
     links: [
       {
