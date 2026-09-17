@@ -1,11 +1,13 @@
 import { siteConfig } from "@/config/site";
 import { absoluteUrl } from "@/lib/seo";
 import { getPublishedArticles } from "@/lib/writing";
+import { getProjectBySlug } from "@/data/projects";
 
 export const dynamic = "force-static";
 
 export function GET() {
   const articles = getPublishedArticles();
+  const aegisgraph = getProjectBySlug("aegisgraph");
   const text = `# ${siteConfig.name}
 
 > Security engineering, AI automation, and fintech systems.
@@ -25,6 +27,7 @@ ${siteConfig.name} builds security tools, automation systems, and technical infr
 ## AegisGraph
 
 [AegisGraph](${absoluteUrl("/work/aegisgraph")}) is an evidence-grounded security investigation application for a synthetic fintech environment. Deterministic detection and correlation establish incident evidence before bounded AI analysis. The application validates structured findings, evidence citations, and claim support outside the model; analyst actions remain authoritative. It is a local engineering demonstration, not a production SOC deployment. Production authentication, tenant authorization, multi-tenancy, streaming ingestion, broader live-model evaluation, and stronger evidence/audit protections remain future work.
+${aegisgraph?.github ? `\n[Public source](${aegisgraph.github}): Threat model, architecture decision records, detection rules, evaluation harness, validation documentation, and CI workflow.\n` : ""}
 
 ## CyberBit Solutions
 

@@ -12,7 +12,7 @@ Work groups AegisGraph and CyberBit as the two selected systems; Job Intelligenc
 
 The existing reusable case-study renderer now supports four optional sections: Demo scenario, Detection & correlation, Evidence-grounded AI, and Validation. Existing case studies continue using their original content. AegisGraph includes Overview, Problem, System, Demo scenario, Selected interfaces, Technical highlights, Architecture, Detection & correlation, What I built, Evidence-grounded AI, Engineering decisions, Security / privacy considerations, Validation, Lessons / constraints, and Links.
 
-The source review covers the README, portfolio summary, demo guide, interview notes, validation record, UX audit, threat model, architecture decisions, source implementation, live-validation records, and screenshot documentation. The inspected AegisGraph revision is `7293c515d47178405df6fcf93feeeadac067cf64`. That repository was read only and remained clean and unchanged. The claim-by-claim map is in [the evidence review](aegisgraph-evidence-review.md).
+The initial source review covers the README, portfolio summary, demo guide, interview notes, validation record, UX audit, threat model, architecture decisions, source implementation, live-validation records, and screenshot documentation. The inspected AegisGraph revision was `7293c515d47178405df6fcf93feeeadac067cf64`. That repository was read only and remained clean and unchanged. The claim-by-claim map and subsequent public-source verification are in [the evidence review](aegisgraph-evidence-review.md).
 
 The story follows telemetry → normalization → detection → correlation → incident → evidence → bounded AI analysis → schema and citation validation → analyst review. It surfaces the four adapters, canonical event model, reproducible 4,026-event dataset, ten rules, deterministic correlation predicates, relational entity view, human workflow, and PostgreSQL/SQLite architecture. The Atlas scenario describes observed activity without asserting a known attacker, malware, exfiltration, or financial loss.
 
@@ -35,7 +35,7 @@ The model is not the system of record. The provider receives bounded incident ev
 
 The case study distinguishes credential-free deterministic and real OpenAI providers. Recorded live validation returned ten supported findings with 13 citation references. The malware-family question returned insufficient evidence. The telemetry-injection fixture excluded untrusted free text before the model call; it does not establish universal prompt-injection resistance. Foreign-case, nonexistent, cross-incident, and omitted-context citations are described as specific application-boundary checks.
 
-Validation counts are coverage evidence: 146 backend tests, 23 frontend tests, 13 browser tests, and 28 deterministic evaluations in the source project's September 17, 2026 UTC record. Dependency audit results are dated. The small live-model sample retains its earlier HTTP 429 failures and is not presented as a broad reliability or security guarantee.
+The initial integration used the source project's historical hardening coverage: 146 backend tests, 23 frontend tests, 13 browser tests, and 28 deterministic evaluations in its September 17, 2026 UTC record. The later release review raises frontend coverage to 25 tests, as recorded in the dated follow-up below. Dependency audit results are dated. The small live-model sample retains its earlier HTTP 429 failures and is not presented as a broad reliability or security guarantee.
 
 Visible future work includes production identity and authorization, tenant isolation, multi-tenancy, authenticated streaming-scale ingestion, repeated live-model evaluation, and stronger independent evidence/audit retention. The limitations also acknowledge bounded-context omissions, unverified telemetry truthfulness, a narrow claim vocabulary, human review, and privileged database-owner powers.
 
@@ -45,7 +45,15 @@ The public route is `/work/aegisgraph`. Shared project metadata produces its tit
 
 No article was published or added to the public article collection. [The internal article plan](aegisgraph-article-plan.md) prepares “Building an Evidence-Grounded AI Security Investigation System” using the existing writing architecture; any future MDX draft must retain `draft: true`.
 
-The source documentation establishes a successful earlier GitHub CI run but does not establish the latest hardening revision's hosted result. The public repository endpoint returned 404 during integration. Therefore the site does not expose an unverified repository link or claim current hosted CI success. The project links to Contact until a public source URL is available.
+At the initial integration, source documentation established an earlier GitHub CI success but did not establish the latest hardening revision's hosted result, and the public repository endpoint returned 404. That pass therefore linked to Contact without exposing an unverified repository link or claiming current hosted CI success. The following public-source pass resolves those specific gaps.
+
+## Public source follow-up — September 17, 2026 UTC
+
+Unauthenticated GitHub API inspection verified [the public AegisGraph repository](https://github.com/farhan-shafee/aegisgraph). Its inspected `main` revision was `c95afa6`, with the owner-selected MIT license. Repository and documentation links are now supported; source publication does not imply a hosted demo or production SOC deployment.
+
+[Run 35179396463](https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463) passed the backend, frontend, and browser jobs between 03:46 and 03:49 UTC on September 17, 2026, at revision `534679eac4a04ee0298fe6f35d1422fa63a4fe90`. The site can cite this named successful run without claiming success for a different `main` revision. CI uses deterministic providers and makes no live OpenAI calls.
+
+The [public release review](https://github.com/farhan-shafee/aegisgraph/blob/main/docs/PUBLIC_RELEASE_REVIEW.md) records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluations passing. Its two added frontend regression tests cover actor attribution and separately labeled AI-assisted findings. Public coverage wording now uses 25; the original count of 23 above remains historical. The recorded live OpenAI results and their limitations are unchanged. This portfolio update did not modify AegisGraph or rerun its tests or live evaluations.
 
 ## Performance
 
@@ -68,7 +76,7 @@ Review captures and measurement artifacts remain ignored local artifacts. No loc
 
 ## Remaining opportunities
 
-- Add a public source link after repository visibility is verified, and refresh dated validation evidence when the current hosted CI result is available.
+- Keep public source links and dated CI references tied to verified repository visibility and the specific tested revision as AegisGraph evolves.
 - Develop the internal article plan into a reviewed technical draft; publish only when explicitly requested.
 - Refresh portfolio screenshots and evidence as production authentication, authorization, ingestion, and audit protections evolve in the separate AegisGraph project.
 - Gather broader repeated live-provider evaluation before making stronger reliability claims.

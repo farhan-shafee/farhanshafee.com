@@ -389,7 +389,7 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
   assert.match(prose("securityPrivacy"), /cross-incident citations/i);
   assert.match(
     prose("validation"),
-    /146 backend tests, 23 frontend tests, 13 browser tests, and 28 deterministic evaluation cases/i,
+    /146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases/i,
   );
   assert.match(
     prose("validation"),

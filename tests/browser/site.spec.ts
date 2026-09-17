@@ -31,6 +31,8 @@ const engineeringCaseSlugs = [
   "ai-job-intelligence-engine",
 ];
 const aegisgraphRoute = "/work/aegisgraph";
+const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
+const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35179396463`;
 const jobEngineTitle = "Job Intelligence Engine";
 const jobEngineRoute = "/work/ai-job-intelligence-engine";
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
@@ -480,6 +482,36 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     if (route === aegisgraphRoute) {
       expect(response?.status()).toBe(200);
       expect(title).toBe("AegisGraph | Farhan Shafee");
+      const projectLinks = page.getByRole("region", {
+        name: "Links",
+        exact: true,
+      });
+      for (const [link, href] of [
+        [
+          page.locator("main header").getByRole("link", {
+            name: /^View source\b/,
+          }),
+          aegisgraphRepository,
+        ],
+        [
+          projectLinks.getByRole("link", {
+            name: /^View source on GitHub\b/,
+          }),
+          aegisgraphRepository,
+        ],
+        [
+          projectLinks.getByRole("link", {
+            name: /^CI validation run\b/,
+          }),
+          aegisgraphCiRun,
+        ],
+      ] as const) {
+        await expect(link).toBeVisible();
+        await expect(link).toHaveAttribute("href", href);
+        await expect(link).toHaveAttribute("target", "_blank");
+        await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
+        await expect(link).toHaveAttribute("rel", /\bnoreferrer\b/);
+      }
       for (const selector of [
         'meta[name="description"]',
         'meta[property="og:description"]',
@@ -582,6 +614,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         expect(body).toContain(
           `[AegisGraph](${canonicalOrigin}${aegisgraphRoute})`,
         );
+        expect(body).toContain(`[Public source](${aegisgraphRepository})`);
       }
     }
   }

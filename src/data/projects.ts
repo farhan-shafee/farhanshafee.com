@@ -145,8 +145,9 @@ export const projects: Project[] = [
       },
       validation: {
         paragraphs: [
-          "The September 17, 2026 UTC validation record reports 146 backend tests, 23 frontend tests, 13 browser tests, and 28 deterministic evaluation cases passing, alongside PostgreSQL/SQLite checks and a production build. Dependency audits reported no known vulnerabilities at that time. These describe validation coverage, not proof of production security.",
+          "The September 17, 2026 UTC public release review records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases passing, alongside PostgreSQL/SQLite checks and a production build. Dependency audits reported no known vulnerabilities at that time. These describe validation coverage, not proof of production security.",
           "Live-provider results are recorded separately: three named scenarios eventually passed across six harness requests, with three earlier HTTP 429 failures retained. Two additional browser requests succeeded. This small sample verifies specific behavior; broader repeated live-model evaluation remains necessary.",
+          "The public repository includes the threat model, architecture decision records, detection rules, evaluation harness, validation documentation, and CI workflow. The linked September 17, 2026 UTC run passed backend, frontend, and browser validation using deterministic providers, without live-model calls.",
         ],
       },
       lessonsConstraints: {
@@ -206,7 +207,14 @@ export const projects: Project[] = [
           "Executed deterministic evaluations on synthetic fixtures. These test application boundaries, not live-model accuracy or universal injection resistance.",
       },
     ],
-    links: [{ label: "Discuss this project", href: "/contact" }],
+    github: "https://github.com/farhan-shafee/aegisgraph",
+    links: [
+      {
+        label: "CI validation run",
+        href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463",
+      },
+      { label: "Discuss this project", href: "/contact" },
+    ],
     featured: true,
     visibility: "public",
   },

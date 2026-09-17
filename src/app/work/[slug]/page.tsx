@@ -63,6 +63,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       >
         <div className="inline-links">
           <TextLink href="/work">All work</TextLink>
+          {project.github && (
+            <TextLink href={project.github} external>
+              View source
+            </TextLink>
+          )}
           {project.website && (
             <TextLink href={project.website} external>
               Visit {project.title}

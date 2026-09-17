@@ -24,7 +24,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
       {
         path: "docs/aegisgraph-evidence-review.md",
         supports:
-          "Read-only review at source revision 7293c515d47178405df6fcf93feeeadac067cf64 supports the synthetic investigation architecture, deterministic correlation, bounded providers, citation/support validation, recorded test results, and explicit production limitations.",
+          "Read-only review at source revision 7293c515d47178405df6fcf93feeeadac067cf64 supports the synthetic investigation architecture, deterministic correlation, bounded providers, citation/support validation, and production limitations. The September 17, 2026 UTC follow-up verifies public source availability, MIT licensing at inspected main c95afa6, and successful backend/frontend/browser CI run 35179396463 at 534679eac4a04ee0298fe6f35d1422fa63a4fe90. That deterministic run makes no live OpenAI calls and does not establish success for later revisions. The linked release record documents 146 backend, 25 frontend, 13 browser, and 28 deterministic checks, preserving the historical 23-frontend-test hardening result separately.",
       },
     ],
     statusReview: {
@@ -33,11 +33,6 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
         "Implemented and hardened engineering demonstration with reviewed synthetic-data interfaces and dated validation records. Active describes the project, not production SOC operation.",
     },
     todos: [
-      {
-        area: "public-source-and-current-ci",
-        prompt:
-          "TODO: Verify public repository visibility and the latest hosted CI result before adding source links or current hosted-run claims. The inspected validation document records the initial implementation's CI separately from local hardening results.",
-      },
       {
         area: "repeated-live-evaluation",
         prompt:
