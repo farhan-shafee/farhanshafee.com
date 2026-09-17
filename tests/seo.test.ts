@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
+import { createRequire } from "node:module";
 import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import nextConfig from "../next.config";
-import HomePage from "../src/app/page";
 import AboutPage from "../src/app/about/page";
 import robots from "../src/app/robots";
 import sitemap from "../src/app/sitemap";
@@ -10,6 +10,12 @@ import { GET as getRss } from "../src/app/rss.xml/route";
 import { GET as getLlms } from "../src/app/llms.txt/route";
 import { siteConfig } from "../src/config/site";
 import { absoluteUrl, pageMetadata } from "../src/lib/seo";
+
+// Match Next's CommonJS interop while rendering its real Image component in Node.
+const loadCommonJs = createRequire(import.meta.url);
+const imageModule = loadCommonJs("next/image");
+if (imageModule.default) Object.assign(imageModule, imageModule.default);
+const { default: HomePage } = await import("../src/app/page");
 
 const origin = "https://farhan-shafee.com";
 const oldOrigin = /https?:\/\/(?:www\.)?farhanshafee\.com\b/i;

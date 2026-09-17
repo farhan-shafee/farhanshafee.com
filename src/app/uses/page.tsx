@@ -9,21 +9,27 @@ export const metadata = pageMetadata(
 );
 
 export default function UsesPage() {
+  const categories = usesCategories.filter(
+    (category) => category.items.length > 0,
+  );
   return (
-    <div className="page-shell">
+    <div className="page-shell editorial-page editorial-compact">
       <PageIntro
         eyebrow="Uses / Tools & working environment"
-        title="The setup behind the work."
-        description="A reference for the tools I use and why. I am still documenting this list; specific software and hardware details will be added here."
+        title="Tools & working environment."
+        description="Software, infrastructure, and hardware behind the work."
       />
-      <div className="row-list section uses-list">
-        {usesCategories.map((category) => (
-          <section className="detail-row" key={category.title}>
-            <h2>{category.title}</h2>
-            <div>
-              <p>{category.description}</p>
-              {category.items.length > 0 ? (
-                <ul className="uses-items">
+      {categories.length > 0 ? (
+        <div className="editorial-tooling">
+          {categories.map((category) => (
+            <section
+              className="editorial-tooling-category"
+              key={category.title}
+            >
+              <h2>{category.title}</h2>
+              <div>
+                <p>{category.description}</p>
+                <ul className="editorial-tooling-items">
                   {category.items.map((item) => (
                     <li key={item.name}>
                       <h3>
@@ -39,13 +45,19 @@ export default function UsesPage() {
                     </li>
                   ))}
                 </ul>
-              ) : (
-                <span className="eyebrow uses-pending">Notes to follow</span>
-              )}
-            </div>
-          </section>
-        ))}
-      </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="editorial-publication-note">
+          <p>
+            Personal tooling notes are not published yet. The project case
+            studies include their verified technology stacks.
+          </p>
+          <TextLink href="/work">Explore the systems</TextLink>
+        </div>
+      )}
     </div>
   );
 }

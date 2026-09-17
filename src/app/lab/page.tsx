@@ -10,40 +10,51 @@ export const metadata = pageMetadata(
 
 export default function LabPage() {
   return (
-    <div className="page-shell">
+    <div className="page-shell editorial-page editorial-lab">
       <PageIntro
         eyebrow="Lab / An engineering notebook"
-        title="Questions worth investigating."
-        description="Notes on detection engineering, AI-assisted security workflows, and infrastructure. Detailed experiments and results are not yet published."
+        title="The engineering notebook."
+        description="Investigation topics in security, automation, and infrastructure. Detailed experiments and results are not yet published."
       />
-      <div className="row-list section">
+      <ol className="editorial-notebook">
         {labEntries.map((entry, index) => (
-          <article className="lab-entry" key={entry.title}>
-            <div className="lab-entry-meta">
-              <span className="project-number" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="eyebrow">{entry.category}</span>
-            </div>
-            <div className="lab-entry-body">
-              <h2>{entry.title}</h2>
+          <li className="editorial-notebook-entry" key={entry.title}>
+            <span className="editorial-entry-number" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <article>
+              <header className="editorial-entry-header">
+                <div>
+                  <p className="editorial-label">{entry.category}</p>
+                  <h2>{entry.title}</h2>
+                </div>
+                <div className="editorial-entry-status">
+                  <span>{entry.status}</span>
+                  {entry.date && (
+                    <time dateTime={entry.date}>{entry.date}</time>
+                  )}
+                </div>
+              </header>
               <p>{entry.description}</p>
               {entry.technologies.length > 0 && (
-                <ul className="project-tags" aria-label="Technologies">
+                <ul
+                  className="editorial-writing-topics"
+                  aria-label="Technologies"
+                >
                   {entry.technologies.map((technology) => (
                     <li key={technology}>{technology}</li>
                   ))}
                 </ul>
               )}
               {(entry.repository || entry.writeup || entry.demo) && (
-                <div className="inline-links">
+                <div className="editorial-inline-links">
                   {entry.repository && (
                     <TextLink href={entry.repository} external>
                       Repository
                     </TextLink>
                   )}
                   {entry.writeup && (
-                    <TextLink href={entry.writeup}>Project overview</TextLink>
+                    <TextLink href={entry.writeup}>Lab scope</TextLink>
                   )}
                   {entry.demo && (
                     <TextLink href={entry.demo} external>
@@ -52,14 +63,10 @@ export default function LabPage() {
                   )}
                 </div>
               )}
-            </div>
-            <div className="lab-entry-status">
-              <span className="status">{entry.status}</span>
-              {entry.date && <time dateTime={entry.date}>{entry.date}</time>}
-            </div>
-          </article>
+            </article>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   );
 }

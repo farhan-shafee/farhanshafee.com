@@ -10,53 +10,56 @@ export const metadata = pageMetadata(
 
 export default function ContactPage() {
   return (
-    <div className="page-shell">
+    <div className="page-shell editorial-page editorial-contact">
       <PageIntro
-        eyebrow="Contact / Start a conversation"
-        title="Engineering opportunities and collaboration."
-        description="For engineering opportunities, security and automation collaboration, technical partnerships, or a systems problem worth thinking through."
+        eyebrow="Contact"
+        title="Engineering & collaboration."
+        description="For engineering opportunities, security and automation collaboration, and technical partnerships."
       />
-      <div className="contact-grid section">
+      <div className="editorial-contact-list">
         {(siteConfig.email || siteConfig.linkedin) && (
-          <section className="contact-card">
-            <span className="eyebrow">01 / Professional</span>
-            <h2>Get in touch</h2>
-            <p>Share the context, the problem, and what you have in mind.</p>
-            <div className="inline-links">
-              {siteConfig.email && (
-                <TextLink href={`mailto:${siteConfig.email}`}>
-                  Email Farhan
-                </TextLink>
-              )}
-              {siteConfig.linkedin && (
-                <TextLink href={siteConfig.linkedin} external>
-                  Connect on LinkedIn
-                </TextLink>
-              )}
+          <section className="editorial-contact-row editorial-contact-lead">
+            <h2>Professional inquiries</h2>
+            <div>
+              <div className="editorial-inline-links">
+                {siteConfig.linkedin && (
+                  <TextLink
+                    href={siteConfig.linkedin}
+                    external
+                    className="editorial-contact-primary"
+                  >
+                    Connect on LinkedIn
+                  </TextLink>
+                )}
+                {siteConfig.email && (
+                  <TextLink href={`mailto:${siteConfig.email}`}>
+                    Email Farhan
+                  </TextLink>
+                )}
+              </div>
+              <p>
+                Share the problem, the context, and the work you have in mind.
+              </p>
             </div>
           </section>
         )}
-        <section className="contact-card">
-          <span className="eyebrow">CyberBit Solutions</span>
-          <h2>Security tools & services</h2>
-          <p>
-            For business cybersecurity inquiries, find the appropriate contact
-            path through CyberBit Solutions.
-          </p>
-          <TextLink href={siteConfig.cyberbit} external>
-            Visit CyberBit Solutions
-          </TextLink>
+        <section className="editorial-contact-row">
+          <h2>CyberBit inquiries</h2>
+          <div>
+            <p>Business cybersecurity tools and services.</p>
+            <TextLink href={siteConfig.cyberbit} external>
+              Visit CyberBit Solutions
+            </TextLink>
+          </div>
         </section>
-        <section className="contact-card">
-          <span className="eyebrow">GitHub</span>
-          <h2>Connect through the work</h2>
-          <p>
-            Explore public repositories and the technical projects I share on
-            GitHub.
-          </p>
-          <TextLink href={siteConfig.github} external>
-            View GitHub profile
-          </TextLink>
+        <section className="editorial-contact-row">
+          <h2>Public work</h2>
+          <div>
+            <p>Repositories and technical projects on GitHub.</p>
+            <TextLink href={siteConfig.github} external>
+              View GitHub profile
+            </TextLink>
+          </div>
         </section>
       </div>
     </div>

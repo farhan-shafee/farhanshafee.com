@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { getPublicProjects, type Project } from "../../src/data/projects";
+import { getPublicProjects, type ProjectImage } from "../../src/data/projects";
 import { readdirSync, readFileSync } from "node:fs";
 import {
   getPublishedArticles,
@@ -31,17 +31,36 @@ const jobEngineRoute = "/work/ai-job-intelligence-engine";
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
 const canonicalOrigin = "https://farhan-shafee.com";
 const oldOrigin = /https?:\/\/(?:www\.)?farhanshafee\.com\b/i;
+const excludedProject = /aegis[\s-]*graph/i;
+const projectOrder = [
+  "CyberBit Solutions",
+  jobEngineTitle,
+  "Detection & Security Engineering Lab",
+  "Secure Infrastructure & Homelab",
+];
 
-async function expectProjectImages(page: Page, project: Project) {
-  const assets = [
-    ...(project.architectureDiagrams ?? []),
-    ...(project.screenshots ?? []),
+function imagesForRoute(route: string): ProjectImage[] {
+  if (route === "/" || route === "/work") {
+    const preview = projectsByRoute.get("/work/cyberbit-solutions")
+      ?.screenshots?.[0];
+    if (!preview) throw new Error("CyberBit needs its real preview image");
+    return [preview];
+  }
+  const project = projectsByRoute.get(route);
+  return [
+    ...(project?.architectureDiagrams ?? []),
+    ...(project?.screenshots ?? []),
   ];
+}
+
+async function expectImages(page: Page, assets: ProjectImage[]) {
   await expect(page.locator("main img")).toHaveCount(assets.length);
   for (const asset of assets) {
     const image = page.getByRole("img", { name: asset.alt, exact: true });
     await expect(image).toHaveCount(1);
     await expect(image).toHaveAttribute("alt", /\S/);
+    await expect(image).toHaveAttribute("width", String(asset.width));
+    await expect(image).toHaveAttribute("height", String(asset.height));
     const source = new URL((await image.getAttribute("src")) ?? "", page.url());
     expect(source.searchParams.get("url") ?? source.pathname).toBe(asset.src);
     await image.scrollIntoViewIfNeeded();
@@ -52,6 +71,28 @@ async function expectProjectImages(page: Page, project: Project) {
         image.evaluate((node) => (node as HTMLImageElement).naturalWidth),
       )
       .toBeGreaterThan(0);
+    const dimensions = await image.evaluate((node) => {
+      const image = node as HTMLImageElement;
+      const bounds = image.getBoundingClientRect();
+      return {
+        width: bounds.width,
+        height: bounds.height,
+        naturalWidth: image.naturalWidth,
+        naturalHeight: image.naturalHeight,
+      };
+    });
+    expect(dimensions.width).toBeGreaterThan(0);
+    expect(dimensions.height).toBeGreaterThan(0);
+    expect(dimensions.naturalHeight).toBeGreaterThan(0);
+    const declaredRatio = asset.width / asset.height;
+    for (const [kind, ratio] of [
+      ["intrinsic", dimensions.naturalWidth / dimensions.naturalHeight],
+      ["rendered", dimensions.width / dimensions.height],
+    ] as const)
+      expect(
+        Math.abs(ratio / declaredRatio - 1),
+        `${asset.src} preserves its ${kind} aspect ratio`,
+      ).toBeLessThan(0.01);
   }
 }
 
@@ -68,8 +109,7 @@ for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
       expect(response?.status(), route).toBe(200);
       await expect(page.locator("h1"), route).toHaveCount(1);
       await expect(page.locator("main")).toBeVisible();
-      const project = projectsByRoute.get(route);
-      if (project) await expectProjectImages(page, project);
+      await expectImages(page, imagesForRoute(route));
       // Capture fixed elements from their normal viewport position after lazy images load.
       await page.evaluate(() =>
         window.scrollTo({ top: 0, behavior: "instant" }),
@@ -108,8 +148,7 @@ for (const theme of ["light", "dark"] as const) {
     for (const route of routes) {
       await page.goto(route);
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-      const project = projectsByRoute.get(route);
-      if (project) await expectProjectImages(page, project);
+      await expectImages(page, imagesForRoute(route));
       const result = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         .analyze();
@@ -138,7 +177,7 @@ for (const theme of ["light", "dark"] as const) {
         const response = await page.goto(route);
         expect(response?.status()).toBe(200);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-        await expectProjectImages(page, project!);
+        await expectImages(page, imagesForRoute(route));
         await page.evaluate(() =>
           window.scrollTo({ top: 0, behavior: "instant" }),
         );
@@ -150,6 +189,101 @@ for (const theme of ["light", "dark"] as const) {
     });
   }
 }
+
+test("cold page loads keep image-led layouts stable", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const measurements: { route: string; width: number; cls: number }[] = [];
+  for (const width of [375, 1440]) {
+    for (const route of ["/", "/work", "/work/cyberbit-solutions"]) {
+      // A fresh browser context gives each route an empty browser cache.
+      const context = await browser.newContext({
+        baseURL,
+        viewport: { width, height: 1000 },
+        colorScheme: "light",
+        reducedMotion: "reduce",
+      });
+      try {
+        const page = await context.newPage();
+        await page.addInitScript(() => {
+          const entries: { value: number; startTime: number }[] = [];
+          const record = (records: PerformanceEntry[]) => {
+            for (const record of records) {
+              const entry = record as PerformanceEntry & {
+                value: number;
+                hadRecentInput: boolean;
+              };
+              if (!entry.hadRecentInput)
+                entries.push({
+                  value: entry.value,
+                  startTime: entry.startTime,
+                });
+            }
+          };
+          const observer = new PerformanceObserver((list) =>
+            record(list.getEntries()),
+          );
+          observer.observe({ type: "layout-shift", buffered: true });
+          Object.assign(window, {
+            readLayoutShifts: () => {
+              record(observer.takeRecords());
+              return entries;
+            },
+          });
+        });
+        const response = await page.goto(route);
+        expect(response?.status(), route).toBe(200);
+        expect(
+          await page.evaluate(() =>
+            PerformanceObserver.supportedEntryTypes.includes("layout-shift"),
+          ),
+          "The browser must expose layout-shift entries for CLS measurement",
+        ).toBe(true);
+        await expectImages(page, imagesForRoute(route));
+        await page.evaluate(async () => {
+          await document.fonts.ready;
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          );
+        });
+        const shifts = await page.evaluate(() => {
+          const measuredWindow: Window & {
+            readLayoutShifts?: () => { value: number; startTime: number }[];
+          } = window;
+          if (!measuredWindow.readLayoutShifts)
+            throw new Error("The CLS observer was not initialized");
+          return measuredWindow.readLayoutShifts();
+        });
+        let cls = 0;
+        let sessionValue = 0;
+        let sessionStart = -Infinity;
+        let previousShift = -Infinity;
+        for (const shift of shifts) {
+          if (
+            shift.startTime - previousShift >= 1000 ||
+            shift.startTime - sessionStart >= 5000
+          ) {
+            sessionValue = 0;
+            sessionStart = shift.startTime;
+          }
+          sessionValue += shift.value;
+          previousShift = shift.startTime;
+          cls = Math.max(cls, sessionValue);
+        }
+        measurements.push({ route, width, cls });
+        console.log(`Cold-load CLS ${route} at ${width}px: ${cls.toFixed(4)}`);
+        expect(cls, `${route} CLS at ${width}px`).toBeLessThanOrEqual(0.1);
+      } finally {
+        await context.close();
+      }
+    }
+  }
+  await testInfo.attach("cold-load-cls", {
+    body: JSON.stringify(measurements, null, 2),
+    contentType: "application/json",
+  });
+});
 
 test("keyboard navigation, persisted theme, and mobile links work", async ({
   page,
@@ -199,6 +333,9 @@ test("metadata, internal links, security headers and feeds are valid", async ({
     );
     expect(html, `No stale project name on ${route}`).not.toMatch(
       oldJobEngineTitle,
+    );
+    expect(html, `No excluded future project on ${route}`).not.toMatch(
+      excludedProject,
     );
     expect(html, `No links to the unowned old domain on ${route}`).not.toMatch(
       oldOrigin,
@@ -291,6 +428,16 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       });
     }
     if (route === "/" || route === "/work") {
+      const headings = await page
+        .locator("main")
+        .getByRole("heading")
+        .allTextContents();
+      expect(
+        headings
+          .map((heading) => heading.trim())
+          .filter((heading) => projectOrder.includes(heading)),
+        `${route} presents CyberBit, Job Engine, then the two labs`,
+      ).toEqual(projectOrder);
       await expect(
         page.getByRole("heading", { name: jobEngineTitle, exact: true }),
       ).toBeVisible();
@@ -362,6 +509,9 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         oldJobEngineTitle,
       );
       expect(body, `No old canonical domain in ${path}`).not.toMatch(oldOrigin);
+      expect(body, `No excluded future project in ${path}`).not.toMatch(
+        excludedProject,
+      );
       if (path === "/robots.txt")
         expect(body).toContain(`Sitemap: ${canonicalOrigin}/sitemap.xml`);
       if (path === "/llms.txt") {
@@ -407,6 +557,11 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       (await request.get("/writing/tag/verification-unpublished")).status(),
     ).toBe(404);
   expect((await request.get("/work/unpublished-project")).status()).toBe(404);
+  const excludedResponse = await request.get("/work/aegisgraph");
+  expect(excludedResponse.status()).toBe(404);
+  expect(await excludedResponse.text()).toContain(
+    'name="robots" content="noindex"',
+  );
   expect((await request.get("/not-a-page")).status()).toBe(404);
 });
 

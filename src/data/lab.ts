@@ -29,7 +29,7 @@ export const labEntries: LabEntry[] = [
   {
     title: "Detection engineering",
     description:
-      "Research into system visibility, detection signals, and the context needed to interpret security events. Specific experiments and results are not yet published.",
+      "System visibility, detection signals, and the context needed to interpret security events.",
     status: "Exploring",
     technologies: [],
     category: "Security",
@@ -38,7 +38,7 @@ export const labEntries: LabEntry[] = [
   {
     title: "Secure infrastructure",
     description:
-      "Research into workload isolation, management access, and maintenance in a personal lab. Specific topology and control details are not yet documented here.",
+      "Workload isolation, management access, and maintenance in a personal lab.",
     status: "Exploring",
     technologies: [],
     category: "Infrastructure",

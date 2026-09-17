@@ -28,6 +28,8 @@ const {
 } = await import("../src/app/work/[slug]/page");
 const { ProjectCaseStudy } =
   await import("../src/components/project-case-study");
+const { ProjectCard } = await import("../src/components/project-card");
+const { default: WorkPage } = await import("../src/app/work/page");
 
 function fixture(overrides: Partial<Project> = {}): Project {
   return {
@@ -199,6 +201,59 @@ test("an architecture diagram can provide evidence without filler prose", () => 
   assert.doesNotMatch(html, /<p>|Overview|Selected interfaces/);
 });
 
+test("project presentation promotes real primary evidence without adding previews to supporting work", () => {
+  const project = fixture({
+    screenshots: [imageFixture],
+    technicalHighlights: ["A reviewed technical statement."],
+  });
+  const primary = renderToStaticMarkup(
+    createElement(ProjectCard, {
+      project,
+      variant: "primary",
+      index: 0,
+    }),
+  );
+  assert.equal(primary.match(/<img\b/g)?.length, 1);
+  assert.match(primary, /alt="Test-only interface description"/);
+  assert.match(primary, /<figcaption>Test-only caption\.<\/figcaption>/);
+  assert.match(primary, /A reviewed technical statement\./);
+  assert.match(primary, /href="\/work\/test-only-project"/);
+  assert.match(primary, /<h3\b/);
+  for (const variant of ["secondary", "supporting"] as const) {
+    const html = renderToStaticMarkup(
+      createElement(ProjectCard, {
+        project,
+        variant,
+        headingLevel: 2,
+      }),
+    );
+    assert.doesNotMatch(html, /<img\b|<figure\b/);
+    assert.match(html, /<h2\b/);
+    assert.match(html, /Exploring/);
+  }
+});
+
+test("Work presents all current projects and only the primary screenshot preview", () => {
+  const html = renderToStaticMarkup(WorkPage());
+  for (const project of getPublicProjects()) {
+    assert.match(html, new RegExp(`href="/work/${project.slug}"`));
+  }
+  const primary = getPublicProjects().find(
+    ({ slug }) => slug === "cyberbit-solutions",
+  );
+  assert.ok(primary?.screenshots?.[0]);
+  assert.equal(html.match(/<img\b/g)?.length, 1);
+  assert.ok(html.includes(primary.screenshots[0].src.replace(/\//g, "%2F")));
+  assert.ok(
+    html.indexOf("/work/cyberbit-solutions") <
+      html.indexOf("/work/ai-job-intelligence-engine"),
+  );
+  assert.ok(
+    html.indexOf("/work/ai-job-intelligence-engine") <
+      html.indexOf("/work/detection-security-lab"),
+  );
+});
+
 test("project statuses match the reviewed evidence boundary", () => {
   for (const project of projects) {
     assert.ok(projectStatuses.includes(project.status));
@@ -364,7 +419,7 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
       name: project.title,
       item: `https://farhan-shafee.com/work/${project.slug}`,
     });
-    assert.match(html, /class="split-layout section"/);
+    assert.match(html, /<dl[^>]*aria-label="Project details"/);
     assert.match(html, /id="overview">Overview<\/h2>/);
     const imageCount =
       (project.screenshots?.length ?? 0) +

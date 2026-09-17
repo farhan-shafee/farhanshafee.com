@@ -35,7 +35,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (!project) notFound();
 
   return (
-    <div className="page-shell">
+    <div className="page-shell case-study-page">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -70,33 +70,35 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           )}
         </div>
       </PageIntro>
-      <div className="split-layout section">
-        <aside aria-label="Project details">
-          <dl className="row-list project-details">
-            <div className="detail-row">
-              <dt className="side-label">Type</dt>
-              <dd>{projectKinds[project.kind]}</dd>
+      <div className="case-study-layout">
+        <dl className="case-metadata" aria-label="Project details">
+          <div className="case-metadata-item">
+            <dt>Type</dt>
+            <dd>{projectKinds[project.kind]}</dd>
+          </div>
+          <div className="case-metadata-item">
+            <dt>Status</dt>
+            <dd>{project.status}</dd>
+          </div>
+          {project.year && (
+            <div className="case-metadata-item">
+              <dt>Year</dt>
+              <dd>{project.year}</dd>
             </div>
-            <div className="detail-row">
-              <dt className="side-label">Status</dt>
+          )}
+          {project.technologies.length > 0 && (
+            <div className="case-metadata-item case-metadata-technologies">
+              <dt>Technologies</dt>
               <dd>
-                <span className="status">{project.status}</span>
+                <ul>
+                  {project.technologies.map((technology) => (
+                    <li key={technology}>{technology}</li>
+                  ))}
+                </ul>
               </dd>
             </div>
-            {project.year && (
-              <div className="detail-row">
-                <dt className="side-label">Year</dt>
-                <dd>{project.year}</dd>
-              </div>
-            )}
-            {project.technologies.length > 0 && (
-              <div className="detail-row">
-                <dt className="side-label">Technologies</dt>
-                <dd>{project.technologies.join(" / ")}</dd>
-              </div>
-            )}
-          </dl>
-        </aside>
+          )}
+        </dl>
         <ProjectCaseStudy project={project} />
       </div>
     </div>

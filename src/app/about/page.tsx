@@ -11,7 +11,7 @@ export const metadata = pageMetadata(
 
 export default function AboutPage() {
   return (
-    <div className="page-shell">
+    <div className="page-shell editorial-page editorial-about">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -23,52 +23,72 @@ export default function AboutPage() {
       />
       <PageIntro
         eyebrow="About / Farhan Shafee"
-        title="Fintech, automation, and security engineering."
-        description="My background spans fintech software engineering, test automation, and backend financial systems."
+        title="Financial systems. Security tooling."
+        description="My work connects backend engineering, automation, and security product development."
       />
-      <div className="split-layout section">
-        <div className="side-label">Background & direction</div>
-        <div className="prose">
-          <p>
-            My professional background is in fintech software engineering, test
-            automation, and backend financial systems. That work spans APIs,
-            FIX-related systems, CI/CD, and the automation that supports
-            software delivery.
-          </p>
-          <p>
-            My security work includes technical projects and labs. The lab
-            notebook focuses on detection engineering, infrastructure security,
-            and AI-assisted workflows.
-          </p>
-          <h2>CyberBit Solutions</h2>
-          <p>
-            I created CyberBit Solutions to develop cybersecurity tools and
-            services primarily for businesses.
-          </p>
-          <p>
-            This site documents that work alongside my personal automation
-            projects, security labs, and financial systems background.
-          </p>
-          <h2>Technical background</h2>
-          <p>
-            My technical experience includes Python, Java, SQL, APIs, and
-            automation engineering. My current focus is security tooling,
-            AI-assisted automation, and infrastructure security.
-          </p>
-          <div className="inline-links">
-            <TextLink href={siteConfig.github} external>
-              GitHub
-            </TextLink>
-            {siteConfig.linkedin && (
-              <TextLink href={siteConfig.linkedin} external>
-                LinkedIn
-              </TextLink>
-            )}
-            <TextLink href={siteConfig.cyberbit} external>
-              CyberBit Solutions
+      <div className="editorial-narrative">
+        <section
+          className="editorial-narrative-section"
+          aria-labelledby="engineering-background"
+        >
+          <p className="editorial-label">01 / Background</p>
+          <div>
+            <h2 id="engineering-background">Financial systems & automation</h2>
+            <p>
+              My professional background is in fintech software engineering,
+              test automation, and backend financial systems. That work spans
+              APIs, FIX-related systems, CI/CD, and software delivery. My
+              technical experience includes Python, Java, and SQL.
+            </p>
+          </div>
+        </section>
+        <section
+          className="editorial-narrative-section"
+          aria-labelledby="security-product-work"
+        >
+          <p className="editorial-label">02 / Product work</p>
+          <div>
+            <h2 id="security-product-work">Building CyberBit Solutions</h2>
+            <p>
+              I created CyberBit Solutions to develop cybersecurity tools and
+              services primarily for businesses. It connects public security
+              checks with assessment, reporting, and the operational workflows
+              around them.
+            </p>
+            <TextLink href="/work/cyberbit-solutions">
+              Inside the CyberBit system
             </TextLink>
           </div>
-        </div>
+        </section>
+        <section
+          className="editorial-narrative-section"
+          aria-labelledby="technical-direction"
+        >
+          <p className="editorial-label">03 / Direction</p>
+          <div>
+            <h2 id="technical-direction">
+              Security, automation & infrastructure
+            </h2>
+            <p>
+              My current focus is security tooling, AI-assisted automation, and
+              infrastructure security. Alongside product work, my lab notebook
+              explores detection engineering and the boundaries of human review
+              in automated workflows.
+            </p>
+            <TextLink href="/now">Current focus</TextLink>
+          </div>
+        </section>
+      </div>
+      <div className="editorial-profile-links">
+        <span className="editorial-label">Elsewhere</span>
+        {siteConfig.linkedin && (
+          <TextLink href={siteConfig.linkedin} external>
+            LinkedIn
+          </TextLink>
+        )}
+        <TextLink href={siteConfig.github} external>
+          GitHub
+        </TextLink>
       </div>
     </div>
   );

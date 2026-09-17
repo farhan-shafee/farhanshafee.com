@@ -7,11 +7,19 @@ export function SiteFooter() {
       <div className="footer-top">
         <Link className="footer-name" href="/">
           {siteConfig.name}
-          <span>Security. Automation. Systems.</span>
+          <span>
+            Security Engineering
+            <br />
+            AI Automation
+            <br />
+            Fintech Systems
+          </span>
         </Link>
         <nav aria-label="More pages">
-          <Link href="/now">Now</Link>
-          <Link href="/uses">Uses</Link>
+          <Link href="/work">Work</Link>
+          <Link href="/writing">Writing</Link>
+          <Link href="/lab">Lab</Link>
+          <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
         </nav>
       </div>

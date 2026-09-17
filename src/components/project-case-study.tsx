@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import Image from "next/image";
 import { TextLink } from "@/components/ui";
 import type { CaseStudySection, Project, ProjectImage } from "@/data/projects";
@@ -30,21 +29,29 @@ function EvidenceImages({
   fullSize?: boolean;
 }) {
   return images.map((image) => (
-    <figure className="mx-0" key={image.src}>
+    <figure
+      className={`case-evidence${fullSize ? " case-evidence--screenshot" : " case-evidence--diagram"}`}
+      key={image.src}
+    >
       <Image
-        className="block rounded-[5px] border border-[var(--line)]"
         src={image.src}
         alt={image.alt}
         width={image.width}
         height={image.height}
-        sizes="(max-width: 760px) 100vw, 720px"
+        sizes={
+          fullSize
+            ? "(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) 47vw, 560px"
+            : "(max-width: 480px) calc(100vw - 40px), 420px"
+        }
       />
-      <figcaption className="mt-3 text-sm">
+      <figcaption>
         {image.caption}
         {fullSize && (
           <>
             {" "}
-            <TextLink href={image.src}>View full-size screenshot</TextLink>
+            <TextLink href={image.src} className="case-evidence-link">
+              View full-size screenshot
+            </TextLink>
           </>
         )}
       </figcaption>
@@ -66,6 +73,11 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
     { id: "overview", title: "Overview", content: study?.overview },
     { id: "problem", title: "Problem", content: study?.problem },
     { id: "system", title: "System", content: study?.system },
+    {
+      id: "selected-interfaces",
+      title: "Selected interfaces",
+      images: project.screenshots,
+    },
     {
       id: "technical-highlights",
       title: "Technical highlights",
@@ -89,11 +101,6 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       content: study?.securityPrivacy,
     },
     {
-      id: "selected-interfaces",
-      title: "Selected interfaces",
-      images: project.screenshots,
-    },
-    {
       id: "lessons-constraints",
       title: "Lessons / constraints",
       content: study?.lessonsConstraints,
@@ -113,40 +120,79 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       : []),
     ...(project.links ?? []),
   ].filter((link) => link.label.trim() && link.href.trim());
+  const populatedSections = sections.flatMap(
+    ({ id, title, content, images }) => {
+      const paragraphs = nonEmpty(content?.paragraphs);
+      const bullets = nonEmpty(content?.bullets);
+      const assets = renderableImages(images);
+      return paragraphs.length || bullets.length || assets.length
+        ? [{ id, title, paragraphs, bullets, assets }]
+        : [];
+    },
+  );
 
   return (
-    <div className="prose">
-      {sections.map(({ id, title, content, images }) => {
-        const paragraphs = nonEmpty(content?.paragraphs);
-        const bullets = nonEmpty(content?.bullets);
-        const assets = renderableImages(images);
-        if (!paragraphs.length && !bullets.length && !assets.length)
-          return null;
-
-        return (
-          <Fragment key={id}>
-            <h2 id={id}>{title}</h2>
-            {paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-            {bullets.length > 0 && (
-              <ul>
-                {bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-            )}
-            <EvidenceImages
-              images={assets}
-              fullSize={id === "selected-interfaces"}
-            />
-          </Fragment>
-        );
-      })}
+    <div className="case-study-content">
+      {populatedSections.map(
+        ({ id, title, paragraphs, bullets, assets }, index) => (
+          <section
+            className={`case-section case-section--${id}`}
+            aria-labelledby={id}
+            key={id}
+          >
+            <div className="case-section-heading">
+              <span className="case-section-index" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h2 id={id}>{title}</h2>
+            </div>
+            <div
+              className={`case-section-body${id === "architecture" && assets.length > 0 && (paragraphs.length > 0 || bullets.length > 0) ? " case-section-body--with-diagrams" : ""}`}
+            >
+              {(paragraphs.length > 0 || bullets.length > 0) && (
+                <div className="case-section-text">
+                  {paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                  {bullets.length > 0 && (
+                    <ul>
+                      {bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+              {assets.length > 0 && (
+                <div
+                  className={
+                    id === "selected-interfaces"
+                      ? "case-evidence-grid"
+                      : "case-diagrams"
+                  }
+                >
+                  <EvidenceImages
+                    images={assets}
+                    fullSize={id === "selected-interfaces"}
+                  />
+                </div>
+              )}
+            </div>
+          </section>
+        ),
+      )}
       {links.length > 0 && (
-        <>
-          <h2 id="links">Links</h2>
-          <div className="inline-links">
+        <section
+          className="case-section case-section--links"
+          aria-labelledby="links"
+        >
+          <div className="case-section-heading">
+            <span className="case-section-index" aria-hidden="true">
+              {String(populatedSections.length + 1).padStart(2, "0")}
+            </span>
+            <h2 id="links">Links</h2>
+          </div>
+          <div className="case-section-body case-section-links">
             {links.map((link) => (
               <TextLink
                 href={link.href}
@@ -157,7 +203,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
               </TextLink>
             ))}
           </div>
-        </>
+        </section>
       )}
     </div>
   );

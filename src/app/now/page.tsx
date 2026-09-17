@@ -1,4 +1,4 @@
-import { PageIntro, TextLink } from "@/components/ui";
+import { TextLink } from "@/components/ui";
 import { now } from "@/data/now";
 import { pageMetadata } from "@/lib/seo";
 
@@ -17,19 +17,17 @@ export default function NowPage() {
   }).format(new Date(`${now.updated}T00:00:00Z`));
 
   return (
-    <div className="page-shell">
-      <PageIntro
-        eyebrow="Now / Current focus"
-        title="A short working update."
-        description="What has my attention right now."
-      >
-        <p className="eyebrow">
+    <div className="page-shell editorial-page editorial-compact">
+      <header className="page-intro editorial-compact-intro">
+        <p className="eyebrow">Now</p>
+        <h1>Current focus.</h1>
+        <p className="editorial-updated">
           Updated <time dateTime={now.updated}>{updated}</time>
         </p>
-      </PageIntro>
-      <div className="row-list section now-list">
+      </header>
+      <div className="editorial-focus-list">
         {now.sections.map((section) => (
-          <section className="detail-row" key={section.title}>
+          <section className="editorial-focus-row" key={section.title}>
             <h2>{section.title}</h2>
             <div>
               <p>{section.text}</p>
@@ -42,6 +40,10 @@ export default function NowPage() {
           </section>
         ))}
       </div>
+      <nav className="editorial-context-links" aria-label="Related notes">
+        <TextLink href="/lab">Lab notebook</TextLink>
+        <TextLink href="/uses">Tooling notes</TextLink>
+      </nav>
     </div>
   );
 }

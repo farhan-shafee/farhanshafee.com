@@ -47,6 +47,7 @@ const disciplines = [
 
 export default function HomePage() {
   const articles = getPublishedArticles().slice(0, 3);
+  const projects = getFeaturedProjects();
   return (
     <div className="home-shell">
       <JsonLd data={{ "@context": "https://schema.org", ...personSchema() }} />
@@ -72,6 +73,11 @@ export default function HomePage() {
             <TextLink href={siteConfig.github} external>
               GitHub
             </TextLink>
+            {siteConfig.linkedin && (
+              <TextLink href={siteConfig.linkedin} external>
+                LinkedIn
+              </TextLink>
+            )}
           </div>
         </div>
         <aside className="discipline-index" aria-label="Areas of work">
@@ -101,109 +107,54 @@ export default function HomePage() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">01 / Selected work</p>
-            <h2 id="selected-heading">
-              Security products, automation, and labs.
-            </h2>
+            <h2 id="selected-heading">Selected work.</h2>
           </div>
           <TextLink href="/work">All work</TextLink>
         </div>
-        <div className="project-grid">
-          {getFeaturedProjects().map((project, index) => (
-            <ProjectCard key={project.slug} project={project} index={index} />
+        <div className="selected-projects">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              index={index}
+              variant={
+                project.slug === "cyberbit-solutions"
+                  ? "primary"
+                  : project.kind === "lab"
+                    ? "supporting"
+                    : "secondary"
+              }
+            />
           ))}
         </div>
       </section>
-      <section
-        className="section exploration-section"
-        aria-labelledby="exploration-heading"
-      >
-        <div className="exploration-intro">
-          <p className="eyebrow">02 / In the lab</p>
-          <h2 id="exploration-heading">Questions behind the lab work.</h2>
+      <div className="home-notes">
+        <section aria-labelledby="writing-heading">
+          <p className="eyebrow">02 / Writing</p>
+          <h2 id="writing-heading">Notes from the work.</h2>
+          {articles.length ? (
+            <WritingList articles={articles} />
+          ) : (
+            <p className="home-note-copy">
+              Technical writing in progress. Security engineering, automation,
+              and financial systems, grounded in implementation.
+            </p>
+          )}
+          <div className="inline-links">
+            <TextLink href="/writing">Writing archive</TextLink>
+            <TextLink href="/rss.xml">RSS</TextLink>
+          </div>
+        </section>
+        <section aria-labelledby="exploration-heading">
+          <p className="eyebrow">03 / Engineering notebook</p>
+          <h2 id="exploration-heading">Questions under investigation.</h2>
           <p>
             Detection signals, infrastructure boundaries, and human review in
-            AI-assisted workflows.
+            AI-assisted workflows. Exploratory work, with scope kept explicit.
           </p>
           <TextLink href="/lab">Open the notebook</TextLink>
-        </div>
-        <div className="exploration-questions">
-          <Link href="/lab">
-            <span className="index-number">A</span>
-            <span>
-              Where can AI agents help security workflows—and where should a
-              person decide?
-            </span>
-            <ArrowIcon />
-          </Link>
-          <Link href="/lab">
-            <span className="index-number">B</span>
-            <span>
-              Which signals make detection more useful and security automation
-              more dependable?
-            </span>
-            <ArrowIcon />
-          </Link>
-          <Link href="/lab">
-            <span className="index-number">C</span>
-            <span>
-              What makes infrastructure secure enough to trust and simple enough
-              to maintain?
-            </span>
-            <ArrowIcon />
-          </Link>
-        </div>
-      </section>
-      <section
-        className="section latest-writing"
-        aria-labelledby="writing-heading"
-      >
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">03 / Writing</p>
-            <h2 id="writing-heading">Notes from the work.</h2>
-          </div>
-          <TextLink href="/writing">All writing</TextLink>
-        </div>
-        {articles.length ? (
-          <WritingList articles={articles} />
-        ) : (
-          <div className="home-writing-empty">
-            <div className="notebook-mark" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div>
-              <h3>Technical writing in progress.</h3>
-              <p>
-                Articles on security engineering, automation, and infrastructure
-                are being prepared for review.
-              </p>
-            </div>
-            <a className="text-link" href="/rss.xml">
-              Follow via RSS
-              <ArrowIcon />
-            </a>
-          </div>
-        )}
-      </section>
-      <section className="cyberbit-section" aria-labelledby="cyberbit-heading">
-        <div className="cyberbit-monogram" aria-hidden="true">
-          cb<span>.</span>
-        </div>
-        <div>
-          <p className="eyebrow">Cybersecurity tools & services</p>
-          <h2 id="cyberbit-heading">CyberBit Solutions.</h2>
-          <p>
-            I created CyberBit Solutions to develop cybersecurity tools
-            <br />
-            and services primarily for businesses.
-          </p>
-        </div>
-        <TextLink href={siteConfig.cyberbit} external>
-          Visit CyberBit Solutions
-        </TextLink>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }

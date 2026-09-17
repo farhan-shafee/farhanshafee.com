@@ -1,39 +1,70 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowIcon } from "@/components/ui";
 import type { Project } from "@/data/projects";
 
 export function ProjectCard({
   project,
   index = 0,
+  variant = "secondary",
+  headingLevel = 3,
 }: {
   project: Project;
   index?: number;
+  variant?: "primary" | "secondary" | "supporting";
+  headingLevel?: 2 | 3;
 }) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
+  const preview = variant === "primary" ? project.screenshots?.[0] : undefined;
+  const highlights =
+    variant === "primary" ? (project.technicalHighlights ?? []) : [];
+
   return (
-    <article className="project-card">
-      <div className="project-card-meta">
-        <span className="project-category">{project.category}</span>
-        <span className="project-number" aria-hidden="true">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+    <article
+      className={`project-entry project-entry--${variant}${preview ? " project-entry--with-preview" : ""}`}
+    >
+      <div className="project-entry-copy">
+        <div className="project-entry-heading">
+          <div className="project-entry-meta">
+            <span className="project-entry-number" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span>{project.category}</span>
+          </div>
+          <Heading
+            className="project-entry-title"
+            id={`project-${project.slug}`}
+          >
+            <Link href={`/work/${project.slug}`}>
+              <span>{project.title}</span>
+              <ArrowIcon diagonal />
+            </Link>
+          </Heading>
+          <span className="project-entry-status">{project.status}</span>
+        </div>
+        <div className="project-entry-summary">
+          <p>{project.description}</p>
+          {highlights.length > 0 && (
+            <ul className="project-entry-highlights">
+              {highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-      <h3 className="project-title" id={`project-${project.slug}`}>
-        <Link href={`/work/${project.slug}`}>{project.title}</Link>
-      </h3>
-      <p className="project-description">{project.description}</p>
-      {project.technologies.length > 0 && (
-        <ul className="project-tags" aria-label="Technologies">
-          {project.technologies.map((technology) => (
-            <li key={technology}>{technology}</li>
-          ))}
-        </ul>
+      {preview && (
+        <figure className="project-entry-preview">
+          <Image
+            src={preview.src}
+            alt={preview.alt}
+            width={preview.width}
+            height={preview.height}
+            sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) 52vw, 610px"
+          />
+          <figcaption>{preview.caption}</figcaption>
+        </figure>
       )}
-      <div className="project-footer">
-        <span className="status">{project.status}</span>
-        <span className="project-arrow" aria-hidden="true">
-          <ArrowIcon diagonal />
-        </span>
-      </div>
     </article>
   );
 }
