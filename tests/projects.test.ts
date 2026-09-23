@@ -88,7 +88,12 @@ test("Job Intelligence Engine retains its established URL and accurate public po
 });
 
 test("absent or whitespace-only content creates no empty case-study modules", () => {
-  const empty = { paragraphs: [" ", "\n"], bullets: [""] };
+  const empty = {
+    title: "A heading alone is not a section",
+    paragraphs: [" ", "\n"],
+    bullets: [""],
+    steps: [" ", "\n"],
+  };
   for (const project of [
     fixture(),
     fixture({
@@ -98,6 +103,8 @@ test("absent or whitespace-only content creates no empty case-study modules", ()
         system: empty,
         demoScenario: empty,
         detectionCorrelation: empty,
+        detectionRegression: empty,
+        evidenceExport: empty,
         aiGrounding: empty,
         validation: empty,
         architecture: empty,
@@ -123,7 +130,7 @@ test("absent or whitespace-only content creates no empty case-study modules", ()
       ],
     }),
   ]) {
-    assert.doesNotMatch(render(project), /<h2|<p>|<ul|<figure|<img|<a\s/);
+    assert.doesNotMatch(render(project), /<h2|<p>|<ul|<ol|<figure|<img|<a\s/);
   }
 });
 
@@ -135,6 +142,8 @@ test("reviewed prose, lists, evidence, and links render in the reusable case stu
       system: { bullets: ["A test component."] },
       demoScenario: { paragraphs: ["A test scenario."] },
       detectionCorrelation: { bullets: ["A test correlation boundary."] },
+      detectionRegression: { paragraphs: ["A test regression comparison."] },
+      evidenceExport: { paragraphs: ["A test integrity boundary."] },
       aiGrounding: { paragraphs: ["A test evidence boundary."] },
       validation: { paragraphs: ["A test validation record."] },
       architecture: { paragraphs: ["A test architecture."] },
@@ -165,6 +174,8 @@ test("reviewed prose, lists, evidence, and links render in the reusable case stu
     "System",
     "Demo scenario",
     "Detection &amp; correlation",
+    "Detection regression",
+    "Evidence export",
     "Evidence-grounded AI",
     "Validation",
     "Technical highlights",
@@ -207,6 +218,41 @@ test("reviewed prose, lists, evidence, and links render in the reusable case stu
   assert.match(websiteLink, /target="_blank"/);
   assert.match(html, /href="https:\/\/github.com\/example\/example"/);
   assert.match(html, /href="\/writing"/);
+});
+
+test("section titles preserve anchors and ordered workflow steps stay meaningful", () => {
+  const html = render(
+    fixture({
+      caseStudy: {
+        overview: { title: "  ", paragraphs: ["A reviewed overview."] },
+        system: {
+          title: "  Investigation <workflow>  ",
+          steps: [
+            "  Replay observations.  ",
+            " ",
+            "Inspect <evidence>.",
+            "Review findings.",
+          ],
+        },
+        evidenceExport: { title: "Title without content" },
+      },
+    }),
+  );
+  assert.match(html, /id="overview">Overview<\/h2>/);
+  assert.match(html, /id="system">Investigation &lt;workflow&gt;<\/h2>/);
+  const process = html.match(/<ol class="case-process"[^>]*>(.*?)<\/ol>/s);
+  assert.ok(process, "Ordered steps must retain native list semantics");
+  assert.deepEqual(
+    [...process[1].matchAll(/<li[^>]*>(.*?)<\/li>/gs)].map(([, item]) =>
+      item.replace(/<span[^>]*aria-hidden="true"[^>]*>.*?<\/span>/gs, ""),
+    ),
+    ["Replay observations.", "Inspect &lt;evidence&gt;.", "Review findings."],
+  );
+  assert.doesNotMatch(
+    html,
+    /<li>\s*<\/li>|<workflow>|<evidence>|Title without content/,
+  );
+  assert.doesNotMatch(html, /id="evidence-export"/);
 });
 
 test("an architecture diagram can provide evidence without filler prose", () => {
@@ -365,8 +411,9 @@ test("flagship inspection separates public evidence from local capabilities and 
     `${source}/blob/main/docs/architecture/SYSTEM.md`,
     `${source}/blob/main/docs/threat-model/THREAT_MODEL.md`,
     `${source}/tree/main/docs/adr`,
-    `${source}/blob/main/docs/evaluations/README.md`,
-    `${source}/actions/runs/35251887304`,
+    `${source}/blob/main/docs/evaluations/BENCHMARK.md`,
+    `${source}/blob/main/docs/V2_VALIDATION.md`,
+    `${source}/actions/runs/35893999624`,
     "/writing/building-an-evidence-grounded-ai-security-investigation-system",
   ])
     assert.ok(
@@ -375,6 +422,18 @@ test("flagship inspection separates public evidence from local capabilities and 
     );
   const modes = new Map(
     aegisgraph.inspection.facts.map(({ label, value }) => [label, value]),
+  );
+  assert.deepEqual(
+    [...modes.keys()],
+    [
+      "System",
+      "Investigation",
+      "Validation",
+      "AI boundary",
+      "Public demo",
+      "Local/interview mode",
+      "Hosting",
+    ],
   );
   assert.match(modes.get("Public demo") ?? "", /read-only/i);
   assert.match(modes.get("Public demo") ?? "", /deterministic/i);
@@ -461,7 +520,7 @@ test("engineering case studies contain reviewed content and architecture evidenc
     }
     if (slug === "aegisgraph") {
       assert.ok(project.screenshots);
-      assert.equal(project.screenshots.length, 4);
+      assert.equal(project.screenshots.length, 5);
       assert.ok(
         project.screenshots.every((image) =>
           image.src.startsWith("/projects/aegisgraph/"),
@@ -485,9 +544,11 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
   assert.ok(project?.caseStudy);
   const prose = (section: keyof NonNullable<Project["caseStudy"]>) => {
     const content = project.caseStudy?.[section];
-    return [...(content?.paragraphs ?? []), ...(content?.bullets ?? [])].join(
-      " ",
-    );
+    return [
+      ...(content?.paragraphs ?? []),
+      ...(content?.bullets ?? []),
+      ...(content?.steps ?? []),
+    ].join(" ");
   };
   assert.match(prose("overview"), /synthetic\/demo/i);
   assert.match(prose("overview"), /not a production SOC deployment/i);
@@ -527,6 +588,17 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
     prose("validation"),
     /146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases/i,
   );
+  assert.match(prose("validation"), /historical|V1/i);
+  for (const check of [
+    /670 backend/i,
+    /121 frontend/i,
+    /26 browser/i,
+    /20 local/i,
+    /(?:6|six) public/i,
+    /145/i,
+    /28/i,
+  ])
+    assert.match(prose("validation"), check);
   assert.match(
     prose("validation"),
     /coverage, not proof of production security/i,
@@ -541,27 +613,84 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
   );
 
   const screenshots = project.screenshots ?? [];
-  assert.equal(screenshots.length, 4);
+  assert.deepEqual(
+    screenshots.map(({ src }) => path.posix.basename(src)),
+    [
+      "v2-replay.png",
+      "v2-detection-regression.png",
+      "v2-hypotheses.png",
+      "v2-bundle-verification.png",
+      "v2-evaluations.png",
+    ],
+  );
   for (const screenshot of screenshots) {
+    assert.equal(screenshot.width, 1440);
+    assert.equal(screenshot.height, 1100);
     assert.match(screenshot.alt, /synthetic/i);
     assert.match(screenshot.caption, /synthetic/i);
   }
-  const answer = screenshots.find(({ src }) =>
-    src.endsWith("grounded-ai-answer.png"),
+  const bundle = screenshots.find(({ src }) =>
+    src.endsWith("v2-bundle-verification.png"),
   );
-  assert.ok(answer);
-  assert.match(answer.caption, /recorded local OpenAI/i);
-  assert.match(answer.caption, /validated findings.*citations/i);
-  assert.match(answer.caption, /hosted public demo.*deterministic/i);
+  assert.ok(bundle);
+  assert.match(bundle.caption, /unsigned/i);
+  assert.match(
+    bundle.caption,
+    /does not authenticate|not authenticity|not.*authentic/i,
+  );
   const evaluation = screenshots.find(({ src }) =>
-    src.endsWith("evaluation-dashboard.png"),
+    src.endsWith("v2-evaluations.png"),
   );
   assert.ok(evaluation);
-  assert.match(evaluation.caption, /deterministic.*not live-model accuracy/i);
+  assert.match(evaluation.caption, /deterministic/i);
+  assert.match(evaluation.caption, /not.*accuracy/i);
   assert.doesNotMatch(
     JSON.stringify(getPublicProjects()),
     /file:\/\/|[A-Za-z]:(?:\\\\|\/)(?:Users|Dev)(?:\\\\|\/)/i,
   );
+});
+
+test("AegisGraph V2 exposes the investigation workflow with separate review and integrity boundaries", () => {
+  const project = getPublicProjects().find(({ slug }) => slug === "aegisgraph");
+  assert.ok(project?.caseStudy);
+  const prose = (section: keyof NonNullable<Project["caseStudy"]>) => {
+    const content = project.caseStudy?.[section];
+    return [
+      ...(content?.paragraphs ?? []),
+      ...(content?.bullets ?? []),
+      ...(content?.steps ?? []),
+    ].join(" ");
+  };
+  assert.deepEqual(project.caseStudy.system?.steps, [
+    "Scenario",
+    "Telemetry",
+    "Normalization",
+    "Detection",
+    "Correlation",
+    "Incident",
+    "Evidence",
+    "Hypothesis",
+    "Bounded AI analysis",
+    "Analyst decision",
+    "Detection tuning",
+    "Replay",
+    "Regression validation",
+  ]);
+  assert.match(prose("demoScenario"), /eight|8/i);
+  assert.match(prose("demoScenario"), /4,098/);
+  assert.match(prose("detectionRegression"), /APP-002/);
+  for (const gate of [/PASS/, /WARN/, /BLOCK/])
+    assert.match(prose("detectionRegression"), gate);
+  assert.match(prose("detectionRegression"), /synthetic|fixture/i);
+  assert.match(prose("evidenceExport"), /SHA-256/);
+  assert.match(prose("evidenceExport"), /unsigned/i);
+  assert.match(prose("evidenceExport"), /replace/i);
+  assert.match(prose("evidenceExport"), /authentic/i);
+  assert.match(prose("evidenceExport"), /source (?:telemetry )?truth/i);
+  const html = render(project);
+  for (const id of ["system", "detection-regression", "evidence-export"])
+    assert.match(html, new RegExp(`aria-labelledby="${id}"`));
+  assert.match(html, /<ol class="case-process"[^>]*>/);
 });
 
 test("unverified labs retain their conservative scope", () => {
@@ -720,7 +849,7 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
       for (const { href } of project.inspection.links)
         assert.ok(html.includes(`href="${href}"`));
     } else assert.equal(inspectionPosition, -1);
-    assert.match(html, /id="overview">Overview<\/h2>/);
+    assert.match(html, /id="overview">[^<]+<\/h2>/);
     const imageCount =
       (project.screenshots?.length ?? 0) +
       (project.architectureDiagrams?.length ?? 0);

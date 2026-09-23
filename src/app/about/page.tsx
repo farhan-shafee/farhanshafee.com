@@ -71,7 +71,9 @@ export default function AboutPage() {
             <p>
               I keep observations, automated suggestions, and human decisions
               separate. In AegisGraph, deterministic detection and correlation
-              establish case evidence; server-side checks validate AI claims and
+              establish case evidence. Causal replay makes that sequence
+              visible, and rule comparisons show a proposed change across eight
+              synthetic scenarios. Server-side checks validate AI claims and
               citations. Its hosted demo is read-only and uses a deterministic
               provider; live OpenAI analysis was validated in the local
               workflow. The fintech data is synthetic. The case study and

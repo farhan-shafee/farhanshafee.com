@@ -261,6 +261,26 @@
 .case-section-text li + li {
   margin-top: 0.65em;
 }
+.case-process {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 0;
+  margin: 0 0 22px;
+  list-style: none;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.8;
+}
+.case-process li {
+  display: flex;
+  gap: 10px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.case-process span {
+  color: var(--muted);
+}
 .case-section--overview .case-section-text {
   color: var(--ink);
   font-size: 20px;

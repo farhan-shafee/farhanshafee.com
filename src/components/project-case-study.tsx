@@ -107,6 +107,16 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       content: study?.aiGrounding,
     },
     {
+      id: "detection-regression",
+      title: "Detection regression",
+      content: study?.detectionRegression,
+    },
+    {
+      id: "evidence-export",
+      title: "Evidence export",
+      content: study?.evidenceExport,
+    },
+    {
       id: "engineering-decisions",
       title: "Engineering decisions",
       content: study?.engineeringDecisions,
@@ -145,9 +155,22 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
     ({ id, title, content, images }) => {
       const paragraphs = nonEmpty(content?.paragraphs);
       const bullets = nonEmpty(content?.bullets);
+      const steps = nonEmpty(content?.steps);
       const assets = renderableImages(images);
-      return paragraphs.length || bullets.length || assets.length
-        ? [{ id, title, paragraphs, bullets, assets }]
+      return paragraphs.length ||
+        bullets.length ||
+        steps.length ||
+        assets.length
+        ? [
+            {
+              id,
+              title: content?.title?.trim() || title,
+              paragraphs,
+              bullets,
+              steps,
+              assets,
+            },
+          ]
         : [];
     },
   );
@@ -155,7 +178,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
   return (
     <div className="case-study-content">
       {populatedSections.map(
-        ({ id, title, paragraphs, bullets, assets }, index) => (
+        ({ id, title, paragraphs, bullets, steps, assets }, index) => (
           <section
             className={`case-section case-section--${id}`}
             aria-labelledby={id}
@@ -170,6 +193,20 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
             <div
               className={`case-section-body${id === "architecture" && assets.length > 0 && (paragraphs.length > 0 || bullets.length > 0) ? " case-section-body--with-diagrams" : ""}`}
             >
+              {steps.length > 0 && (
+                <ol
+                  className="case-process"
+                  role="list"
+                  aria-label={`${title} sequence`}
+                >
+                  {steps.map((step, stepIndex) => (
+                    <li key={`${stepIndex}-${step}`}>
+                      {stepIndex > 0 && <span aria-hidden="true">→</span>}
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+              )}
               {(paragraphs.length > 0 || bullets.length > 0) && (
                 <div className="case-section-text">
                   {paragraphs.map((paragraph) => (

@@ -41,7 +41,7 @@ const engineeringCaseSlugs = [
 ];
 const aegisgraphRoute = "/work/aegisgraph";
 const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
-const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35251887304`;
+const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35893999624`;
 const aegisgraphDemo = "https://aegisgraph.farhan-shafee.com";
 const aegisgraphArticleRoute =
   "/writing/building-an-evidence-grounded-ai-security-investigation-system";
@@ -483,6 +483,91 @@ test("keyboard navigation, persisted theme, and mobile links work", async ({
   );
 });
 
+for (const theme of ["light", "dark"] as const) {
+  test(`AegisGraph V2 supports visible keyboard focus, reduced motion, and zoom-equivalent reflow in ${theme} theme`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+    await page.goto(aegisgraphRoute);
+    await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const workflow = page.locator('[aria-labelledby="system"] ol.case-process');
+    await expect(workflow).toBeVisible();
+    await expect(workflow.getByRole("listitem")).toHaveCount(13);
+    for (const id of ["detection-regression", "evidence-export"])
+      await expect(page.locator(`[aria-labelledby="${id}"]`)).toBeVisible();
+    await expectImages(page, imagesForRoute(aegisgraphRoute));
+
+    // Keyboard modality makes :focus-visible observable even when starting a
+    // long page's evidence-link sequence without tabbing through the header.
+    await page.keyboard.press("Tab");
+    const links = page
+      .getByRole("region", { name: "Inspect the system", exact: true })
+      .locator(".evidence-links a");
+    await links.first().focus();
+    for (let index = 0; index < (await links.count()); index++) {
+      const link = links.nth(index);
+      await expect(link).toBeFocused();
+      const outline = await link.evaluate((node) => {
+        const style = getComputedStyle(node);
+        return {
+          visible: node.matches(":focus-visible"),
+          width: parseFloat(style.outlineWidth),
+          style: style.outlineStyle,
+          color: style.outlineColor,
+        };
+      });
+      expect(outline.visible).toBe(true);
+      expect(outline.width).toBeGreaterThanOrEqual(2);
+      expect(outline.style).not.toBe("none");
+      expect(outline.color).not.toBe("rgba(0, 0, 0, 0)");
+      if (index + 1 < (await links.count())) await page.keyboard.press("Tab");
+    }
+    const motion = await page.evaluate(() => ({
+      reduced: matchMedia("(prefers-reduced-motion: reduce)").matches,
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+      durations: [...document.querySelectorAll("a, button")].flatMap((node) => {
+        const style = getComputedStyle(node);
+        return [style.animationDuration, style.transitionDuration].flatMap(
+          (value) => value.split(",").map((duration) => parseFloat(duration)),
+        );
+      }),
+    }));
+    expect(motion.reduced).toBe(true);
+    expect(motion.scrollBehavior).toBe("auto");
+    expect(Math.max(...motion.durations)).toBeLessThanOrEqual(0.00002);
+
+    // These CSS viewports reproduce the available layout space at 200% and
+    // 400% desktop zoom. They test reflow, not browser-chrome zoom behavior.
+    for (const { zoom, width, height } of [
+      { zoom: 200, width: 640, height: 512 },
+      { zoom: 400, width: 320, height: 256 },
+    ]) {
+      await page.setViewportSize({ width, height });
+      await expect(workflow).toBeVisible();
+      for (const region of [workflow, links, page.locator("main figure")])
+        for (const element of await region.all()) {
+          await element.scrollIntoViewIfNeeded();
+          const bounds = await element.boundingBox();
+          expect(bounds).not.toBeNull();
+          expect(bounds!.x).toBeGreaterThanOrEqual(0);
+          expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width + 1);
+        }
+      const dimensions = await page.evaluate(() => ({
+        document: document.documentElement.scrollWidth,
+        viewport: innerWidth,
+      }));
+      expect(
+        dimensions.document,
+        `${zoom}% equivalent reflow`,
+      ).toBeLessThanOrEqual(dimensions.viewport);
+      await page.screenshot({
+        path: `.artifacts/aegisgraph-reflow-${zoom}-${theme}.png`,
+        fullPage: true,
+      });
+    }
+  });
+}
+
 test("metadata, internal links, security headers and feeds are valid", async ({
   page,
   request,
@@ -810,6 +895,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         aegisgraphRepository,
         aegisgraphDemo,
         aegisgraphCiRun,
+        `${aegisgraphRepository}/blob/main/docs/evaluations/BENCHMARK.md`,
+        `${aegisgraphRepository}/blob/main/docs/V2_VALIDATION.md`,
         aegisgraphArticleRoute,
       ])
         await expectEvidenceLink(inspection.locator(`a[href="${href}"]`), href);
@@ -836,15 +923,13 @@ test("metadata, internal links, security headers and feeds are valid", async ({
           "content",
           "AegisGraph | Farhan Shafee",
         );
-      await expect(
-        page.getByRole("heading", {
-          name: "Evidence-grounded AI",
-          exact: true,
-        }),
-      ).toBeVisible();
-      await expect(
-        page.getByRole("heading", { name: "Validation", exact: true }),
-      ).toBeVisible();
+      for (const id of [
+        "ai-grounding",
+        "validation",
+        "detection-regression",
+        "evidence-export",
+      ])
+        await expect(page.locator(`h2#${id}`)).toBeVisible();
     }
     if (route === jobEngineRoute) {
       expect(response?.status()).toBe(200);

@@ -12,8 +12,10 @@ export type ProjectStatus = (typeof projectStatuses)[number];
 
 /** Reviewed prose only. Unanswered research prompts belong in project-evidence.ts. */
 export type CaseStudySection = {
+  title?: string;
   paragraphs?: string[];
   bullets?: string[];
+  steps?: string[];
 };
 
 export type ProjectCaseStudy = {
@@ -25,6 +27,8 @@ export type ProjectCaseStudy = {
   detectionCorrelation?: CaseStudySection;
   whatIBuilt?: CaseStudySection;
   aiGrounding?: CaseStudySection;
+  detectionRegression?: CaseStudySection;
+  evidenceExport?: CaseStudySection;
   engineeringDecisions?: CaseStudySection;
   securityPrivacy?: CaseStudySection;
   validation?: CaseStudySection;
@@ -90,10 +94,10 @@ export const projects: Project[] = [
     category: "Security engineering / AI systems",
     kind: "personal",
     description:
-      "A security investigation platform for synthetic fintech telemetry, connecting deterministic detection and correlation with bounded AI analysis and validated evidence citations.",
+      "A security investigation engineering platform for synthetic fintech telemetry: scenario replay, evidence-grounded AI, hypothesis tracking, and detection regression.",
     inspection: {
       summary:
-        "A synthetic fintech investigation environment, not a production SOC deployment. Explore the read-only demo or inspect the implementation and its evidence.",
+        "V2 is live as a read-only, deterministic synthetic fintech investigation environment. Inspect the workflow and its boundaries; this is not a production SOC deployment.",
       links: [
         {
           label: "Live demo",
@@ -119,11 +123,15 @@ export const projects: Project[] = [
         },
         {
           label: "Evaluations",
-          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/evaluations/README.md",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/evaluations/BENCHMARK.md",
+        },
+        {
+          label: "V2 validation",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/V2_VALIDATION.md",
         },
         {
           label: "CI",
-          href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/35251887304",
+          href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/35893999624",
         },
         {
           label: "Engineering article",
@@ -138,19 +146,29 @@ export const projects: Project[] = [
             "Next.js / TypeScript, FastAPI, PostgreSQL, SQLAlchemy, and Alembic.",
         },
         {
-          label: "Security flow",
+          label: "Investigation",
           value:
-            "Synthetic telemetry → normalization → detection → correlation → incident evidence → bounded AI → validation → analyst review.",
+            "Eight synthetic scenarios, causal replay, deterministic detections and correlation, evidence timeline, and hypothesis ledger.",
+        },
+        {
+          label: "Validation",
+          value:
+            "Full-corpus rule comparison, regression gates, deterministic analyst benchmark, and SHA-256 export verification.",
+        },
+        {
+          label: "AI boundary",
+          value:
+            "Bounded evidence, typed claims, exact-context citations, support predicates, and explicit insufficient evidence.",
         },
         {
           label: "Public demo",
           value:
-            "Read-only, with two deterministic questions. No live OpenAI calls or saved answers.",
+            "Read-only replay and fixed comparisons; two deterministic analyst questions. No live OpenAI calls, spend, or saved reviews.",
         },
         {
           label: "Local/interview mode",
           value:
-            "Analyst annotations, findings, report review, and optional OpenAI analysis.",
+            "Saved rule and hypothesis reviews, case workflow, and optional OpenAI analysis. Persistent decisions remain human-controlled.",
         },
         {
           label: "Hosting",
@@ -161,82 +179,112 @@ export const projects: Project[] = [
     caseStudy: {
       overview: {
         paragraphs: [
-          "I built AegisGraph to make a security investigation inspectable from its source observations to an analyst's decision. It is a synthetic/demo environment for a simulated fintech system, not a production SOC deployment.",
+          "I built AegisGraph to make the path from a security observation to an analyst decision inspectable. V1 established one deep Atlas investigation; V2 tests the reasoning against a wider synthetic corpus and connects it to replay, hypothesis review, detection tuning, and evidence export. It remains a synthetic/demo environment, not a production SOC deployment.",
         ],
       },
       problem: {
         paragraphs: [
-          "A suspicious login, role change, or resource request can mean little in isolation. Combining them requires an explainable evidence scope. Adding a language model introduces another problem: a plausible answer with a real citation can still assert something that the cited event does not support.",
+          "A suspicious login, role change, or resource request can mean little in isolation. A plausible model answer can misuse a real citation, and a threshold change can suppress a useful signal along with a benign one. I wanted to expose both the evidence behind an interpretation and the consequences of changing the rules.",
         ],
       },
       system: {
+        title: "Investigation loop",
+        steps: [
+          "Scenario",
+          "Telemetry",
+          "Normalization",
+          "Detection",
+          "Correlation",
+          "Incident",
+          "Evidence",
+          "Hypothesis",
+          "Bounded AI analysis",
+          "Analyst decision",
+          "Detection tuning",
+          "Replay",
+          "Regression validation",
+        ],
         paragraphs: [
-          "The investigation follows one explicit path: synthetic fintech telemetry → normalization → detection → correlation → incident → evidence → bounded AI analysis → schema validation → citation and claim-support validation → analyst review.",
-          "Source observations and persisted case records remain authoritative. The provider proposes structured findings; in local/interview mode, human actions control annotations, workflow changes, finding approval, and report review. The hosted public demo makes the synthetic investigation available read-only.",
+          "This is an investigation and review loop, not an autonomous pipeline. Schema, citation, and claim-support checks sit between AI proposals and rendered findings. Human review remains separate from automated evidence assessment; saving decisions and approving rule revisions belong to local mode.",
         ],
       },
       demoScenario: {
+        title: "Scenario corpus",
         paragraphs: [
-          "The Atlas Trading Platform scenario follows an engineer account from familiar activity to unfamiliar authentication, successful MFA, a privileged role assignment, internal API enumeration, sensitive resource access, abnormal access volume, another unusual session, and privilege reversion.",
-          "The fixed dataset contains 4,026 synthetic events: 4,000 baseline observations and 26 scenario observations. The sequence supports an investigation hypothesis; it does not establish who operated the account, malware execution, external exfiltration, or financial loss.",
+          "Eight versioned scenarios contain 4,098 synthetic events. The original Atlas case retains 4,026 events, ten alerts, and 26 evidence items. Additional scenarios include authentication pressure, service-principal access, approved administration, bulk automation, an isolated anomaly, and conflicting context. They provide known conditions for testing both useful signals and uncertainty.",
+          "Atlas follows unfamiliar authentication, MFA acceptance, privilege assignment, API enumeration, sensitive-resource access, abnormal volume, related anomalous activity, and privilege reversion. The sequence does not establish who operated the account, a malware family, exfiltration, or financial loss. Synthetic ground truth and evaluation-only expectations stay separate from analyst-visible observations; an answer key never becomes model evidence.",
         ],
       },
       architecture: {
         paragraphs: [
-          "A Next.js/TypeScript workspace uses a FastAPI backend with Pydantic validation. SQLAlchemy and Alembic manage persistence and schema changes in PostgreSQL. The public demo requires PostgreSQL; SQLite supports lightweight local demonstrations and isolated tests.",
-          "Four adapters normalize identity, API gateway, endpoint, and Atlas application telemetry into one canonical event model: timestamp, source, event type, action, outcome, actor, target, network, device, session, bounded attributes, and a synthetic source reference. A seeded generator makes the dataset reproducible.",
+          "One Next.js/TypeScript frontend connects to FastAPI, with Pydantic validation, SQLAlchemy, Alembic, and PostgreSQL. The hosted path is Vercel → Railway FastAPI → Railway PostgreSQL; SQLite supports lightweight local runs and tests. Only the canonical Atlas case is persisted. Other scenario projections remain ephemeral, including those that form an incident during replay.",
+          "Four adapters normalize identity, API gateway, endpoint, and Atlas application telemetry into a canonical event model with timestamps, actors, targets, outcomes, network/device/session context, bounded attributes, and synthetic source references. The workspace connects source records, a timeline, and relational entity links. Local annotations, findings, workflow, and report approvals remain separate from source observations.",
         ],
       },
       detectionCorrelation: {
+        title: "Replay, detection & correlation",
         paragraphs: [
-          "Ten inspectable rules emit alerts with source-event references. Detection and correlation are separate: an incident requires at least three distinct rules across at least two rule families for one principal within a 30-minute window anchored at the first alert.",
-          "The default case contains ten alerts from nine distinct rules across five families over 22 minutes. Its explanation exposes those actual grouping facts. Device, session, and IP relationships support investigation; they are not additional correlation predicates. These are synthetic policy examples, not calibrated production detectors.",
+          "The API computes bounded causal frames from arrived observations; the browser cursor controls which frame is visible. Atlas initializes 4,000 background observations before playing the 26 investigation observations. Start, pause, step, and replay speed expose when signals emerge. Source-time gaps are compressed and disclosed. This is finite telemetry replay, not production streaming ingestion.",
+          "Ten rules emit source-cited alerts. Correlation separately requires three distinct rules across two families for one principal within 30 minutes of the first alert. A scenario below that threshold stays an observation scope. Replay creates no stored case, workflow record, or per-visitor server session; opening the canonical Atlas case returns to its preserved investigation.",
         ],
       },
       whatIBuilt: {
-        bullets: [
-          "Event and alert explorers, a chronological incident timeline, source-evidence inspection, and an entity graph derived from relational associations.",
-          "Separate evidence annotations, analyst notes, cited findings, incident workflow, and audit history, without rewriting source observations.",
-          "Deterministic template reports with explicit human approval. Later case changes mark a report stale, clear approval, and require regeneration and review.",
+        title: "Hypothesis ledger",
+        paragraphs: [
+          "The ledger separates observation, supported claim, and working hypothesis. Four fixed hypothesis types expose supporting citations, narrow counterevidence, typed missing evidence, and evidence-derived status. Conditional guidance identifies what would help confirm or reject an interpretation without inventing a future observation.",
+          "Human acceptance is a separate review: accepting a partially supported hypothesis does not make its evidence conclusive. Changed context makes a prior local review stale. The ledger can inspect richer approval/job counterevidence than the narrower analyst projection; it does not give the model authority to accept a hypothesis or mutate a case.",
         ],
       },
       aiGrounding: {
         paragraphs: [
-          "A provider interface supports credential-free deterministic testing and optional OpenAI analysis in local/interview mode. Both use the same validation boundary. The public demo forces the deterministic provider for two curated questions and does not persist answers. Application retrieval selects the earliest 50 incident evidence rows in event-time order; a separate boundary limits projected context and excludes analyst-marked benign observations.",
+          "A provider interface supports credential-free deterministic testing and optional OpenAI analysis in local/interview mode. Both use the same validation boundary. The public demo forces deterministic analysis for two curated questions without persisted answers or OpenAI spend. The application selects bounded, allowlisted evidence; evaluator expectations and untrusted free text are excluded.",
           "The provider selects typed claim candidates and exact evidence references, rather than writing unrestricted factual prose. Server-side checks enforce the output schema, evidence existence, incident membership, inclusion in the actual bounded context, and support for the proposed claim. Fixed templates render accepted findings and their cited summary. One invalid claim rejects the entire answer, including any otherwise valid subset.",
-          "In recorded local live OpenAI validation, “What most likely happened?” returned ten supported findings with 13 citation references from 26 supplied evidence rows. “What malware family was used?” produced insufficient evidence and no invented malware attribution. The provider has no database connection, retrieval tools, or incident-mutation authority.",
+          "In historical V1 local live OpenAI validation, “What most likely happened?” returned ten supported findings with 13 citation references from 26 supplied evidence rows. “What malware family was used?” produced insufficient evidence and no invented malware attribution. These are recorded provider observations, not new V2 live-model trials. The provider has no database connection, retrieval tools, or incident-mutation authority.",
+        ],
+      },
+      detectionRegression: {
+        paragraphs: [
+          "Eight of the ten rule definitions expose bounded typed parameters. The local workbench saves append-only proposals, full-corpus comparisons, and explicit reviews. Approval independently recomputes the comparison and rejects a stale baseline. Approved revisions affect future replay projections without rewriting historical Atlas alerts or evidence.",
+          "For APP-002, raising the threshold from 1,000 to 1,500 records removes the benign reconciliation signal while retaining the required Atlas and service-access signals: PASS. A 1,100-record comparison leaves fixture outcomes unchanged: WARN. At 2,200, a required service signal and its correlated incident disappear: BLOCK. A blocking change cannot be approved; a warning requires deliberate review. Public visitors inspect these three fixed comparisons without saving or approving changes.",
+          "These are synthetic fixture measurements, not production precision or recall. TP/FN count two required scenarios; FP/TN count two explicitly benign scenarios. Four other scenarios still participate in full-rule and correlation gates. The workbench exposes those populations and before/after outcomes instead of reducing them to one flattering accuracy score.",
+        ],
+      },
+      evidenceExport: {
+        paragraphs: [
+          "A hash-verifiable investigation export captures a bounded, consistent committed snapshot as exact UTF-8 logical files in a JSON container with a SHA-256 manifest. Browser and offline verification check membership, lengths, and hashes without extracting paths. Public exports omit human workflow material.",
+          "VALID means agreement with the supplied manifest; changing a file without updating it is detected. The manifest is unsigned and replaceable, so replacing both content and hashes defeats any authenticity inference. Verification does not establish source telemetry truth, cryptographic source provenance, privileged database integrity, or legal/forensic chain-of-custody compliance.",
         ],
       },
       engineeringDecisions: {
         bullets: [
-          "Use PostgreSQL for event queries, evidence joins, and transactional case changes. Add a search system only when measured workload needs justify it.",
-          "Build the case graph from relational evidence associations instead of introducing a separate graph database for a bounded investigation view.",
-          "Construct incidents deterministically before invoking a model, so grouping logic and detection rules can be inspected and tested independently.",
-          "Keep the claim vocabulary deliberately narrow. Exact support checks are auditable, while citation existence alone would allow unsupported prose to appear credible.",
+          "Retain one relational store for evidence joins and transactional reviews. Neither Elasticsearch nor a graph database is justified by the measured fixture workload.",
+          "Use bounded JSON replay frames and a browser cursor; a finite demonstration does not require Kafka, WebSockets, or a distributed replay service.",
+          "Separate detection, incident correlation, hypothesis support, and human approval so each decision can be inspected and tested independently.",
+          "Constrain rule proposals and model claims to explicit types. Arbitrary code editing and unrestricted factual prose would need different validation boundaries.",
         ],
       },
       securityPrivacy: {
         paragraphs: [
-          "Telemetry is untrusted data. In a tested telemetry-injection fixture, free text was excluded before the live model call; accepted output remained evidence-grounded and case state stayed unchanged. This validates that fixture's projection and output boundaries, not universal prompt-injection resistance.",
-          "Local boundary checks rejected foreign-case input, nonexistent citations, cross-incident citations, and current-case citations omitted from bounded context. Case scoping is separate from user authorization: local/interview mode uses one fixed analyst, and the public demo denies persistent API writes. Database triggers reject ordinary event and audit edits or deletes, but a privileged database owner can remove those protections.",
+          "Telemetry is untrusted data. In the historical tested telemetry-injection fixture, free text was excluded before the live model call; accepted output remained evidence-grounded and case state stayed unchanged. This validates that fixture's projection and output boundaries, not universal prompt-injection resistance. V2's deterministic benchmark adds named containment and counterevidence obligations without claiming general model safety.",
+          "Boundary checks reject foreign-case input, nonexistent citations, cross-incident citations, and current-case citations omitted from bounded context. Public mode denies persistent writes. Local actor labels are not authenticated identities; case scoping is not tenant authorization. Database triggers reject ordinary event and audit edits, but a privileged owner can remove those protections. Replay, comparison, and export work is bounded; caches and abuse controls remain process-local.",
         ],
       },
       validation: {
         paragraphs: [
-          "The September 17, 2026 UTC public release review at revision c95afa6 records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases passing, alongside PostgreSQL/SQLite checks and a production build. Dependency audits reported no known vulnerabilities at that time. These describe historical validation coverage, not proof of production security.",
-          "Live-provider results are recorded separately: three named scenarios eventually passed across six harness requests, with three earlier HTTP 429 failures retained. Two additional browser requests succeeded. This small sample verifies specific behavior; broader repeated live-model evaluation remains necessary.",
-          "The inspection links expose the architecture, threat model, decisions, evaluations, and CI. The linked September 17, 2026 UTC CI run at revision 1670ca4 passed backend, frontend, and browser validation, including PostgreSQL public initialization and the public production-build workflow. It used deterministic providers without live-model calls.",
+          "The September 23, 2026 V2 record reports 670 backend tests, 121 frontend tests, and 26 browser tests: 20 local plus six public-mode HTTPS checks. The original 28 deterministic evaluations and 145 V2 benchmark obligations are separate suites. The benchmark's eight metric populations overlap; these are application-boundary checks, not live-model accuracy samples. This is validation coverage, not proof of production security.",
+          "The linked CI run passed backend, frontend, and browser jobs for final source revision 23edc847, a documentation-only follow-up to application release 559e3ad. It includes PostgreSQL clean/populated migration checks, dependency audits, and a production build. Hosted smoke evidence separately records V2 routes, deterministic answers, bundle verification, denied writes, and unchanged canonical API state across a main run and continuation.",
+          "Historical V1 evidence remains dated: the September 17 release review at c95afa6 records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases. Its live OpenAI record retains three earlier HTTP 429 failures as well as successful scenarios. Neither V2's deterministic benchmark nor its public hosted checks extend that small live-provider sample.",
         ],
       },
       lessonsConstraints: {
         paragraphs: [
-          "Bounded evidence can omit relevant observations, and a supported finding can still be incomplete. Typed telemetry is not proof that a source is truthful. The narrow claim language trades open-ended narrative for inspectable support; human review remains necessary.",
-          "Production work includes authenticated identities, case and tenant authorization, multi-tenancy, authenticated streaming-scale ingestion, broader repeated live-model evaluation, and stronger independently retained evidence and audit protections. The synchronous system now has a hosted read-only demo alongside its local/interview workflow. Neither is a production SOC deployment or an autonomous response system.",
+          "Synthetic ground truth is useful for repeatability, not evidence of real-world detection effectiveness. Bounded context and finite claim predicates can omit useful observations or interpretations. Supported findings can still be incomplete, and matching export hashes do not establish source truth. Human review and honest insufficiency remain necessary.",
+          "Production work includes authenticated identities, case and tenant authorization, multi-tenancy, authenticated streaming-scale ingestion, multi-instance rule rollout, broader repeated live-model evaluation, and stronger independently retained evidence and audit protections. The hosted V2 demo and local review workflow are implemented; production ingestion, access control, retention, and operating-scale measurements are not.",
         ],
       },
     },
     technicalHighlights: [
-      "The model is not the system of record: the application validates evidence citations and claim support before factual findings render.",
+      "The model is not the system of record. Typed claims require validated evidence; persistent review decisions remain human-controlled.",
     ],
     technologies: [
       "Next.js",
@@ -253,41 +301,63 @@ export const projects: Project[] = [
     ],
     screenshots: [
       {
-        src: "/projects/aegisgraph/incident-workspace.png",
-        alt: "AegisGraph's synthetic Atlas incident workspace showing correlation rationale, an event timeline, and the Evidence Analyst panel.",
-        width: 1600,
-        height: 1050,
+        src: "/projects/aegisgraph/v2-replay.png",
+        alt: "AegisGraph V2 synthetic Atlas replay paused with three alerts, the first correlated incident, and causal processing stages.",
+        width: 1440,
+        height: 1100,
         caption:
-          "Synthetic Atlas incident workspace: correlation rationale and chronology connect the case to its evidence.",
+          "Synthetic Atlas replay connects observations to alerts and correlation, with compressed source-time gaps disclosed. Recorded in the September 23 public-mode rehearsal.",
       },
       {
-        src: "/projects/aegisgraph/grounded-ai-answer.png",
-        alt: "AegisGraph Evidence Analyst displaying an OpenAI answer with structured findings and evidence citations for the synthetic Atlas incident.",
-        width: 1600,
-        height: 1050,
+        src: "/projects/aegisgraph/v2-detection-regression.png",
+        alt: "AegisGraph APP-002 threshold comparison from 1,000 to 1,500 records with a PASS gate and before-and-after synthetic scenario measurements.",
+        width: 1440,
+        height: 1100,
         caption:
-          "Recorded local OpenAI validation on the synthetic case, with validated findings and citations. The hosted public demo uses deterministic answers instead.",
+          "The computed APP-002 comparison exposes a parameter change, scenario outcomes, and a PASS gate. Synthetic fixture populations are shown; this is not production detection accuracy.",
       },
       {
-        src: "/projects/aegisgraph/entity-relationships.png",
-        alt: "AegisGraph entity graph and evidence-backed relationships connecting synthetic users, devices, sessions, IP addresses, and resources.",
-        width: 1600,
-        height: 1050,
+        src: "/projects/aegisgraph/v2-hypotheses.png",
+        alt: "AegisGraph synthetic Atlas hypothesis ledger showing supporting citations, partial support, investigation gaps, and separate human review.",
+        width: 1440,
+        height: 1100,
         caption:
-          "Synthetic entity relationships derived from incident evidence, with supporting observations available for inspection.",
+          "Synthetic-case support, citations, and missing evidence remain distinct from human acceptance. A working hypothesis is not automatically a confirmed conclusion.",
       },
       {
-        src: "/projects/aegisgraph/evaluation-dashboard.png",
-        alt: "AegisGraph evaluation dashboard showing executed deterministic application-boundary checks on synthetic fixtures.",
-        width: 1600,
-        height: 1050,
+        src: "/projects/aegisgraph/v2-bundle-verification.png",
+        alt: "AegisGraph synthetic investigation export showing VALID, 35 declared files checked, and an unsigned SHA-256 manifest.",
+        width: 1440,
+        height: 1100,
         caption:
-          "Executed deterministic evaluations on synthetic fixtures. These test application boundaries, not live-model accuracy or universal injection resistance.",
+          "The synthetic investigation bundle matches its supplied hashes. VALID does not authenticate the source: the manifest is unsigned and replaceable.",
+      },
+      {
+        src: "/projects/aegisgraph/v2-evaluations.png",
+        alt: "AegisGraph deterministic benchmark showing 145 passed synthetic obligations and named metric populations.",
+        width: 1440,
+        height: 1100,
+        caption:
+          "Named deterministic obligations show expected and observed behavior on synthetic fixtures. These are application checks, not live-model accuracy measurements.",
       },
     ],
     website: "https://aegisgraph.farhan-shafee.com",
     github: "https://github.com/farhan-shafee/aegisgraph",
-    links: [{ label: "Discuss this project", href: "/contact" }],
+    links: [
+      {
+        label: "Replay Atlas",
+        href: "https://aegisgraph.farhan-shafee.com/replay?scenario=atlas-compromise",
+      },
+      {
+        label: "Inspect APP-002",
+        href: "https://aegisgraph.farhan-shafee.com/detections/APP-002",
+      },
+      {
+        label: "Seven-minute walkthrough",
+        href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md",
+      },
+      { label: "Discuss this project", href: "/contact" },
+    ],
     featured: true,
     visibility: "public",
   },

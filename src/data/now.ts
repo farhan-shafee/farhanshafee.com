@@ -8,11 +8,11 @@ type NowSection = {
 
 /** Update this date only when the content is reviewed; do not use build time. */
 export const now: { updated: string; sections: NowSection[] } = {
-  updated: "2026-09-17",
+  updated: "2026-09-23",
   sections: [
     {
       title: "Building",
-      text: "AegisGraph now has a hosted read-only demo with synthetic fintech data and a deterministic analyst. CyberBit remains my business product work: public checks, human-reviewed reports, and a separate paid Brief.",
+      text: "AegisGraph V2 is built and live: replay across eight synthetic scenarios, evidence-derived hypotheses, fixed public rule comparisons, and hash-verifiable exports. Its public demo stays read-only and deterministic. CyberBit remains my business product work: public checks, human-reviewed reports, and a separate paid Brief.",
       links: [
         { label: "AegisGraph case study", href: "/work/aegisgraph" },
         {
@@ -24,7 +24,7 @@ export const now: { updated: string; sections: NowSection[] } = {
     },
     {
       title: "Studying",
-      text: "The tradeoffs documented in my AegisGraph article: deterministic incident scope, evidence support, storage choices, and what production would require.",
+      text: "How hypothesis gaps and full-corpus rule comparisons make investigation decisions easier to review. My original AegisGraph article records the V1 design; the current case study covers the expanded workflow.",
       links: [
         {
           label: "Read the engineering decisions",
@@ -34,7 +34,7 @@ export const now: { updated: string; sections: NowSection[] } = {
     },
     {
       title: "Investigating",
-      text: "How to evaluate security automation beyond one synthetic scenario while keeping case decisions under human control. Broader live-model evaluation, production authorization, and stronger audit protections remain open work.",
+      text: "How named synthetic obligations can inform broader evaluation while keeping case decisions under human control. Repeated live-model trials, authenticated case access, tenant isolation, and independent evidence retention remain open work.",
       links: [{ label: "Questions in the lab", href: "/lab" }],
     },
   ],
