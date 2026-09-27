@@ -163,6 +163,12 @@ export default function HomePage() {
             />
           ))}
         </div>
+        <div className="inline-links">
+          <TextLink href="/work#security-engineering">
+            Security engineering: application, detection, remediation &amp;
+            cloud
+          </TextLink>
+        </div>
       </section>
       <div className="home-notes">
         <section aria-labelledby="writing-heading">

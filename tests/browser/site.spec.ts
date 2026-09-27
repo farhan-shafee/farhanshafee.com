@@ -41,7 +41,7 @@ const engineeringCaseSlugs = [
 ];
 const aegisgraphRoute = "/work/aegisgraph";
 const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
-const aegisgraphCiRun = `${aegisgraphRepository}/actions/runs/35893999624`;
+const aegisgraphCiWorkflow = `${aegisgraphRepository}/actions/workflows/ci.yml`;
 const aegisgraphDemo = "https://aegisgraph.farhan-shafee.com";
 const aegisgraphArticleRoute =
   "/writing/building-an-evidence-grounded-ai-security-investigation-system";
@@ -53,8 +53,11 @@ const oldOrigin = /https?:\/\/(?:www\.)?farhanshafee\.com\b/i;
 const projectOrder = [
   "AegisGraph",
   "CyberBit Solutions",
+  "SecurePay / DevSecOps Pipeline",
+  "Detection Engineering Lab",
+  "Vulnerability Management",
+  "Cloud Security",
   jobEngineTitle,
-  "Detection & Security Engineering Lab",
   "Secure Infrastructure & Homelab",
 ];
 
@@ -797,15 +800,26 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         headings
           .map((heading) => heading.trim())
           .filter((heading) => projectOrder.includes(heading)),
-        `${route} presents AegisGraph, CyberBit, Job Engine, then the two labs`,
-      ).toEqual(projectOrder);
-      await expect(
-        page.getByRole("heading", { name: jobEngineTitle, exact: true }),
-      ).toBeVisible();
-      await expect(
-        page.getByRole("link", { name: jobEngineTitle, exact: true }),
-      ).toHaveAttribute("href", jobEngineRoute);
-      for (const project of publicProjects) {
+        `${route} preserves the two flagships and the reviewed supporting hierarchy`,
+      ).toEqual(route === "/" ? projectOrder.slice(0, 2) : projectOrder);
+      if (route === "/work") {
+        await expect(
+          page.getByRole("heading", { name: jobEngineTitle, exact: true }),
+        ).toBeVisible();
+        await expect(
+          page.getByRole("link", { name: jobEngineTitle, exact: true }),
+        ).toHaveAttribute("href", jobEngineRoute);
+        await expect(
+          page.locator("#security-engineering .project-entry"),
+        ).toHaveCount(4);
+      } else {
+        await expect(
+          page.locator('a[href="/work#security-engineering"]'),
+        ).toBeVisible();
+      }
+      for (const project of publicProjects.filter(
+        (project) => route === "/work" || project.featured,
+      )) {
         const card = page.locator(".project-entry").filter({
           has: page.getByRole("heading", { name: project.title, exact: true }),
         });
@@ -844,7 +858,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
           about: {
             "@type": "SoftwareSourceCode",
             codeRepository: project.github,
-            url: project.website,
+            ...(project.website ? { url: project.website } : {}),
           },
         });
       } else expect(work).toBeUndefined();
@@ -855,9 +869,13 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       if (project.inspection) {
         await expect(inspection).toBeVisible();
         await expect(inspection.locator(".evidence-links a")).toHaveCount(
-          project.inspection.links.length,
+          project.inspection.links.length +
+            (project.inspection.guidedLinks?.length ?? 0),
         );
-        for (const { href } of project.inspection.links)
+        for (const { href } of [
+          ...project.inspection.links,
+          ...(project.inspection.guidedLinks ?? []),
+        ])
           await expectEvidenceLink(
             inspection.locator(`a[href="${href}"]`),
             href,
@@ -894,9 +912,9 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       for (const href of [
         aegisgraphRepository,
         aegisgraphDemo,
-        aegisgraphCiRun,
+        aegisgraphCiWorkflow,
         `${aegisgraphRepository}/blob/main/docs/evaluations/BENCHMARK.md`,
-        `${aegisgraphRepository}/blob/main/docs/V2_VALIDATION.md`,
+        `${aegisgraphRepository}/blob/main/docs/FINAL_EXCELLENCE_REVIEW.md`,
         aegisgraphArticleRoute,
       ])
         await expectEvidenceLink(inspection.locator(`a[href="${href}"]`), href);

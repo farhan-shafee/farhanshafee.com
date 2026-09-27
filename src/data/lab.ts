@@ -47,7 +47,7 @@ export const labEntries: LabEntry[] = [
     description:
       "When should related signals become an incident, and what context makes that decision inspectable?",
     evidence:
-      "AegisGraph separates detection rules from deterministic correlation and explains the resulting synthetic incident. Standalone lab experiments are not yet published.",
+      "The Detection Engineering case study documents tested Windows behavior rules, correlation, simulated triage, and scoped tuning. AegisGraph adds decision receipts for both formed incidents and unmet correlation conditions.",
     openQuestion:
       "How should thresholds and correlation rules be evaluated against more varied, representative telemetry?",
     status: "Exploring",

@@ -22,6 +22,12 @@ export function ProjectCard({
       : undefined;
   const highlights =
     variant === "primary" ? (project.technicalHighlights ?? []) : [];
+  const selectedEvidence = (
+    <EvidenceLinks
+      links={project.inspection?.links.filter((link) => link.featured) ?? []}
+      label={`${project.title} selected evidence`}
+    />
+  );
 
   return (
     <article
@@ -55,15 +61,10 @@ export function ProjectCard({
               ))}
             </ul>
           )}
+          {(variant === "secondary" || variant === "supporting") &&
+            selectedEvidence}
         </div>
-        {(variant === "primary" || variant === "flagship") && (
-          <EvidenceLinks
-            links={
-              project.inspection?.links.filter((link) => link.featured) ?? []
-            }
-            label={`${project.title} selected evidence`}
-          />
-        )}
+        {(variant === "primary" || variant === "flagship") && selectedEvidence}
       </div>
       {preview && (
         <figure className="project-entry-preview">

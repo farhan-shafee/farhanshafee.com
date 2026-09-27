@@ -8,6 +8,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { projectEvidenceBacklog } from "../src/data/project-evidence";
 import {
   getPublicProjects,
+  getFeaturedProjects,
+  getSecurityProjects,
   projects,
   projectStatuses,
   type Project,
@@ -67,10 +69,7 @@ const engineeringCaseSlugs = [
   "ai-job-intelligence-engine",
 ] as const;
 
-const exploringLabSlugs = [
-  "detection-security-lab",
-  "secure-infrastructure-homelab",
-] as const;
+const exploringLabSlugs = ["secure-infrastructure-homelab"] as const;
 
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
 
@@ -83,7 +82,7 @@ test("Job Intelligence Engine retains its established URL and accurate public po
   assert.equal(project.category, "Workflow automation / Systems engineering");
   assert.equal(project.status, "Active");
   assert.equal(project.kind, "personal");
-  assert.equal(project.featured, true);
+  assert.equal(project.featured, false);
   assert.doesNotMatch(JSON.stringify(getPublicProjects()), oldJobEngineTitle);
 });
 
@@ -364,7 +363,8 @@ test("project presentation distinguishes primary and second flagships from suppo
     assert.doesNotMatch(html, /<img\b|<figure\b/);
     assert.match(html, /<h2\b/);
     assert.match(html, /Exploring/);
-    assert.doesNotMatch(html, /evidence-links|https:\/\/example.com\/source/);
+    assert.match(html, /href="https:\/\/example.com\/source"/);
+    assert.doesNotMatch(html, /href="https:\/\/example.com\/details"/);
   }
 });
 
@@ -373,6 +373,10 @@ test("Work puts AegisGraph and CyberBit previews before the supporting engineeri
   const order = [
     "aegisgraph",
     "cyberbit-solutions",
+    "devsecops-pipeline",
+    "detection-security-lab",
+    "vulnerability-management",
+    "cloud-security",
     "ai-job-intelligence-engine",
     ...exploringLabSlugs,
   ];
@@ -387,6 +391,12 @@ test("Work puts AegisGraph and CyberBit previews before the supporting engineeri
       assert.ok(position > html.indexOf(`href="/work/${order[index - 1]}"`));
   }
   assert.equal(html.match(/<img\b/g)?.length, 2);
+  assert.deepEqual(
+    getFeaturedProjects().map(({ slug }) => slug),
+    order.slice(0, 2),
+    "Homepage selection preserves the two flagships; Work carries the complete set",
+  );
+  assert.match(html, /id="security-engineering"/);
   for (const slug of order.slice(0, 2)) {
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project?.screenshots?.[0]);
@@ -412,8 +422,8 @@ test("flagship inspection separates public evidence from local capabilities and 
     `${source}/blob/main/docs/threat-model/THREAT_MODEL.md`,
     `${source}/tree/main/docs/adr`,
     `${source}/blob/main/docs/evaluations/BENCHMARK.md`,
-    `${source}/blob/main/docs/V2_VALIDATION.md`,
-    `${source}/actions/runs/35893999624`,
+    `${source}/blob/main/docs/FINAL_EXCELLENCE_REVIEW.md`,
+    `${source}/actions/workflows/ci.yml`,
     "/writing/building-an-evidence-grounded-ai-security-investigation-system",
   ])
     assert.ok(
@@ -456,7 +466,8 @@ test("flagship inspection separates public evidence from local capabilities and 
     cyberbit.inspection.facts.map(({ label, value }) => [label, value]),
   );
   assert.match(workflows.get("Snapshot") ?? "", /human review/i);
-  assert.match(workflows.get("Paid Brief") ?? "", /automated.*Stripe/i);
+  assert.match(workflows.get("Paid Brief") ?? "", /reporting.*Stripe/i);
+  assert.match(workflows.get("Paid Brief") ?? "", /configuration/i);
   for (const project of [aegisgraph, cyberbit]) {
     const links = project.inspection!.links;
     assert.equal(new Set(links.map(({ href }) => href)).size, links.length);
@@ -482,8 +493,76 @@ test("project statuses match the reviewed evidence boundary", () => {
     assert.equal(project.status, review.statusReview.status);
     assert.ok(review.statusReview.reason.trim());
     for (const source of review.sources) {
-      assert.ok(fs.existsSync(path.resolve(source.path)));
+      if (source.path) assert.ok(fs.existsSync(path.resolve(source.path)));
+      else {
+        assert.ok(source.url);
+        assert.equal(new URL(source.url).protocol, "https:");
+      }
     }
+  }
+});
+
+test("guided inspection exposes the incident, near-miss, and blocked-revision examples", () => {
+  const project = getPublicProjects().find(({ slug }) => slug === "aegisgraph");
+  assert.ok(project?.inspection);
+  assert.deepEqual(
+    project.inspection.guidedLinks?.map(({ href }) => href),
+    [
+      "https://aegisgraph.farhan-shafee.com/replay?scenario=atlas-compromise",
+      "https://aegisgraph.farhan-shafee.com/replay?scenario=approved-admin",
+      "https://aegisgraph.farhan-shafee.com/detections/APP-002?comparison=miss-service-access",
+    ],
+  );
+  const html = renderToStaticMarkup(
+    createElement(ProjectInspection, { project }),
+  );
+  assert.match(html, /<h3>Guided inspection<\/h3>/);
+  for (const { href } of project.inspection.guidedLinks!) {
+    const anchor = [...html.matchAll(/<a\s[^>]*>/g)].find(([tag]) =>
+      tag.includes(`href="${href}"`),
+    )?.[0];
+    assert.ok(anchor, `Missing guided entry: ${href}`);
+    assert.match(anchor, /target="_blank"/);
+    assert.match(anchor, /rel="noopener noreferrer"/);
+  }
+});
+
+test("supporting security cases have comparable evidence paths and public source metadata", async () => {
+  const projects = getSecurityProjects();
+  assert.equal(projects.length, 4);
+  for (const project of projects) {
+    assert.equal(project.featured, false);
+    assert.equal(project.status, "Completed");
+    assert.ok(project.github);
+    assert.ok(
+      project.inspection?.links.some(
+        ({ href, featured }) => href === project.github && featured,
+      ),
+    );
+    for (const key of [
+      "problem",
+      "system",
+      "validation",
+      "lessonsConstraints",
+    ] as const) {
+      assert.ok(
+        project.caseStudy?.[key]?.paragraphs?.some((text) => text.trim()),
+        `${project.slug} needs ${key}`,
+      );
+    }
+    const html = renderToStaticMarkup(
+      createElement(ProjectCard, { project, variant: "secondary" }),
+    );
+    assert.ok(html.includes(`href="${project.github}"`));
+    assert.doesNotMatch(html, /<img\b|<figure\b/);
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ slug: project.slug }),
+    });
+    assert.equal(
+      metadata.alternates?.canonical,
+      `https://farhan-shafee.com/work/${project.slug}`,
+    );
+    assert.equal(metadata.openGraph?.url, metadata.alternates?.canonical);
   }
 });
 
@@ -491,7 +570,7 @@ test("engineering case studies contain reviewed content and architecture evidenc
   for (const slug of engineeringCaseSlugs) {
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project, `${slug} must have a public project record`);
-    assert.equal(project.featured, true);
+    assert.equal(project.featured, slug !== "ai-job-intelligence-engine");
     assert.ok(
       project.technologies.length > 0,
       `${slug} needs a verified stack`,
@@ -590,11 +669,11 @@ test("AegisGraph retains visible demo limits, evidence grounding, and narrow val
   );
   assert.match(prose("validation"), /historical|V1/i);
   for (const check of [
-    /670 backend/i,
-    /121 frontend/i,
-    /26 browser/i,
+    /695 backend/i,
+    /129 frontend/i,
+    /27 browser/i,
     /20 local/i,
-    /(?:6|six) public/i,
+    /(?:7|seven) public/i,
     /145/i,
     /28/i,
   ])

@@ -1,4 +1,6 @@
 import { siteConfig } from "@/config/site";
+import { applicationSecurityProjects } from "./security-projects-core";
+import { verificationSecurityProjects } from "./security-projects-verification";
 
 export const projectStatuses = [
   "Active",
@@ -67,6 +69,7 @@ export type Project = {
   inspection?: {
     summary: string;
     links: ProjectEvidenceLink[];
+    guidedLinks?: ProjectEvidenceLink[];
     facts: { label: string; value: string }[];
   };
   caseStudy?: ProjectCaseStudy;
@@ -126,17 +129,35 @@ export const projects: Project[] = [
           href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/evaluations/BENCHMARK.md",
         },
         {
-          label: "V2 validation",
-          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/V2_VALIDATION.md",
+          label: "Latest validation",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/FINAL_EXCELLENCE_REVIEW.md",
         },
         {
           label: "CI",
-          href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/35893999624",
+          href: "https://github.com/farhan-shafee/aegisgraph/actions/workflows/ci.yml",
+        },
+        {
+          label: "September 27 CI",
+          href: "https://github.com/farhan-shafee/aegisgraph/actions/runs/36348207961",
         },
         {
           label: "Engineering article",
           href: "/writing/building-an-evidence-grounded-ai-security-investigation-system",
           featured: true,
+        },
+      ],
+      guidedLinks: [
+        {
+          label: "Why an incident forms",
+          href: "https://aegisgraph.farhan-shafee.com/replay?scenario=atlas-compromise",
+        },
+        {
+          label: "Why one does not",
+          href: "https://aegisgraph.farhan-shafee.com/replay?scenario=approved-admin",
+        },
+        {
+          label: "Why a rule change is blocked",
+          href: "https://aegisgraph.farhan-shafee.com/detections/APP-002?comparison=miss-service-access",
         },
       ],
       facts: [
@@ -148,7 +169,7 @@ export const projects: Project[] = [
         {
           label: "Investigation",
           value:
-            "Eight synthetic scenarios, causal replay, deterministic detections and correlation, evidence timeline, and hypothesis ledger.",
+            "Eight synthetic scenarios, causal replay, deterministic detections and correlation receipts, evidence timeline, and hypothesis ledger.",
         },
         {
           label: "Validation",
@@ -226,6 +247,8 @@ export const projects: Project[] = [
         paragraphs: [
           "The API computes bounded causal frames from arrived observations; the browser cursor controls which frame is visible. Atlas initializes 4,000 background observations before playing the 26 investigation observations. Start, pause, step, and replay speed expose when signals emerge. Source-time gaps are compressed and disclosed. This is finite telemetry replay, not production streaming ingestion.",
           "Ten rules emit source-cited alerts. Correlation separately requires three distinct rules across two families for one principal within 30 minutes of the first alert. A scenario below that threshold stays an observation scope. Replay creates no stored case, workflow record, or per-visitor server session; opening the canonical Atlas case returns to its preserved investigation.",
+          "Each reached principal and alert window has a decision receipt: matched rules and families, configured minimums, time bounds, and the incident or unmet conditions. The same function produces the receipt and decides whether an incident forms. Stable rule and signal ordering makes equal-time input permutations produce the same decision and incident identity.",
+          "Atlas finishes with nine distinct rules across five families over 22 minutes and one incident. Approved administration produces two rules from one family over nine minutes, below both diversity minimums. Its approval evidence is separate counterevidence, not a correlation veto; no incident does not prove there was no compromise.",
         ],
       },
       whatIBuilt: {
@@ -271,8 +294,8 @@ export const projects: Project[] = [
       },
       validation: {
         paragraphs: [
-          "The September 23, 2026 V2 record reports 670 backend tests, 121 frontend tests, and 26 browser tests: 20 local plus six public-mode HTTPS checks. The original 28 deterministic evaluations and 145 V2 benchmark obligations are separate suites. The benchmark's eight metric populations overlap; these are application-boundary checks, not live-model accuracy samples. This is validation coverage, not proof of production security.",
-          "The linked CI run passed backend, frontend, and browser jobs for final source revision 23edc847, a documentation-only follow-up to application release 559e3ad. It includes PostgreSQL clean/populated migration checks, dependency audits, and a production build. Hosted smoke evidence separately records V2 routes, deterministic answers, bundle verification, denied writes, and unchanged canonical API state across a main run and continuation.",
+          "The September 27, 2026 refinement passed 695 backend tests, 129 frontend tests, and 27 browser tests: 20 local plus seven public-mode HTTPS checks. The original 28 deterministic evaluations and 145 V2 benchmark obligations are separate suites. The benchmark's eight metric populations overlap; these are application-boundary checks, not live-model accuracy samples. This is validation coverage, not proof of production security.",
+          "The September 27 CI run passed backend, frontend, and browser jobs for source revision f616185, the documentation follow-up to application revision 72647c7. It includes PostgreSQL clean/populated migration checks, dependency audits, and a production build. Both hosted services were verified at f616185; fresh public reads confirmed the correlation receipts and fixed APP-002 BLOCK comparison. That point-in-time check is separate from the earlier complete V2 hosted smoke.",
           "Historical V1 evidence remains dated: the September 17 release review at c95afa6 records 146 backend tests, 25 frontend tests, 13 browser tests, and 28 deterministic evaluation cases. Its live OpenAI record retains three earlier HTTP 429 failures as well as successful scenarios. Neither V2's deterministic benchmark nor its public hosted checks extend that small live-provider sample.",
         ],
       },
@@ -345,14 +368,6 @@ export const projects: Project[] = [
     github: "https://github.com/farhan-shafee/aegisgraph",
     links: [
       {
-        label: "Replay Atlas",
-        href: "https://aegisgraph.farhan-shafee.com/replay?scenario=atlas-compromise",
-      },
-      {
-        label: "Inspect APP-002",
-        href: "https://aegisgraph.farhan-shafee.com/detections/APP-002",
-      },
-      {
         label: "Seven-minute walkthrough",
         href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md",
       },
@@ -368,7 +383,7 @@ export const projects: Project[] = [
     category: "Security engineering / Product",
     kind: "business",
     description:
-      "Public security checks, human-reviewed reporting, and paid digital workflows for small businesses.",
+      "Cybersecurity services and business engineering for small businesses: scoped reviews, remediation, public security checks, and reporting workflows.",
     inspection: {
       summary:
         "Inspect the public tools, methodology, and reporting format. The sample Snapshot uses a fictional business and findings; it is not a client assessment.",
@@ -389,6 +404,11 @@ export const projects: Project[] = [
       ],
       facts: [
         {
+          label: "Services",
+          value:
+            "Business Security Baseline reviews for Microsoft 365 or Google Workspace, scoped remediation, and external security oversight.",
+        },
+        {
           label: "Public tools",
           value: "Website, email, and domain checks with defined scope.",
         },
@@ -399,7 +419,7 @@ export const projects: Project[] = [
         {
           label: "Paid Brief",
           value:
-            "Automated reporting from eligible checks, with Stripe checkout and paid access.",
+            "Implemented reporting from eligible checks, with Stripe checkout and paid access; availability depends on configuration.",
         },
         {
           label: "Operations",
@@ -416,23 +436,24 @@ export const projects: Project[] = [
     caseStudy: {
       overview: {
         paragraphs: [
-          "I built CyberBit Solutions to connect public security signals with assessment, reporting, and business operations. The system includes free checks, a human-reviewed Snapshot, and a separate paid Instant Signal Brief.",
+          "I built CyberBit Solutions to connect public security signals with assessment, reporting, and business operations. The application includes free checks, a human-reviewed Snapshot, and a separate Instant Signal Brief workflow.",
+          "The business now leads with a Business Security Baseline for Microsoft 365 or Google Workspace, alongside scoped remediation and external security oversight. Public checks, intake, reporting, and business workflows support the service offering; reviews and remediation are separately scoped engagements.",
         ],
       },
       problem: {
         paragraphs: [
-          "Small businesses need to identify and interpret website, email, and domain security signals without invasive testing or an internal security team. Findings need context, review, and a usable next step.",
+          "Small businesses need to understand public website, email, and domain signals, review workplace security settings, and decide what to fix without an internal security team. Findings need context, an agreed scope, and a usable next step.",
         ],
       },
       system: {
         paragraphs: [
           "The Free Website, Email & Domain Check evaluates 11 defined public-facing controls. Business Email Trust Check and IP, DNS & WebRTC Connection Check provide additional focused tools.",
-          "The Snapshot workflow combines intake, admin report preparation, and human review. The Instant Signal Brief instead turns an eligible completed domain check into an automated paid report.",
+          "The Snapshot workflow combines intake, admin report preparation, and human review. The separate Instant Signal Brief implements automated paid reporting from an eligible completed domain check. Its availability depends on configuration.",
         ],
       },
       architecture: {
         paragraphs: [
-          "A Next.js application connects the public tools and report workflows. Airtable supports service requests, Snapshot orders, and CRM records; Neon/PostgreSQL stores paid-brief state. Resend handles application email and subscriber state.",
+          "A Next.js application connects the public tools and report workflows. Airtable supports service requests, Snapshot orders, and CRM records; Neon/PostgreSQL stores paid-brief state. Resend handles application email and provider contact status.",
         ],
       },
       whatIBuilt: {
@@ -446,13 +467,13 @@ export const projects: Project[] = [
       engineeringDecisions: {
         bullets: [
           "Keep automated public signals separate from human-reviewed assessment. A paid Brief does not become a human-reviewed Snapshot.",
-          "Use Resend Contacts as the newsletter subscriber authority and Airtable as its CRM mirror. Broadcasts are operated manually in Resend.",
+          "Use Resend Contacts for provider contact status and Airtable as its CRM mirror. Broadcasts are operated manually in Resend.",
           "Keep Snapshot browser print/PDF output distinct from the paid Brief's server PDF generator.",
         ],
       },
       securityPrivacy: {
         paragraphs: [
-          "The public checks and Snapshot are scoped to nonintrusive public signals and do not guarantee security. Paid-brief eligibility and access are decided on the server. Client scan exports omit internal CRM and follow-up fields.",
+          "The public checks and Snapshot are scoped to nonintrusive public signals and do not guarantee security. Broader reviews and remediation require separately agreed scope, authorization, and access. Paid-brief eligibility and access are decided on the server. Client scan exports omit internal CRM and follow-up fields.",
         ],
       },
       currentState: {
@@ -508,6 +529,8 @@ export const projects: Project[] = [
     featured: true,
     visibility: "public",
   },
+  ...applicationSecurityProjects,
+  ...verificationSecurityProjects,
   {
     title: "Job Intelligence Engine",
     slug: "ai-job-intelligence-engine",
@@ -589,26 +612,7 @@ export const projects: Project[] = [
           "Conceptual discovery and preparation path. Outlook also supplies tracker suggestions for review; discovered jobs are not automatically submitted.",
       },
     ],
-    featured: true,
-    visibility: "public",
-  },
-  {
-    title: "Detection & Security Engineering Lab",
-    slug: "detection-security-lab",
-    status: "Exploring",
-    category: "Security engineering",
-    kind: "lab",
-    description:
-      "Detection engineering, security signals, and system observability.",
-    caseStudy: {
-      overview: {
-        paragraphs: [
-          "The lab's scope covers detection engineering and security automation. Specific experiments, configurations, and results are not yet documented publicly.",
-        ],
-      },
-    },
-    technologies: [],
-    featured: true,
+    featured: false,
     visibility: "public",
   },
   {
@@ -627,7 +631,7 @@ export const projects: Project[] = [
       },
     },
     technologies: [],
-    featured: true,
+    featured: false,
     visibility: "public",
   },
 ];
@@ -638,6 +642,19 @@ export function getPublicProjects(): Project[] {
 
 export function getFeaturedProjects(): Project[] {
   return getPublicProjects().filter((project) => project.featured);
+}
+
+const securityProjectSlugs = [
+  "devsecops-pipeline",
+  "detection-security-lab",
+  "vulnerability-management",
+  "cloud-security",
+];
+
+export function getSecurityProjects(): Project[] {
+  return getPublicProjects().filter((project) =>
+    securityProjectSlugs.includes(project.slug),
+  );
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {

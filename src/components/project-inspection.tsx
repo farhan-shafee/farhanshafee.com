@@ -5,10 +5,17 @@ export function ProjectInspection({ project }: { project: Project }) {
   const inspection = project.inspection;
   if (!inspection) return null;
   const links = evidenceLinks(inspection.links);
+  const guidedLinks = evidenceLinks(inspection.guidedLinks ?? []);
   const facts = inspection.facts.filter(
     ({ label, value }) => label.trim() && value.trim(),
   );
-  if (!inspection.summary.trim() && !links.length && !facts.length) return null;
+  if (
+    !inspection.summary.trim() &&
+    !links.length &&
+    !guidedLinks.length &&
+    !facts.length
+  )
+    return null;
 
   return (
     <section className="project-inspection" aria-labelledby="inspect-heading">
@@ -17,6 +24,15 @@ export function ProjectInspection({ project }: { project: Project }) {
         {inspection.summary.trim() && <p>{inspection.summary}</p>}
       </div>
       <EvidenceLinks links={links} label={`${project.title} evidence`} />
+      {guidedLinks.length > 0 && (
+        <div className="inspection-guided">
+          <h3>Guided inspection</h3>
+          <EvidenceLinks
+            links={guidedLinks}
+            label={`${project.title} guided inspection`}
+          />
+        </div>
+      )}
       {facts.length > 0 && (
         <dl className="inspection-facts">
           {facts.map((fact) => (

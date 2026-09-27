@@ -16,6 +16,11 @@ export default function LabPage() {
         title="The engineering notebook."
         description="Questions under investigation, the implementation evidence available, and what remains untested. These topics are exploratory."
       />
+      <div className="editorial-inline-links">
+        <TextLink href="/work#security-engineering">
+          Implemented security projects and their validation
+        </TextLink>
+      </div>
       <ol className="editorial-notebook">
         {labEntries.map((entry, index) => (
           <li className="editorial-notebook-entry" key={entry.title}>
@@ -65,7 +70,7 @@ export default function LabPage() {
                     </TextLink>
                   )}
                   {entry.writeup && (
-                    <TextLink href={entry.writeup}>Lab scope</TextLink>
+                    <TextLink href={entry.writeup}>Related work</TextLink>
                   )}
                   {entry.demo && (
                     <TextLink href={entry.demo} external>

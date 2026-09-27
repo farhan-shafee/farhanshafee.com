@@ -2,7 +2,7 @@
 title: "Building an Evidence-Grounded AI Security Investigation System"
 description: "The engineering decisions behind AegisGraph: deterministic incident scope, bounded AI claims, server-side evidence validation, and human-controlled case decisions."
 date: "2026-09-17"
-updated: "2026-09-23"
+updated: "2026-09-27"
 slug: "building-an-evidence-grounded-ai-security-investigation-system"
 tags: ["security-engineering", "ai-systems", "systems-engineering"]
 draft: false
@@ -16,7 +16,7 @@ I wanted to explore a specific problem: how can an AI assistant help investigate
 
 AegisGraph is the system I built around that question. It takes synthetic telemetry from a simulated fintech application through detection, incident correlation, evidence inspection, and AI-assisted analysis. It is an engineering demonstration using synthetic data, not a production SOC deployment.
 
-> **Update — 2026-09-23:** This article records AegisGraph V1. The current V2 adds replay across eight synthetic scenarios, hypotheses, detection regression, and hash-verifiable exports. See the [current case study](/work/aegisgraph), [source](https://github.com/farhan-shafee/aegisgraph), or [public demo](https://aegisgraph.farhan-shafee.com) for that expanded workflow. The hosted stack remains Next.js on Vercel with FastAPI and PostgreSQL on Railway. Public exploration is read-only and deterministic; the OpenAI results and human workflows discussed below come from separate local/interview-mode validation.
+> **Update — 2026-09-27:** This article records AegisGraph V1. The current V2 adds replay across eight synthetic scenarios, hypotheses, detection regression, and hash-verifiable exports. The September 27 refinement adds correlation decision receipts and guided examples showing why an incident forms, why approved administration stays below the threshold, and why a rule change is blocked. See the [current case study](/work/aegisgraph), [source](https://github.com/farhan-shafee/aegisgraph), or [public demo](https://aegisgraph.farhan-shafee.com) for that expanded workflow. The hosted stack remains Next.js on Vercel with FastAPI and PostgreSQL on Railway. Public exploration is read-only and deterministic; the OpenAI results and human workflows discussed below come from separate local/interview-mode validation.
 
 The failure I wanted to avoid was straightforward: put logs into a model, receive a confident narrative, and leave the analyst to work out whether the evidence supports it. Adding citations does not resolve that problem. An application-access event might support “this account read a sensitive resource.” The same event cannot establish “an attacker stole customer data,” even if the answer cites its real ID. Attribution, intent, and a transfer outcome have been added without evidence.
 

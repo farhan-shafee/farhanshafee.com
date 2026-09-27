@@ -51,10 +51,11 @@ export default function AboutPage() {
             <h2 id="security-product-work">Building CyberBit Solutions</h2>
             <p>
               I created CyberBit Solutions to develop cybersecurity tools and
-              services for businesses. I keep its automated public checks and
-              paid Instant Signal Brief distinct from the human-reviewed
-              Snapshot. That separation carries through intake, reporting,
-              payment, and delivery.
+              services for businesses. Scoped account reviews and remediation
+              sit alongside public checks and human-reviewed Snapshot reporting.
+              The application connects intake, report preparation, payments, and
+              communications while keeping service authorization and automated
+              signals separate.
             </p>
             <TextLink href="/work/cyberbit-solutions">
               Inside the CyberBit system
@@ -71,22 +72,33 @@ export default function AboutPage() {
             <p>
               I keep observations, automated suggestions, and human decisions
               separate. In AegisGraph, deterministic detection and correlation
-              establish case evidence. Causal replay makes that sequence
-              visible, and rule comparisons show a proposed change across eight
-              synthetic scenarios. Server-side checks validate AI claims and
-              citations. Its hosted demo is read-only and uses a deterministic
-              provider; live OpenAI analysis was validated in the local
-              workflow. The fintech data is synthetic. The case study and
-              article explain these boundaries, their tests, and the remaining
-              production work.
+              establish case evidence. Replay exposes why an incident forms or
+              which correlation conditions remain unmet. Rule comparisons show a
+              proposed change across eight synthetic scenarios. Server-side
+              checks validate AI claims and citations. Its hosted demo is
+              read-only and uses a deterministic provider; live OpenAI analysis
+              was validated in the local workflow. The fintech data is
+              synthetic. The case study and article explain these boundaries,
+              their tests, and the remaining production work.
             </p>
             <p>
               I make failure explicit: a single invalid claim rejects the whole
               AI answer. An accepted answer still cannot change case state; that
               remains an analyst decision in the local workflow.
             </p>
+            <p>
+              The supporting security work applies the same discipline at other
+              points in the lifecycle: validate scanner evidence before a CI
+              decision, test detection changes against known cases, and require
+              a matching rescan or reassessment before closing a finding. Those
+              projects make their synthetic inputs and operational limits
+              explicit.
+            </p>
             <div className="editorial-context-links">
               <TextLink href="/work/aegisgraph">Inside AegisGraph</TextLink>
+              <TextLink href="/work#security-engineering">
+                Supporting security engineering
+              </TextLink>
               <TextLink href="/writing/building-an-evidence-grounded-ai-security-investigation-system">
                 Read the engineering decisions
               </TextLink>
