@@ -8,6 +8,8 @@ export const dynamic = "force-static";
 export function GET() {
   const articles = getPublishedArticles();
   const aegisgraph = getProjectBySlug("aegisgraph");
+  const creditops = getProjectBySlug("creditops-ai");
+  const tradeflow = getProjectBySlug("tradeflow");
   const securityProjects = getSecurityProjects();
   const text = `# ${siteConfig.name}
 
@@ -18,9 +20,9 @@ ${siteConfig.name} builds security tools, automation systems, and technical infr
 ## Important resources
 
 - [About](${absoluteUrl("/about")}): Professional background and technical focus.
-- [Work](${absoluteUrl("/work")}): Business systems, personal engineering projects, and labs. Each entry distinguishes its status and type; unverified implementation details and outcomes are omitted.
+- [Work](${absoluteUrl("/work")}): AegisGraph, CreditOps AI, TradeFlow, and four supporting public security projects. Each entry identifies its evidence and limitations.
 - [Writing](${absoluteUrl("/writing")}): Published technical articles. Draft outlines are not public.
-- [Lab](${absoluteUrl("/lab")}): Open questions in detection, AI-assisted investigation, and infrastructure. Implemented supporting security projects and their validation are documented under Work.
+- [Lab](${absoluteUrl("/lab")}): Public-evidence questions in detection, AI-assisted investigation, and test isolation. Implemented security projects and their validation are documented under Work.
 - [Now](${absoluteUrl("/now")}): Current building, studying, and investigation priorities.
 - [Uses](${absoluteUrl("/uses")}): Verified project stacks; personal tooling notes are not yet published.
 - [Contact](${absoluteUrl("/contact")}): Professional contact paths.
@@ -33,9 +35,19 @@ The hosted public demo is read-only and deterministic, with fixed rule compariso
 ${aegisgraph?.inspection ? `\n${aegisgraph.inspection.links.map((link) => `- [${link.label}](${absoluteUrl(link.href)})`).join("\n")}\n` : ""}
 ${aegisgraph?.inspection?.guidedLinks?.length ? `\nGuided inspection:\n\n${aegisgraph.inspection.guidedLinks.map((link) => `- [${link.label}](${link.href})`).join("\n")}\n` : ""}
 
-## CyberBit Solutions
+## CreditOps AI
 
-${siteConfig.name} created [CyberBit Solutions](${siteConfig.cyberbit}), a cybersecurity services business whose application connects public tools, intake, reporting, Stripe, transactional email, and admin workflows. Authorized workspace reviews and remediation have separate service scopes from the public checks and human-reviewed Snapshot. The implemented Instant Signal Brief workflow is available according to its configuration. The [case study](${absoluteUrl("/work/cyberbit-solutions")}) links public methodology and an explicitly fictional sample report. Public checks do not guarantee security.
+[CreditOps AI](${absoluteUrl("/work/creditops-ai")}): ${creditops?.description}
+
+Source private. The public showcase plays recorded model-assisted investigations with synthetic pricing/Kafka, FIX-session, database-pool, and RFQ/order evidence. Playback makes no fresh model or MCP diagnostic calls. Original proposals, recorded advisories, and draft handoffs require human review; initiating causes remain unconfirmed. The recordings do not establish model-directed follow-ups or production incident resolution. Python/FastAPI, read-only MCP tools, Next.js, and PostgreSQL are publicly described.
+${creditops?.inspection ? `\n${creditops.inspection.links.map((link) => `- [${link.label}](${link.href})`).join("\n")}\n` : ""}
+
+## TradeFlow
+
+[TradeFlow](${absoluteUrl("/work/tradeflow")}): ${tradeflow?.description}
+
+A local, in-memory synthetic trading workstation with strict TypeScript, a Node.js server, test-owned sessions and records, runtime schemas, independently interpreted OpenAPI contracts, and Playwright UI/API/contract/integration coverage. Chromium, Firefox, and WebKit check the browser workflows. Documented AI assistance remains human-reviewed; deterministic checks decide acceptance. There is no live brokerage, exchange execution, matching engine, real P&L, or employer data. Browser activity is not a durable audit history.
+${tradeflow?.inspection ? `\n${tradeflow.inspection.links.map((link) => `- [${link.label}](${link.href})`).join("\n")}\n` : ""}
 
 ## Supporting security engineering
 

@@ -2,112 +2,6 @@ import type { Project } from "./projects";
 
 export const verificationSecurityProjects: Project[] = [
   {
-    title: "Vulnerability Management",
-    slug: "vulnerability-management",
-    status: "Completed",
-    category: "Security engineering / Vulnerability management",
-    kind: "personal",
-    description:
-      "A Python workflow for scanner normalization, explainable remediation priority, and closure verified against matching rescans, with reproducible synthetic and local Trivy evidence.",
-    inspection: {
-      summary:
-        "A completed local lab with an offline workflow demo and a captured Trivy dependency scan. The business processes are simulated.",
-      links: [
-        {
-          label: "View source",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project",
-          featured: true,
-        },
-        {
-          label: "Methodology",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/docs/methodology.md",
-        },
-        {
-          label: "Real scan evidence",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/lab/evidence/manifest.json",
-        },
-        {
-          label: "Local demo guide",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/docs/interview-demo.md",
-        },
-        {
-          label: "Validation record",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/docs/validation.md",
-        },
-        {
-          label: "CI workflow",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project/actions/workflows/ci.yml",
-        },
-        {
-          label: "September 7 CI result",
-          href: "https://github.com/farhan-shafee/vulnerability-management-project/actions/runs/34147859541",
-        },
-      ],
-      facts: [
-        {
-          label: "Inputs",
-          value: "CSV, Trivy JSON v2, and Nessus v2 XML exports.",
-        },
-        {
-          label: "Workflow",
-          value:
-            "Risk and SLA, reviewed dispositions, remediation, and rescan verification.",
-        },
-        {
-          label: "Scope",
-          value:
-            "Local files and an inert dependency manifest; no production integrations.",
-        },
-      ],
-    },
-    caseStudy: {
-      overview: {
-        paragraphs: [
-          "I built this lab to make vulnerability decisions inspectable: where a finding came from, why it deserves attention, what remediation was recorded, and which later evidence supports closure.",
-        ],
-      },
-      problem: {
-        paragraphs: [
-          "Severity alone misses asset context. A lower risk score does not establish remediation, and a finding missing from an incomplete export does not prove it was fixed.",
-        ],
-      },
-      system: {
-        title: "From observation to closure",
-        steps: [
-          "Normalize scanner exports",
-          "Enrich asset context",
-          "Calculate priority and SLA",
-          "Record reviewed work",
-          "Compare a matching rescan",
-          "Report closure or continued work",
-        ],
-        paragraphs: [
-          "Stable identities and provenance survive normalization. A transparent custom score combines technical severity, asset importance, exposure, threat context, age, and evidenced controls. Calendar-day SLAs retain the original first-seen date; accepting risk does not pause the clock.",
-        ],
-      },
-      engineeringDecisions: {
-        paragraphs: [
-          "Scanner observations and workflow decisions stay separate. Closure requires recorded remediation and a strictly later complete scan with matching scanner, scope, and asset coverage. Reappearing findings reopen. Time-bound exceptions and validated false positives remain visible with review dates.",
-        ],
-      },
-      validation: {
-        paragraphs: [
-          "The six-finding synthetic demo ends with two verified closures, one accepted risk, one validated false positive, and two actionable open findings. A separate real Trivy capture on September 7, 2026 found five vulnerabilities before a Requests manifest update and zero afterward; matching package coverage, timestamps, and hashes support five closures.",
-          "September 7, 2026 CI passed 212 tests in each Windows/Ubuntu and Python 3.11/3.14 matrix job, plus lint, configuration checks, and byte-for-byte comparisons of 13 synthetic-demo and 11 captured-scan artifacts.",
-        ],
-      },
-      lessonsConstraints: {
-        paragraphs: [
-          "The real scan analyzes a direct-dependency manifest; it does not install packages, prove exploitability, or assess a running system. Nessus support is export parsing. Ownership and approvals are simulated, scoring is custom, and local JSON has no authenticated roles, concurrent transactions, or signed evidence.",
-        ],
-      },
-    },
-    technologies: ["Python", "Trivy", "pytest", "GitHub Actions"],
-    github: "https://github.com/farhan-shafee/vulnerability-management-project",
-    featured: false,
-    visibility: "public",
-  },
-  {
     title: "Cloud Security",
     slug: "cloud-security",
     status: "Completed",
@@ -210,6 +104,112 @@ export const verificationSecurityProjects: Project[] = [
     },
     technologies: ["Python", "pytest", "mypy", "GitHub Actions"],
     github: "https://github.com/farhan-shafee/cloud-security-lab",
+    featured: false,
+    visibility: "public",
+  },
+  {
+    title: "Vulnerability Management",
+    slug: "vulnerability-management",
+    status: "Completed",
+    category: "Security engineering / Vulnerability management",
+    kind: "personal",
+    description:
+      "A Python workflow for scanner normalization, explainable remediation priority, and closure verified against matching rescans, with reproducible synthetic and local Trivy evidence.",
+    inspection: {
+      summary:
+        "A completed local lab with an offline workflow demo and a captured Trivy dependency scan. The business processes are simulated.",
+      links: [
+        {
+          label: "View source",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project",
+          featured: true,
+        },
+        {
+          label: "Methodology",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/docs/methodology.md",
+        },
+        {
+          label: "Real scan evidence",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/lab/evidence/manifest.json",
+        },
+        {
+          label: "Local demo guide",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/docs/interview-demo.md",
+        },
+        {
+          label: "Validation record",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project/blob/main/docs/validation.md",
+        },
+        {
+          label: "CI workflow",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project/actions/workflows/ci.yml",
+        },
+        {
+          label: "September 7 CI result",
+          href: "https://github.com/farhan-shafee/vulnerability-management-project/actions/runs/34147859541",
+        },
+      ],
+      facts: [
+        {
+          label: "Inputs",
+          value: "CSV, Trivy JSON v2, and Nessus v2 XML exports.",
+        },
+        {
+          label: "Workflow",
+          value:
+            "Risk and SLA, reviewed dispositions, remediation, and rescan verification.",
+        },
+        {
+          label: "Scope",
+          value:
+            "Local files and an inert dependency manifest; no production integrations.",
+        },
+      ],
+    },
+    caseStudy: {
+      overview: {
+        paragraphs: [
+          "I built this lab to make vulnerability decisions inspectable: where a finding came from, why it deserves attention, what remediation was recorded, and which later evidence supports closure.",
+        ],
+      },
+      problem: {
+        paragraphs: [
+          "Severity alone misses asset context. A lower risk score does not establish remediation, and a finding missing from an incomplete export does not prove it was fixed.",
+        ],
+      },
+      system: {
+        title: "From observation to closure",
+        steps: [
+          "Normalize scanner exports",
+          "Enrich asset context",
+          "Calculate priority and SLA",
+          "Record reviewed work",
+          "Compare a matching rescan",
+          "Report closure or continued work",
+        ],
+        paragraphs: [
+          "Stable identities and provenance survive normalization. A transparent custom score combines technical severity, asset importance, exposure, threat context, age, and evidenced controls. Calendar-day SLAs retain the original first-seen date; accepting risk does not pause the clock.",
+        ],
+      },
+      engineeringDecisions: {
+        paragraphs: [
+          "Scanner observations and workflow decisions stay separate. Closure requires recorded remediation and a strictly later complete scan with matching scanner, scope, and asset coverage. Reappearing findings reopen. Time-bound exceptions and validated false positives remain visible with review dates.",
+        ],
+      },
+      validation: {
+        paragraphs: [
+          "The six-finding synthetic demo ends with two verified closures, one accepted risk, one validated false positive, and two actionable open findings. A separate real Trivy capture on September 7, 2026 found five vulnerabilities before a Requests manifest update and zero afterward; matching package coverage, timestamps, and hashes support five closures.",
+          "September 7, 2026 CI passed 212 tests in each Windows/Ubuntu and Python 3.11/3.14 matrix job, plus lint, configuration checks, and byte-for-byte comparisons of 13 synthetic-demo and 11 captured-scan artifacts.",
+        ],
+      },
+      lessonsConstraints: {
+        paragraphs: [
+          "The real scan analyzes a direct-dependency manifest; it does not install packages, prove exploitability, or assess a running system. Nessus support is export parsing. Ownership and approvals are simulated, scoring is custom, and local JSON has no authenticated roles, concurrent transactions, or signed evidence.",
+        ],
+      },
+    },
+    technologies: ["Python", "Trivy", "pytest", "GitHub Actions"],
+    github: "https://github.com/farhan-shafee/vulnerability-management-project",
     featured: false,
     visibility: "public",
   },

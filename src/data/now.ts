@@ -1,5 +1,3 @@
-import { siteConfig } from "@/config/site";
-
 type NowSection = {
   title: string;
   text: string;
@@ -8,23 +6,23 @@ type NowSection = {
 
 /** Update this date only when the content is reviewed; do not use build time. */
 export const now: { updated: string; sections: NowSection[] } = {
-  updated: "2026-09-27",
+  updated: "2026-10-14",
   sections: [
     {
       title: "Current systems",
-      text: "AegisGraph's final V2 refinement is live. Guided replay explains both incident formation and unmet correlation conditions; fixed rule comparisons expose regression failures. The public demo remains read-only and deterministic. CyberBit remains my business product work, connecting scoped security services with public tools, intake, reporting, payments, and communications.",
+      text: "My public engineering portfolio centers on AegisGraph, CreditOps AI, and TradeFlow. AegisGraph's hosted replay remains read-only and deterministic. CreditOps presents recorded synthetic trading investigations with private source. TradeFlow is a local synthetic workstation whose session ownership, contracts, and browser tests can be inspected in public source.",
       links: [
         { label: "AegisGraph case study", href: "/work/aegisgraph" },
         {
-          label: "Visit CyberBit Solutions",
-          href: siteConfig.cyberbit,
-          external: true,
+          label: "CreditOps AI case study",
+          href: "/work/creditops-ai",
         },
+        { label: "TradeFlow case study", href: "/work/tradeflow" },
       ],
     },
     {
-      title: "Studying",
-      text: "Investigation reliability, bounded AI evaluation, and verification after remediation. The supporting security projects now cover CI evidence gates, detection tuning, matching rescans, and synthetic cloud reassessment. My original AegisGraph article records the V1 design; the current case study covers the expanded workflow.",
+      title: "Evidence & quality",
+      text: "The supporting security work covers CI evidence gates, detection tuning, synthetic cloud reassessment, and matching-rescan closure. Each case study distinguishes its fixture or recorded evidence from production claims. The published AegisGraph article preserves the original design and its dated V2 update.",
       links: [
         {
           label: "Security engineering work",
@@ -37,8 +35,8 @@ export const now: { updated: string; sections: NowSection[] } = {
       ],
     },
     {
-      title: "Investigating",
-      text: "How named synthetic obligations can inform broader evaluation while keeping case decisions under human control. Repeated live-model trials, authenticated case access, tenant isolation, and independent evidence retention remain open work.",
+      title: "Open boundaries",
+      text: "Broader live-model evaluation and authenticated tenant controls remain outside AegisGraph's public demo. CreditOps recordings leave initiating causes unconfirmed. TradeFlow's tests establish finite synthetic behavior, without exchange execution or operational trading guarantees. The lab notebook keeps those open questions tied to public evidence.",
       links: [{ label: "Questions in the lab", href: "/lab" }],
     },
   ],

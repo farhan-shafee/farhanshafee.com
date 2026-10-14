@@ -1,31 +1,27 @@
 import { ProjectCard } from "@/components/project-card";
-import { PageIntro } from "@/components/ui";
+import { PageIntro, TextLink } from "@/components/ui";
 import { getPublicProjects, getSecurityProjects } from "@/data/projects";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Work",
-  "Security investigation, product engineering, DevSecOps, detection, vulnerability management, and cloud security projects by Farhan Shafee.",
+  "Security investigation, recorded trading-incident analysis, fintech test engineering, and supporting security projects by Farhan Shafee.",
   "/work",
 );
 
 export default function WorkPage() {
   const projects = getPublicProjects();
   const flagships = projects.filter((project) =>
-    ["aegisgraph", "cyberbit-solutions"].includes(project.slug),
+    ["aegisgraph", "creditops-ai", "tradeflow"].includes(project.slug),
   );
   const securityProjects = getSecurityProjects();
-  const supporting = projects.filter(
-    (project) =>
-      !flagships.includes(project) && !securityProjects.includes(project),
-  );
 
   return (
     <div className="page-shell work-index-page">
       <PageIntro
         eyebrow="Work / Systems & projects"
         title="Systems and engineering work."
-        description="AegisGraph explores security investigation and bounded AI. CyberBit connects security tools to business workflows. Inspect the systems, then follow the decisions behind them."
+        description="AegisGraph makes security investigation inspectable. CreditOps AI presents recorded trading-incident analysis. TradeFlow makes trading-workflow tests and their evidence visible."
       />
       {flagships.length > 0 && (
         <section
@@ -34,7 +30,7 @@ export default function WorkPage() {
         >
           <div className="work-index-heading">
             <h2 id="work-systems-heading">Selected systems</h2>
-            <span>Security / AI / Product engineering</span>
+            <span>Security / AI / Fintech test engineering</span>
           </div>
           {flagships.map((project) => (
             <ProjectCard
@@ -52,7 +48,7 @@ export default function WorkPage() {
         aria-labelledby="work-security-heading"
       >
         <div className="work-index-heading">
-          <h2 id="work-security-heading">Security engineering</h2>
+          <h2 id="work-security-heading">Supporting security engineering</h2>
           <span>Application / Detection / Remediation / Cloud</span>
         </div>
         {securityProjects.map((project) => (
@@ -64,25 +60,29 @@ export default function WorkPage() {
           />
         ))}
       </section>
-      {supporting.length > 0 && (
-        <section
-          className="work-index-group"
-          aria-labelledby="work-labs-heading"
-        >
-          <div className="work-index-heading">
-            <h2 id="work-labs-heading">Other systems &amp; exploration</h2>
-            <span>Workflows / Infrastructure</span>
-          </div>
-          {supporting.map((project) => (
-            <ProjectCard
-              key={project.slug}
-              project={project}
-              index={projects.indexOf(project)}
-              variant="supporting"
-            />
-          ))}
-        </section>
-      )}
+      <section
+        className="work-index-group"
+        aria-labelledby="work-material-heading"
+      >
+        <div className="work-index-heading">
+          <h2 id="work-material-heading">Additional public material</h2>
+          <span>Response / Hunting</span>
+        </div>
+        <div className="inline-links">
+          <TextLink
+            href="https://github.com/farhan-shafee/incident-response-playbooks"
+            external
+          >
+            Incident Response Playbooks
+          </TextLink>
+          <TextLink
+            href="https://github.com/farhan-shafee/threat-hunting-playbooks"
+            external
+          >
+            Threat Hunting Playbooks
+          </TextLink>
+        </div>
+      </section>
     </div>
   );
 }

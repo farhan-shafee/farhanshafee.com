@@ -10,6 +10,11 @@ import { GET as getRss } from "../src/app/rss.xml/route";
 import { GET as getLlms } from "../src/app/llms.txt/route";
 import { siteConfig } from "../src/config/site";
 import { absoluteUrl, pageMetadata } from "../src/lib/seo";
+import {
+  approvedProjectSlugs,
+  excludedPublicContent,
+  retiredProjectRoutes,
+} from "./portfolio-policy";
 
 // Match Next's CommonJS interop while rendering its real Image component in Node.
 const loadCommonJs = createRequire(import.meta.url);
@@ -48,6 +53,7 @@ test("canonical metadata and public profile identities use the new origin", () =
   assert.equal(person["@id"], `${origin}/#person`);
   assert.equal(person.url, origin);
   assert.ok(person.sameAs.includes("https://github.com/farhan-shafee"));
+  assert.equal(person.affiliation, undefined);
 
   const aboutHtml = renderToStaticMarkup(AboutPage());
   const profile = structuredData(aboutHtml).find(
@@ -59,6 +65,38 @@ test("canonical metadata and public profile identities use the new origin", () =
   assert.equal(profile.mainEntity.url, origin);
   for (const output of [JSON.stringify(metadata), homeHtml, aboutHtml])
     assert.doesNotMatch(output, oldOrigin);
+});
+
+test("public editorial pages and generated resources enforce the narrowed portfolio", async () => {
+  const editorialModules = await Promise.all([
+    import("../src/app/contact/page"),
+    import("../src/app/lab/page"),
+    import("../src/app/now/page"),
+    import("../src/app/uses/page"),
+  ]);
+  const outputs = [
+    renderToStaticMarkup(HomePage()),
+    renderToStaticMarkup(AboutPage()),
+    ...editorialModules.map(({ default: Page }) =>
+      renderToStaticMarkup(Page()),
+    ),
+    JSON.stringify(siteConfig),
+    JSON.stringify(sitemap()),
+    await getLlms().text(),
+    await getRss().text(),
+  ];
+  for (const output of outputs)
+    assert.doesNotMatch(output, excludedPublicContent);
+  const urls = sitemap().map(({ url }) => url);
+  for (const slug of approvedProjectSlugs)
+    assert.ok(urls.includes(`${origin}/work/${slug}`));
+  for (const route of retiredProjectRoutes)
+    assert.ok(!urls.includes(`${origin}${route}`));
+  const llms = await getLlms().text();
+  assert.match(llms, /Source private/);
+  assert.match(llms, /no fresh model or MCP/i);
+  for (const slug of approvedProjectSlugs)
+    assert.ok(llms.includes(`${origin}/work/${slug}`));
 });
 
 test("sitemap, RSS, and machine-readable resources advertise the canonical origin", async () => {

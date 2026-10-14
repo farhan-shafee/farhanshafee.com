@@ -1,4 +1,5 @@
-import { siteConfig } from "@/config/site";
+import { creditopsProject } from "./creditops-project";
+import { tradeflowProject } from "./tradeflow-project";
 import { applicationSecurityProjects } from "./security-projects-core";
 import { verificationSecurityProjects } from "./security-projects-verification";
 
@@ -78,6 +79,7 @@ export type Project = {
   architectureDiagrams?: ProjectImage[];
   links?: { label: string; href: string }[];
   github?: string;
+  sourceVisibility?: "public" | "private";
   website?: string;
   featured: boolean;
   visibility: "public" | "private";
@@ -376,264 +378,10 @@ export const projects: Project[] = [
     featured: true,
     visibility: "public",
   },
-  {
-    title: "CyberBit Solutions",
-    slug: "cyberbit-solutions",
-    status: "Active",
-    category: "Security engineering / Product",
-    kind: "business",
-    description:
-      "Cybersecurity services and business engineering for small businesses: scoped reviews, remediation, public security checks, and reporting workflows.",
-    inspection: {
-      summary:
-        "Inspect the public tools, methodology, and reporting format. The sample Snapshot uses a fictional business and findings; it is not a client assessment.",
-      links: [
-        { label: "Product", href: siteConfig.cyberbit, featured: true },
-        {
-          label: "Free security check",
-          href: `${siteConfig.cyberbit}/free-scan`,
-        },
-        {
-          label: "Methodology",
-          href: `${siteConfig.cyberbit}/methodology`,
-        },
-        {
-          label: "Sample Snapshot (fictional)",
-          href: `${siteConfig.cyberbit}/sample-report`,
-        },
-      ],
-      facts: [
-        {
-          label: "Services",
-          value:
-            "Business Security Baseline reviews for Microsoft 365 or Google Workspace, scoped remediation, and external security oversight.",
-        },
-        {
-          label: "Public tools",
-          value: "Website, email, and domain checks with defined scope.",
-        },
-        {
-          label: "Snapshot",
-          value: "Intake, admin report preparation, and human review.",
-        },
-        {
-          label: "Paid Brief",
-          value:
-            "Implemented reporting from eligible checks, with Stripe checkout and paid access; availability depends on configuration.",
-        },
-        {
-          label: "Operations",
-          value:
-            "Admin/report tooling, service records, and transactional email.",
-        },
-        {
-          label: "Scope",
-          value:
-            "Public checks and the Snapshot use nonintrusive signals; neither guarantees security.",
-        },
-      ],
-    },
-    caseStudy: {
-      overview: {
-        paragraphs: [
-          "I built CyberBit Solutions to connect public security signals with assessment, reporting, and business operations. The application includes free checks, a human-reviewed Snapshot, and a separate Instant Signal Brief workflow.",
-          "The business now leads with a Business Security Baseline for Microsoft 365 or Google Workspace, alongside scoped remediation and external security oversight. Public checks, intake, reporting, and business workflows support the service offering; reviews and remediation are separately scoped engagements.",
-        ],
-      },
-      problem: {
-        paragraphs: [
-          "Small businesses need to understand public website, email, and domain signals, review workplace security settings, and decide what to fix without an internal security team. Findings need context, an agreed scope, and a usable next step.",
-        ],
-      },
-      system: {
-        paragraphs: [
-          "The Free Website, Email & Domain Check evaluates 11 defined public-facing controls. Business Email Trust Check and IP, DNS & WebRTC Connection Check provide additional focused tools.",
-          "The Snapshot workflow combines intake, admin report preparation, and human review. The separate Instant Signal Brief implements automated paid reporting from an eligible completed domain check. Its availability depends on configuration.",
-        ],
-      },
-      architecture: {
-        paragraphs: [
-          "A Next.js application connects the public tools and report workflows. Airtable supports service requests, Snapshot orders, and CRM records; Neon/PostgreSQL stores paid-brief state. Resend handles application email and provider contact status.",
-        ],
-      },
-      whatIBuilt: {
-        bullets: [
-          "Public checks, shared control definitions, and client-facing JSON exports of scan results.",
-          "Admin report builders, Snapshot print/PDF output, and server-generated paid-brief PDFs.",
-          "Server-side scan eligibility, Stripe checkout and webhook handling, and paid-state access to briefs.",
-          "Operational records, transactional messages, admin notifications and login alerts, and visit/funnel event tracking.",
-        ],
-      },
-      engineeringDecisions: {
-        bullets: [
-          "Keep automated public signals separate from human-reviewed assessment. A paid Brief does not become a human-reviewed Snapshot.",
-          "Use Resend Contacts for provider contact status and Airtable as its CRM mirror. Broadcasts are operated manually in Resend.",
-          "Keep Snapshot browser print/PDF output distinct from the paid Brief's server PDF generator.",
-        ],
-      },
-      securityPrivacy: {
-        paragraphs: [
-          "The public checks and Snapshot are scoped to nonintrusive public signals and do not guarantee security. Broader reviews and remediation require separately agreed scope, authorization, and access. Paid-brief eligibility and access are decided on the server. Client scan exports omit internal CRM and follow-up fields.",
-        ],
-      },
-      currentState: {
-        paragraphs: [
-          "An active cybersecurity business and engineering project with a public website.",
-        ],
-      },
-    },
-    technicalHighlights: [
-      "A shared set of 11 control definitions feeds free-check scoring and Brief reporting.",
-      "Separate storage and delivery paths support service operations and paid digital reports.",
-    ],
-    technologies: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node.js",
-      "Stripe",
-      "Airtable",
-      "Resend",
-      "Neon / PostgreSQL",
-    ],
-    screenshots: [
-      {
-        src: "/projects/cyberbit-solutions/free-security-check.png",
-        alt: "Completed CyberBit public check for farhan-shafee.com: all 11 checks completed, with seven controls observed, one configuration concern, and three controls not observed.",
-        width: 1440,
-        height: 1000,
-        caption:
-          "Live public-check result for my own domain, with control summaries and scope limits. Captured September 16, 2026; results are point-in-time observations.",
-      },
-      {
-        src: "/projects/cyberbit-solutions/risk-snapshot-report.png",
-        alt: "CyberBit's public Snapshot sample layout with an executive summary, check statuses, and a visible disclaimer that the example business and findings are fictional.",
-        width: 1425,
-        height: 990,
-        caption:
-          "Public Snapshot sample showing the report structure and check statuses. The application labels its business and findings as fictional; this is not a client report.",
-      },
-    ],
-    architectureDiagrams: [
-      {
-        src: "/diagrams/cyberbit-workflows.svg",
-        alt: "Public-signal workflows include browser results and a Snapshot with intake and human review. Only eligible completed domain-check results feed the separate Stripe, paid-access, and Brief PDF path. Operations and communications support the relevant workflows.",
-        width: 420,
-        height: 640,
-        caption:
-          "Conceptual workflow map. Review and payment apply to different paths; this is not a deployment or network diagram.",
-      },
-    ],
-    website: siteConfig.cyberbit,
-    featured: true,
-    visibility: "public",
-  },
+  creditopsProject,
+  tradeflowProject,
   ...applicationSecurityProjects,
   ...verificationSecurityProjects,
-  {
-    title: "Job Intelligence Engine",
-    slug: "ai-job-intelligence-engine",
-    status: "Active",
-    category: "Workflow automation / Systems engineering",
-    kind: "personal",
-    description:
-      "An engineering system for job discovery, normalization, matching against career evidence, and application workflows.",
-    caseStudy: {
-      overview: {
-        paragraphs: [
-          "I built this personal engineering system to bring job discovery, career evidence, application preparation, and progress tracking into one workflow.",
-        ],
-      },
-      problem: {
-        paragraphs: [
-          "Job searching across multiple sources fragments information and repeats the same evaluation and writing tasks. Application material also needs to stay grounded in actual career experience.",
-        ],
-      },
-      system: {
-        paragraphs: [
-          "Manual imports, configured job-board discovery, and Outlook discovery feed normalized job records. The Career Truth Vault stores structured career facts and source references for requirement matching and application drafts.",
-        ],
-      },
-      architecture: {
-        paragraphs: [
-          "The React/TypeScript application uses Next.js-style App Router conventions through vinext and Vite. Source configuration targets Cloudflare Workers; Cloudflare D1 and Drizzle support persisted jobs, career evidence, assessments, and tracking.",
-          "Normalization, deduplication, and provenance precede matching. Selected jobs feed application preparation and tracking; Outlook also produces workflow suggestions for review.",
-        ],
-      },
-      whatIBuilt: {
-        bullets: [
-          "Greenhouse, Lever, and Ashby public-feed adapters; JSON-LD job extraction; and LinkedIn public-page/import parsing.",
-          "Microsoft Graph Mail.Read integration for discovering job, recruiter, and application messages.",
-          "Evidence-linked matching, recruiter-message templates, optional cover-letter templates, screening-answer assistance, and résumé/application packets.",
-          "Résumé review and DOCX export, plus a tracker for stages, notes, follow-ups, outcomes, and event history.",
-        ],
-      },
-      engineeringDecisions: {
-        bullets: [
-          "Application assistance uses deterministic templates grounded in career evidence; requirement scoring is deterministic as well. The current workflow does not use a language model.",
-          "Retain evidence references and gaps. Unresolved personal screening questions require user input rather than an invented answer.",
-          "Run discovery against selected inputs and configured sources; do not treat a source adapter as unrestricted background crawling.",
-        ],
-      },
-      securityPrivacy: {
-        paragraphs: [
-          "The Outlook connector requests read-only Mail.Read access; job relevance is filtered by the application, not by a job-only mailbox permission. Résumé approval and export use review and verification gates. The tracker requires confirmation of an external submission before marking an application Applied.",
-        ],
-      },
-      currentState: {
-        paragraphs: [
-          "An active personal engineering system for my own job-search workflow, with assistive preparation and user-controlled tracking.",
-        ],
-      },
-    },
-    technicalHighlights: [
-      "Career facts, source references, and verification states connect matching to application material.",
-      "Approved résumé versions are immutable; application submission remains external and user-confirmed.",
-    ],
-    technologies: [
-      "React",
-      "TypeScript",
-      "vinext",
-      "Vite",
-      "Tailwind CSS",
-      "Cloudflare Workers",
-      "Cloudflare D1",
-      "Drizzle ORM",
-      "Microsoft Graph",
-    ],
-    architectureDiagrams: [
-      {
-        src: "/diagrams/job-engine-workflows.svg",
-        alt: "Job inputs become normalized records. Those records and approved Career Truth Vault evidence feed matching. A user selects jobs for application preparation and review, while the tracker records confirmed external submissions.",
-        width: 420,
-        height: 600,
-        caption:
-          "Conceptual discovery and preparation path. Outlook also supplies tracker suggestions for review; discovered jobs are not automatically submitted.",
-      },
-    ],
-    featured: false,
-    visibility: "public",
-  },
-  {
-    title: "Secure Infrastructure & Homelab",
-    slug: "secure-infrastructure-homelab",
-    status: "Exploring",
-    category: "Infrastructure / Security",
-    kind: "lab",
-    description:
-      "Infrastructure security, isolation, access boundaries, and maintainability in a personal lab.",
-    caseStudy: {
-      overview: {
-        paragraphs: [
-          "The scope covers infrastructure experiments, access boundaries, and maintainability. Specific systems, configurations, and engineering decisions are not yet documented publicly.",
-        ],
-      },
-    },
-    technologies: [],
-    featured: false,
-    visibility: "public",
-  },
 ];
 
 export function getPublicProjects(): Project[] {
@@ -647,8 +395,8 @@ export function getFeaturedProjects(): Project[] {
 const securityProjectSlugs = [
   "devsecops-pipeline",
   "detection-security-lab",
-  "vulnerability-management",
   "cloud-security",
+  "vulnerability-management",
 ];
 
 export function getSecurityProjects(): Project[] {

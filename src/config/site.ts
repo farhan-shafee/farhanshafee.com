@@ -9,12 +9,10 @@ export const siteConfig = {
   linkedin: "https://www.linkedin.com/in/farhanshafee/",
   googleSiteVerification: "", // Only the exact HTML-tag token supplied by the site owner.
   email: "", // TODO: Add a public professional contact address, never a private address.
-  cyberbit: "https://cyberbitsolutions.com",
   ogImage: "/opengraph-image",
 };
 
 export const socialLinks = [
   { label: "GitHub", href: siteConfig.github },
   { label: "LinkedIn", href: siteConfig.linkedin },
-  { label: "CyberBit Solutions", href: siteConfig.cyberbit },
 ].filter(({ href }) => Boolean(href));

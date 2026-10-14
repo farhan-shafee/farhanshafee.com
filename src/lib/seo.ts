@@ -57,10 +57,5 @@ export function personSchema() {
       "Financial technology",
       "Backend systems",
     ],
-    affiliation: {
-      "@type": "Organization",
-      name: "CyberBit Solutions",
-      url: siteConfig.cyberbit,
-    },
   };
 }

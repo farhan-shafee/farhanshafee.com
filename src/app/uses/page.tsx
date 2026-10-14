@@ -13,7 +13,7 @@ export default function UsesPage() {
   const categories = usesCategories.filter(
     (category) => category.items.length > 0,
   );
-  const documentedProjects = ["aegisgraph", "cyberbit-solutions"]
+  const documentedProjects = ["aegisgraph", "tradeflow"]
     .map(getProjectBySlug)
     .filter((project) => project !== undefined);
   return (

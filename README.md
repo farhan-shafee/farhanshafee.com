@@ -1,108 +1,111 @@
 # farhan-shafee.com
 
-Farhan Shafee's personal authority hub for security engineering, AI automation, and fintech systems. Built around factual project records and reviewed technical writing, with no fabricated metrics or filler articles.
+Farhan Shafee's personal engineering portfolio: **Security Engineering × AI Automation × Fintech Systems**. The site presents the work deliberately selected on the current [public GitHub profile](https://github.com/farhan-shafee/farhan-shafee), with reviewed evidence and technical writing. This site repository is private; the deployed pages are public.
 
 ## Develop and verify
 
-Use Node.js 22 or later and npm. Run commands from the repository root:
+Use Node.js 22 or later and npm. Read `AGENTS.md` and the relevant installed Next.js guides before changing framework code. From the repository root:
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). For a production build and local preview:
-
-```sh
-npm run build
-npm start
-```
+Open [localhost:3000](http://localhost:3000). For a production preview, run `npm run build` followed by `npm start`.
 
 Before publishing changes:
 
 ```sh
+npm run format:check
 npm run lint
 npm run typecheck
 npm test
 npm run build
-```
-
-Browser checks use Playwright and axe. Install Chromium once, then run the suite:
-
-```sh
-npx playwright install chromium
 npm run test:browser
 ```
 
-The browser suite starts the production build on port 3100. To use a production server you have already started, set `PLAYWRIGHT_BASE_URL` to its local URL before running it.
-
-Use `npm run format:check` to check formatting or `npm run format` to apply it. These commands describe the verification workflow; consult their output for current results.
+Browser checks use Playwright and axe. Install Chromium once with `npx playwright install chromium`. The suite starts the production build on port 3100. Set `PLAYWRIGHT_BASE_URL` to an existing local or production server when verifying that deployment. Use `npm run format` to apply formatting. Command output supplies current validation results; historical records do not replace a fresh run.
 
 ## Architecture
 
-Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, and system fonts. Pages use React Server Components; small client components provide navigation, theme switching, and copyable article heading links. Content is local and rendered at build time. There is no database, authentication, CMS, or external font request.
+Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, and system fonts. Pages use React Server Components; small client components provide navigation, theme switching, and article heading links. Content is local and rendered at build time. There is no database, authentication, CMS, runtime GitHub fetch, or external font request.
 
-| Location                                     | Purpose                                                                          |
-| -------------------------------------------- | -------------------------------------------------------------------------------- |
-| `src/app/`                                   | Pages, metadata, RSS, sitemap, robots, and `llms.txt`                            |
-| `src/components/`                            | Shared interface and article rendering                                           |
-| `src/config/site.ts`                         | Public identity, canonical domain, social links, contact address                 |
-| `src/data/projects.ts`                       | Projects and case study records                                                  |
-| `src/data/security-projects-core.ts`         | Supporting DevSecOps and Detection case studies                                  |
-| `src/data/security-projects-verification.ts` | Supporting Vulnerability Management and Cloud Security case studies              |
-| `src/data/project-evidence.ts`               | Source-only evidence requests and status rationale; never imported into the site |
-| `src/data/lab.ts`                            | Lab notebook entries                                                             |
-| `src/data/uses.ts`                           | Confirmed tooling and empty categories                                           |
-| `src/data/now.ts`                            | All `/now` content and its reviewed date                                         |
-| `src/lib/writing.ts`                         | Front matter validation, publication filtering, tags, and reading time           |
-| `content/writing/`                           | Trusted local MDX articles and draft outlines                                    |
-| `tests/`                                     | Automated content and browser checks                                             |
+| Location                                     | Purpose                                                                            |
+| -------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `src/app/`                                   | Pages, metadata, RSS, sitemap, robots, and `llms.txt`                              |
+| `src/components/`                            | Shared interface and article rendering                                             |
+| `src/config/site.ts`                         | Public identity, canonical domain, verified social links, optional contact address |
+| `src/data/projects.ts`                       | Project model, AegisGraph case study, public ordering and selectors                |
+| `src/data/creditops-project.ts`              | Publicly approved CreditOps AI presentation with private-source boundary           |
+| `src/data/tradeflow-project.ts`              | Public-source TradeFlow case study and reviewed screenshots                        |
+| `src/data/security-projects-core.ts`         | Supporting DevSecOps and Detection case studies                                    |
+| `src/data/security-projects-verification.ts` | Supporting Cloud Security and Vulnerability Management case studies                |
+| `src/data/project-evidence.ts`               | Source-only provenance, status rationale, and unresolved evidence requests         |
+| `src/data/lab.ts`                            | Public-evidence-backed questions and related implementations                       |
+| `src/data/uses.ts`                           | Confirmed tooling; empty categories remain intentional                             |
+| `src/data/now.ts`                            | `/now` content and its reviewed date                                               |
+| `src/lib/writing.ts`                         | Front matter validation, publication filtering, tags, and reading time             |
+| `content/writing/`                           | Trusted local MDX articles and unpublished drafts                                  |
+| `tests/portfolio-policy.ts`                  | Independent approved-project, retired-route, asset, and publication expectations   |
+| `tests/`                                     | Content and browser verification                                                   |
 
-Public routes: `/`, `/about`, `/work`, `/work/[slug]`, `/writing`, `/writing/[slug]`, `/writing/tag/[tag]`, `/lab`, `/uses`, `/now`, `/contact`, `/rss.xml`, `/llms.txt`, `/sitemap.xml`, and `/robots.txt`. Article and tag routes exist only for published content.
+Public routes include `/`, `/about`, `/work`, approved `/work/[slug]` pages, `/writing`, published article/tag pages, `/lab`, `/uses`, `/now`, `/contact`, `/rss.xml`, `/llms.txt`, `/sitemap.xml`, and `/robots.txt`. Unknown or retired project slugs return 404.
 
-## Maintain content
+## Maintain the public portfolio
 
-### Projects, lab, uses, and now
+The October 14, 2026 public-profile review at `d49cceae12f60252a6a372cc0b03122fa70babc5` establishes seven included projects:
 
-Add a typed record in `src/data/projects.ts` with a unique lowercase slug. Set `kind` to `business`, `personal`, or `lab`, choose an honest `status`, and set `visibility: "public"` to include it in `/work`, its detail route, and the sitemap. `featured: true` also includes it on the homepage. Private records have no public detail route.
+| Order | Project                  | Presentation                                           |
+| ----- | ------------------------ | ------------------------------------------------------ |
+| 1     | AegisGraph               | Primary flagship; public demo and source               |
+| 2     | CreditOps AI             | Recorded public showcase; source private               |
+| 3     | TradeFlow                | Local synthetic SDET lab; public source and demo guide |
+| 4     | SecurePay / DevSecOps    | Supporting security engineering                        |
+| 5     | Detection Engineering    | Supporting security engineering                        |
+| 6     | Cloud Security           | Supporting security engineering                        |
+| 7     | Vulnerability Management | Supporting security engineering                        |
 
-Project statuses use one vocabulary: `Active` (ongoing work, without a deployment claim), `Production` (verified operation), `Completed` (a finished scope), `Exploring` (investigation), and `Archived` (no longer current). AegisGraph, CyberBit, and the personal Job Engine are Active. The four supporting security projects are Completed within their documented reproducible lab scope; the infrastructure/homelab remains Exploring. A website URL, a draft article title, or a project name is not proof that every implementation is operating in production.
+The homepage features the three primary projects and a restrained entry to supporting security work. `/work` preserves those groups. Additional public playbook links can provide depth without becoming flagship case studies. Keep the established premium presentation and AegisGraph's strongest emphasis.
 
-The public hierarchy is AegisGraph as the primary flagship and CyberBit Solutions as the second flagship. Work then groups SecurePay / DevSecOps, Detection Engineering, Vulnerability Management, and Cloud Security as supporting security engineering. Job Intelligence Engine and the infrastructure/homelab follow as other systems and exploration. The homepage features the two flagships and links to the supporting group. The existing presentation variants express that hierarchy; adding a project does not mean making every entry visually equal. Supporting records live in the two `security-projects-*` modules; `projects.ts` assembles the public order and `getSecurityProjects()` selects the Work group. Preserve the established Detection and Job Engine slugs.
+Project inclusion follows the deliberately curated public profile, not ownership or authenticated repository access. Do not add unrelated businesses, private applications, or personal experiments. Previously excluded project routes stay retired with 404 responses, without unrelated redirects. Remove their obsolete assets from `public/` as well as their records: deleting a card alone does not stop an image or diagram from being served. `tests/portfolio-policy.ts` records those retirement expectations. Historical documents and unpublished drafts do not authorize renewed public promotion.
 
-The optional `caseStudy` object supports `overview`, `problem`, `system`, `demoScenario`, `architecture`, `detectionCorrelation`, `whatIBuilt`, `aiGrounding`, `detectionRegression`, `evidenceExport`, `engineeringDecisions`, `securityPrivacy`, `validation`, `lessonsConstraints`, and `currentState`. Each section accepts `paragraphs`, `bullets`, and/or ordered `steps`, with an optional editorial `title` that preserves its stable section anchor. Only populated sections render; a title alone is not content. Omit unanswered sections rather than adding placeholder prose. Describe outcomes and limitations under the relevant verified section.
+Typed records use unique lowercase slugs. `visibility: "public"` permits a case-study route, Work entry, and sitemap URL; `featured: true` includes the project on the homepage. Private presentation records have no public detail route. `sourceVisibility` describes source availability independently: CreditOps has a public presentation with `sourceVisibility: "private"`, a plain **Source private** label, and no `github` URL. Never invent or link a private repository URL, or attach source-code schema to private source. Public-source projects use verified `github` links.
 
-`technicalHighlights` and `technologies` accept verified project-specific lists. `screenshots` and `architectureDiagrams` accept reviewed local image records with `src`, meaningful `alt`, intrinsic `width`/`height`, and a factual `caption`. Store assets under `public/`, redact sensitive information, and only add a record after the file exists. Empty evidence arrays render nothing. The detail page uses the existing typography and layout; adding evidence does not require a new page template. `website`, `github`, and labeled `links` provide public references. Optional `inspection` data supplies a concise summary, reviewed evidence links, and labeled system facts near the top of a case study; `guidedLinks` adds a restrained guided-inspection group. Mark a link `featured: true` to include it on cards. Supporting cards expose source links without preview images. `ProjectInspection` and `EvidenceLinks` are server components with no runtime fetching. Empty evidence renders nothing.
+Statuses share one vocabulary: `Active`, `Production`, `Completed`, `Exploring`, and `Archived`. AegisGraph is Active. CreditOps' approved recorded showcase, TradeFlow's local deliverable, and the four supporting labs are Completed within their documented scopes. These statuses do not establish production trading, SOC, cloud, or enterprise operation. A demo URL alone cannot support a Production status.
 
-Maintain unanswered questions in `src/data/project-evidence.ts`. It contains structured TODOs and evidence references for the projects, separate from renderable data. It must not be imported by app routes, components, or public content loaders. After Farhan verifies a detail against code, configuration, or an approved artifact, write the factual account into `projects.ts` and resolve its evidence task. Keep unresolved TODOs out of public fields, metadata, and image captions.
+`projects.ts` assembles the approved order; `getSecurityProjects()` selects the supporting group. Preserve the established Detection slug. Add implementation facts only after reviewing public source, public documentation, or an explicitly approved artifact. For CreditOps, use only the public profile and showcase: do not inspect or copy private implementation into this site.
 
-AegisGraph V2 is a synthetic fintech security investigation environment with an eight-scenario corpus, causal replay, evidence-derived hypotheses, bounded rule comparisons, and hash-verifiable exports. Its September 27 refinement adds deterministic decision receipts explaining both incident formation and unmet correlation conditions, with guided incident, near-miss, and blocked-rule examples. Public exploration is read-only and deterministic; saved reviews, rule approvals, and optional OpenAI analysis belong to local mode. The application validates citations and typed claim support outside the model. Rule measurements describe synthetic fixtures, and unsigned export manifests establish hash agreement rather than authenticity. [The original AegisGraph evidence review](docs/aegisgraph-evidence-review.md) remains historical; the [final refinement review](https://github.com/farhan-shafee/aegisgraph/blob/main/docs/FINAL_EXCELLENCE_REVIEW.md) and [September 27 CI](https://github.com/farhan-shafee/aegisgraph/actions/runs/36348207961) record the current validation at `f616185`. Later September 27 deployment inspection confirmed that revision on both hosted services, superseding the review document's earlier pending API-rollout note. Keep historical live-provider results separate from deterministic evaluations. Authentication, tenant isolation, production ingestion, and independent evidence retention remain future work.
+The optional `caseStudy` sections accept reviewed `paragraphs`, `bullets`, and ordered `steps`, with an optional editorial `title` that preserves the section anchor. Only populated sections render. Omit unanswered sections rather than adding placeholders. `technicalHighlights` and `technologies` contain verified project-specific facts.
 
-[AegisGraph's public source](https://github.com/farhan-shafee/aegisgraph) and [successful GitHub Actions run 35179396463](https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463) were verified on September 17, 2026 UTC. The backend, frontend, and browser jobs passed at revision `534679eac4a04ee0298fe6f35d1422fa63a4fe90`; cite that run rather than implying every later `main` revision is covered. CI uses deterministic providers without live OpenAI calls. The later public release review records 146 backend, 25 frontend, and 13 browser tests plus 28 deterministic evaluations; the earlier 23-frontend-test hardening result remains historical in the evidence notes. This is a historical source/CI verification record, separate from the later hosted-demo check below.
+`screenshots` and `architectureDiagrams` require existing reviewed local assets, descriptive alt text, intrinsic dimensions, and factual captions. Store them under `public/`, preserve aspect ratios, and exclude secrets or private data. TradeFlow's two images come from its public synthetic workstation captures. Do not generate implementation evidence or imply that local screenshots establish a hosted service.
 
-The CyberBit and Job Intelligence Engine case studies contain source-validated capabilities, project-specific stacks, and authored conceptual diagrams. [Their evidence review](docs/flagship-evidence-review.md) inventories the claims added in that earlier pass, their basis, corrections to supplied terminology, runtime/provider limitations, and recommended screenshots. That source review was read-only; it did not exercise sibling applications or live integrations. CyberBit's source includes separate free, reviewed-report, and paid-Brief workflows. The Job Intelligence Engine uses vinext/Vite with Next.js-style routes, deterministic requirement scoring, and evidence-backed application templates. Do not infer a standard Next.js runtime or an LLM integration from its name.
+`website`, `github`, and labeled `links` supply public references. Optional `inspection` data supplies a summary, evidence links, and system facts; `guidedLinks` adds a restrained inspection group. Mark a link `featured: true` for card display. Supporting cards expose source links without preview galleries. These components are server-rendered and fetch no external evidence at runtime.
 
-Use **Job Intelligence Engine** as the public project name and **Workflow automation / Systems engineering** as its category. Preserve `/work/ai-job-intelligence-engine` for URL stability; the historical slug does not describe a current AI capability. The project remains Active. Metadata, cards, and breadcrumb JSON-LD derive their wording from the shared project record. Keep broader personal AI Automation positioning separate from claims about this project's implemented functionality. Its related unpublished article uses the filename and slug `building-a-job-intelligence-engine`, removing unsupported AI branding while preserving its title, body, and draft status.
+Keep provenance and unresolved requests in `src/data/project-evidence.ts`. Its exclusive `path`/`url` source records bind claims to inspected artifacts or public revisions. Never import it into application code or serialize its TODOs into pages, metadata, feeds, or bundles. The private site repository still must not contain credentials, confidential source, private contact details, or sensitive infrastructure information.
 
-Two real CyberBit interface captures accompany the case study: a completed public check of the owner's domain and the public Snapshot sample-report layout using explicitly fictional data. The sample is not a generated or reviewed client artifact. A third admin/report capture remains blocked; actual reviewed/generated report evidence, a sanitized admin view, and the paid Brief experience are still outstanding. No measured outcomes are published. The diagrams use the existing palette, adapt to the site's light/dark color scheme, and represent conceptual relationships rather than private topology or deployment evidence. General experience and this portfolio's stack must not be used to infer another project's technologies. Use public HTTPS links. Source-only notes and private records are not secret stores; never include credentials or sensitive infrastructure details.
+Edit `lab.ts` for evidence-backed open questions, `uses.ts` for confirmed tools, and `now.ts` for current relevant work. Change the Now date only after reviewing its content. Language experience and project stacks do not establish personal editor, hardware, or service use.
 
-Edit `src/data/lab.ts` for experiments and `src/data/uses.ts` for tools. Empty tooling categories are intentional until products are confirmed. Edit `src/data/now.ts` to update `/now`; change its `updated` date only when reviewing that content. Do not publish private infrastructure details.
+## Evidence boundaries and historical records
 
-### Hosted AegisGraph and proof inspection
+AegisGraph's public mode is read-only and deterministic. Saved analyst reviews, rule approval, and optional OpenAI analysis belong to local/interview mode. Its eight-scenario corpus, causal replay, positive/negative correlation receipts, bounded typed claims, regression comparisons, and unsigned hash-verifiable exports remain synthetic demonstration evidence. Authentication, tenant authorization, production ingestion, and independent evidence retention remain future work.
 
-The [public AegisGraph demo](https://aegisgraph.farhan-shafee.com) is now hosted on a Vercel frontend with Railway FastAPI and Railway PostgreSQL. Public mode is read-only with two deterministic analyst questions, no live OpenAI calls, and no persisted answers. Optional real OpenAI analysis and human workflow mutation remain separate local/interview-mode capabilities. Hosting is not a production SOC readiness claim.
+The September 27 refinement at `f616185` has [CI run 36348207961](https://github.com/farhan-shafee/aegisgraph/actions/runs/36348207961), with separate backend, frontend, browser, original-evaluation, and V2-benchmark results. October 14 inspection found public main unchanged and rechecked the existing CI logs, deterministic runtime, guided routes, and receipt behavior. It did not execute new source suites or live-model calls. The [final refinement review](https://github.com/farhan-shafee/aegisgraph/blob/main/docs/FINAL_EXCELLENCE_REVIEW.md) retains its initial pending API-rollout note; the site's later September 27 deployment record and current public reads are separate evidence.
 
-The September 17 proof-density review observed HTTP 200 for the demo and runtime endpoint, confirmed the read-only deterministic runtime, and inspected source revision `1670ca4b09e7000019401d852ab98e140bd137e7`. [CI run 35251887304](https://github.com/farhan-shafee/aegisgraph/actions/runs/35251887304) passed backend, frontend, and browser jobs at that revision. Historical release counts and OpenAI validation stay attached to their original scope. [The pre-edit audit](docs/proof-density-audit.md) records the live-site findings and implementation boundaries.
+Keep dated AegisGraph history attached to its original revisions. September 17 [source CI 35179396463](https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463) covers `534679eac4a04ee0298fe6f35d1422fa63a4fe90`; [hosted-demo CI 35251887304](https://github.com/farhan-shafee/aegisgraph/actions/runs/35251887304) covers `1670ca4b09e7000019401d852ab98e140bd137e7`. The [original evidence review](docs/aegisgraph-evidence-review.md) and [historical proof inspection](docs/proof-density-audit.md) remain archival records. Historical OpenAI observations do not extend into current deterministic benchmark accuracy or general model-safety claims.
 
-### Writing
+CreditOps' public showcase plays recorded model-assisted investigations using synthetic data. Playback makes no fresh model or MCP diagnostic calls. Fresh diagnostics are a separate mode; recordings do not demonstrate model-directed follow-ups. Initiating causes remain unconfirmed and human review remains required. Source stays private.
 
-Create `content/writing/your-article-slug.mdx`. The `slug` must match the filename. Start with a draft:
+TradeFlow's public source demonstrates a locally run synthetic workstation and reproducible test engineering. Its exact-head October 13 [CI run 38339620878](https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/38339620878) covers `dc8ac09`, with 34 unit checks and 205 Playwright executions counted separately. It establishes no live brokerage, exchange execution, matching engine, real P&L, employer integration, or production trading suitability.
+
+## Writing
+
+Create `content/writing/your-article-slug.mdx`; its filename and `slug` must match. Start unpublished:
 
 ```mdx
 ---
 title: "An evidence-based article title"
 description: "A concise account of what this article covers."
-date: "2026-09-16"
+date: "2026-10-14"
 slug: "your-article-slug"
 tags: ["security-engineering"]
 draft: true
@@ -114,43 +117,30 @@ featured: false
 TODO: Add reviewed observations and supporting evidence.
 ```
 
-Front matter also supports `updated`, `canonical` (an HTTPS URL), and `ogImage` (an HTTPS URL or root-relative path). Both `date` and `updated` require quoted `YYYY-MM-DD` strings so invalid dates cannot be silently normalized by YAML. Tags use lowercase words separated by hyphens. The default canonical URL is the production article URL; use an override only for a deliberate canonical source. An article that declares a different canonical URL is omitted from this site's sitemap. Relative image paths refer to files under `public/`.
+Front matter also supports `updated`, HTTPS `canonical`, and HTTPS or root-relative `ogImage`. Quote `date` and `updated` as `YYYY-MM-DD` strings. Tags use lowercase hyphenated words. The default canonical is the production article URL; a deliberately different canonical excludes the article from this sitemap. Relative image paths refer to `public/`.
 
-Use one page title from front matter, then `##` and `###` headings in the body. Fenced code blocks support syntax highlighting. Headings receive copy-link anchors. Longer articles receive a table of contents, and related writing is derived from published content. Reading time is an estimate based on prose words and non-empty code lines.
+Use front matter for the page title and `##`/`###` headings in the body. Code fences support syntax highlighting; headings receive copy-link anchors. Longer articles receive a table of contents. Related writing derives only from published content. Reading time estimates prose words and non-empty code lines.
 
-Publishing checklist:
+Before publication, review every claim and artifact, check links and mobile rendering, obtain approval for publication and any confidential material, set the actual publication date and `draft: false`, then run all validation. Change `updated` only after a substantive review or revision.
 
-1. Replace TODOs, validate claims, and add real evidence where needed. Obtain permission for anything confidential.
-2. Check links, accessible image descriptions, code formatting, metadata, and mobile layout.
-3. Set the actual publication date, and set `draft: false` explicitly. Update `updated` only after a substantive review or revision.
-4. Run the verification commands, inspect the article, and rebuild or redeploy.
+Draft status defaults to true. Drafts and future-dated articles are excluded from public indexes, tags, sitemap, RSS, and article routes, including development and previews. There is no public draft bypass. Review trusted drafts in the editor or an ignored local rendering artifact. Dates use UTC; rebuild on publication day to refresh static indexes and feeds. A future date alone is not a privacy control: retain `draft: true` until approved.
 
-Draft status defaults to true when omitted. Drafts and articles whose publication date has not arrived are excluded from every public article query, index, tag route, sitemap, RSS feed, and article route, including local development and Vercel previews. There is no public draft-preview bypass. Review drafts in your editor, or render their trusted bodies with `ArticleBody` into an ignored local HTML artifact while retaining `draft: true`. Such an artifact is not a public article route. Dates use UTC. Pages are statically rendered, including on-demand paths; rebuild on the publication date to refresh indexes, feeds, and sitemap together. A directly requested article path may become available on or after its date, so a future date is not a private draft mechanism: keep unreviewed writing `draft: true`.
+The collection retains one published article and five unpublished drafts. No draft was published by the October 14 synchronization; excluded-project drafts and older outlines remain private editorial material. Do not expose them through Work, related-writing links, feeds, or metadata.
 
-The writing collection contains one published article and five remaining drafts. `content/writing/building-a-job-intelligence-engine.mdx` contains the Job Intelligence Engine technical draft, “Building a Job Intelligence Engine for Multi-Source Job Discovery and Application Workflows.” Its filename and slug use `building-a-job-intelligence-engine`, and `draft: true` keeps it out of routes, indexes, tags, feeds, and the sitemap. [Article evidence notes](docs/article-evidence-review.md) map its implementation claims to the reviewed project evidence. Four older files remain outlines with evidence TODOs and claims to validate.
+`content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx` remains the featured published article, **Building an Evidence-Grounded AI Security Investigation System**, dated September 17, 2026, with its existing September 27 update note. Preserve its original narrative and dates. The [article evidence review](docs/aegisgraph-article-evidence-review.md) maps its claims, synthetic screenshots, and simplified diagram; the [article plan](docs/aegisgraph-article-plan.md) remains historical. Earlier draft checks are distinct from publication validation.
 
-`content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx` is the published, featured article, “Building an Evidence-Grounded AI Security Investigation System.” Farhan approved its editorial judgments and authorized publication with `draft: false`, `featured: true`, and publication date `2026-09-17`. Its filename and slug match; the public route is `/writing/building-an-evidence-grounded-ai-security-investigation-system`. [The article evidence review](docs/aegisgraph-article-evidence-review.md) maps its implementation claims, two existing synthetic-data screenshots, and simplified architecture diagram to the inspected source; [the article plan](docs/aegisgraph-article-plan.md) retains the planning and publication context. Historical draft checks in those notes are separate from publication validation.
+## Identity, SEO, privacy, and deployment
 
-### Social and contact links
+`src/config/site.ts` centralizes Farhan's identity, `https://farhan-shafee.com`, GitHub, verified LinkedIn, optional email, and Search Console configuration. Social links and Person/ProfilePage `sameAs` use GitHub and LinkedIn. There is no business website entry or business affiliation in identity metadata. The optional email remains empty until a public professional address is supplied; no contact form or email service is required.
 
-Edit `src/config/site.ts`. GitHub, CyberBit Solutions, the production domain, and shared metadata live here. `linkedin` is centrally configured with Farhan's owner-provided verified profile, `https://www.linkedin.com/in/farhanshafee/`. `email` remains empty and is not rendered; add a public professional contact address when available. Never add a private email address or secret to this file. No contact form or email service is required.
+Pages have distinct canonical metadata, OpenGraph/Twitter cards, relevant project/article structured data, breadcrumbs, RSS, sitemap, and `llms.txt`. Only approved project records and published writing supply discovery content. Sitemap modification dates derive from article dates and the reviewed Now date. Private source must not receive a repository URL or `SoftwareSourceCode` reference.
 
-The existing header, footer, About, Contact, `llms.txt`, and Person/ProfilePage `sameAs` references use the central `linkedin` value. [Post-launch integration notes](docs/post-launch-integration.md) record the configured profiles, screenshot capture paths, and Search Console steps.
+`siteConfig.googleSiteVerification` is empty until Farhan supplies the exact HTML-tag token. Root metadata emits verification only for a real configured value. Supply the tag's content value, rebuild/deploy, and complete ownership verification in Search Console. URL-prefix HTML verification and Domain-property DNS verification are separate; the repository performs neither ownership verification nor sitemap submission.
 
-## SEO, privacy, and deployment
+Security headers live in `next.config.ts`. Static rendering and the initial theme script require inline scripts/styles, so CSP permits `unsafe-inline`; this is not a strict nonce-based CSP. Production excludes `unsafe-eval`, while development permits it for tooling. MDX is executable trusted repository content, never a remote or user-submission format. JSON-LD is safely serialized.
 
-Pages have distinct metadata and production canonical URLs, with OpenGraph/Twitter cards, Person/ProfilePage and article structured data where applicable, breadcrumbs, RSS, sitemap, and a factual `llms.txt`. Sitemap modification dates come only from article dates and the reviewed `/now` date. Published content supplies tags; drafts cannot create public tag pages.
+There are no analytics, tracking cookies, third-party scripts, or runtime service credentials. Theme preference is stored locally under `fs-theme`. Do not commit secrets or confidential data, including to source-only notes.
 
-`siteConfig.googleSiteVerification` is an optional, empty configuration point for the exact Google Search Console HTML-tag token supplied by Farhan. The root metadata emits `google-site-verification` only when that value is set. Supply the tag's content value, not the whole HTML tag or a DNS record. Rebuild and deploy after setting it, then complete verification in Search Console. HTML-tag verification applies to a URL-prefix property; a Domain property requires DNS verification. No ownership verification or sitemap submission is performed by this repository.
+Deploy with Vercel's Next.js preset and this repository as the root directory. `npm run build` requires no service credentials. All production URLs derive from `siteConfig.url`. Bind both apex and www domains, configure DNS and HTTPS, and preserve the existing host-specific HTTP 308 www-to-apex redirect with path/query retention. Repository settings do not provision DNS or bind domains.
 
-Security headers live in `next.config.ts`: CSP, content-type protection, framing protection, referrer and permissions policies, and production HSTS. The static App Router rendering and initial theme script require inline scripts, so CSP permits `unsafe-inline` for scripts and styles. This is a deliberate limitation: it is not a strict nonce-based CSP. Production does not allow `unsafe-eval`; development permits it for tooling. MDX is executable content and must come only from trusted, reviewed repository files, never user submissions or remote input. JSON-LD is safely serialized.
-
-There are no analytics, tracking cookies, third-party scripts, or runtime service credentials. The theme follows the system preference until changed; only the chosen theme is stored in the browser under `fs-theme`. Do not commit secrets, private contact information, or sensitive network configuration.
-
-The repository is ready for Vercel's Next.js preset with this repository as the root directory. Use `npm run build`; no secrets or service setup are required. The canonical production domain is `https://farhan-shafee.com`, defined in `src/config/site.ts`. All site URLs in metadata, structured data, feeds, and discovery files derive from that setting.
-
-When deploying, associate both `farhan-shafee.com` and `www.farhan-shafee.com` with the hosting project and configure their DNS and HTTPS certificates. The host-specific rule in `next.config.ts` permanently redirects `https://www.farhan-shafee.com` to `https://farhan-shafee.com` with HTTP 308, preserving the path and query string. Other hosts, including local and preview hosts, do not match this rule. Repository configuration alone does not configure DNS or bind domains to a hosting project.
-
-Vercel preview deployments receive `noindex, nofollow` metadata and an `X-Robots-Tag` header, and their `robots.txt` disallows crawling. These are indexing controls, not access restrictions. A protected preview should use Vercel's deployment protection.
-
-The initial implementation record did not include deployment; the personal site now runs at the canonical production domain above. Headers require a Next.js-capable host; a generic static file host will not apply `next.config.ts` headers automatically.
+Vercel previews emit `noindex, nofollow`, an `X-Robots-Tag` header, and disallowing robots rules. These are indexing controls; use deployment protection for access restrictions. Headers and redirects require a Next.js-capable host. After publication, verify the exact deployment commit and production routes, discovery files, retired 404s/assets, both themes, and narrow layouts.

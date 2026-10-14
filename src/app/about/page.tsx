@@ -5,7 +5,7 @@ import { absoluteUrl, pageMetadata, personSchema } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "About",
-  "Farhan Shafee's work connects fintech software engineering, security engineering, and AI-assisted automation. Creator of AegisGraph and CyberBit Solutions.",
+  "Farhan Shafee's work connects fintech software engineering, evidence-driven security systems, human-reviewed AI, and trading-workflow test engineering.",
   "/about",
 );
 
@@ -44,22 +44,23 @@ export default function AboutPage() {
         </section>
         <section
           className="editorial-narrative-section"
-          aria-labelledby="security-product-work"
+          aria-labelledby="engineering-quality"
         >
-          <p className="editorial-label">02 / Product work</p>
+          <p className="editorial-label">02 / Engineering quality</p>
           <div>
-            <h2 id="security-product-work">Building CyberBit Solutions</h2>
+            <h2 id="engineering-quality">
+              Trading workflows &amp; test evidence
+            </h2>
             <p>
-              I created CyberBit Solutions to develop cybersecurity tools and
-              services for businesses. Scoped account reviews and remediation
-              sit alongside public checks and human-reviewed Snapshot reporting.
-              The application connects intake, report preparation, payments, and
-              communications while keeping service authorization and automated
-              signals separate.
+              TradeFlow makes my approach to quality engineering inspectable:
+              each test owns its authenticated session and order records,
+              independent contracts validate responses, and cross-layer checks
+              follow the exact record through a workflow. Its trading
+              workstation and data are synthetic. The source, test strategy, and
+              failure evidence show the engineering decisions without claiming
+              employer infrastructure or live trading.
             </p>
-            <TextLink href="/work/cyberbit-solutions">
-              Inside the CyberBit system
-            </TextLink>
+            <TextLink href="/work/tradeflow">Inside TradeFlow</TextLink>
           </div>
         </section>
         <section
@@ -87,6 +88,14 @@ export default function AboutPage() {
               remains an analyst decision in the local workflow.
             </p>
             <p>
+              CreditOps AI explores the same need for review in trading-incident
+              investigation. Its public showcase plays recorded model-assisted
+              assessments using synthetic evidence, with no fresh model or MCP
+              diagnostic calls during playback. Original proposals and recorded
+              advisories remain inspectable; initiating causes remain
+              unconfirmed. Its source is private.
+            </p>
+            <p>
               The supporting security work applies the same discipline at other
               points in the lifecycle: validate scanner evidence before a CI
               decision, test detection changes against known cases, and require
@@ -96,6 +105,7 @@ export default function AboutPage() {
             </p>
             <div className="editorial-context-links">
               <TextLink href="/work/aegisgraph">Inside AegisGraph</TextLink>
+              <TextLink href="/work/creditops-ai">Inside CreditOps AI</TextLink>
               <TextLink href="/work#security-engineering">
                 Supporting security engineering
               </TextLink>

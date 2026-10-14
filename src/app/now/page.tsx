@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Now",
-  "What Farhan Shafee is building, studying, and investigating: AegisGraph, CyberBit Solutions, and the evidence boundaries of security automation.",
+  "Farhan Shafee's current public engineering work: AegisGraph, CreditOps AI, TradeFlow, and evidence-driven security validation.",
   "/now",
 );
 

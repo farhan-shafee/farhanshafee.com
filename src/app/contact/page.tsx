@@ -17,7 +17,7 @@ export default function ContactPage() {
       <PageIntro
         eyebrow="Contact"
         title="Engineering & collaboration."
-        description="Engineering opportunities and technical discussions through LinkedIn; business security inquiries through CyberBit."
+        description="Engineering opportunities and technical discussions in security, AI systems, fintech automation, and test engineering."
       />
       <div className="editorial-contact-list">
         {(siteConfig.email || siteConfig.linkedin) && (
@@ -47,18 +47,6 @@ export default function ContactPage() {
             </div>
           </section>
         )}
-        <section className="editorial-contact-row">
-          <h2>CyberBit inquiries</h2>
-          <div>
-            <p>
-              For business security checks, reports, and service inquiries,
-              start with CyberBit Solutions.
-            </p>
-            <TextLink href={siteConfig.cyberbit} external>
-              Visit CyberBit Solutions
-            </TextLink>
-          </div>
-        </section>
         <section className="editorial-contact-row">
           <h2>Technical discussion</h2>
           <div>

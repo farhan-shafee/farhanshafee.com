@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata(
   "Lab",
-  "Farhan Shafee's engineering notebook on detection signals, AI-assisted security workflows, and infrastructure access boundaries.",
+  "Farhan Shafee's engineering notebook on detection signals, human-reviewed AI, and test isolation and contract boundaries.",
   "/lab",
 );
 

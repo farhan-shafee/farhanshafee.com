@@ -6,15 +6,23 @@ import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { projectEvidenceBacklog } from "../src/data/project-evidence";
+import { labEntries } from "../src/data/lab";
 import {
   getPublicProjects,
   getFeaturedProjects,
   getSecurityProjects,
+  getProjectBySlug,
   projects,
   projectStatuses,
   type Project,
   type ProjectImage,
 } from "../src/data/projects";
+import {
+  approvedProjectSlugs,
+  excludedPublicContent,
+  retiredProjectRoutes,
+  retiredPublicAssets,
+} from "./portfolio-policy";
 
 // Next's bundler unwraps this CommonJS default export; native Node/tsx does not.
 // Expose the real forwardRef on the test process's wrapper; do not mock image markup.
@@ -65,25 +73,69 @@ const imageFixture: ProjectImage = {
 
 const engineeringCaseSlugs = [
   "aegisgraph",
-  "cyberbit-solutions",
-  "ai-job-intelligence-engine",
+  "creditops-ai",
+  "tradeflow",
 ] as const;
-
-const exploringLabSlugs = ["secure-infrastructure-homelab"] as const;
 
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
 
-test("Job Intelligence Engine retains its established URL and accurate public positioning", () => {
-  const project = getPublicProjects().find(
-    ({ slug }) => slug === "ai-job-intelligence-engine",
+test("public portfolio follows the deliberately selected GitHub hierarchy", () => {
+  assert.deepEqual(
+    getPublicProjects().map(({ slug }) => slug),
+    [...approvedProjectSlugs],
   );
-  assert.ok(project, "The established project slug must remain public");
-  assert.equal(project.title, "Job Intelligence Engine");
-  assert.equal(project.category, "Workflow automation / Systems engineering");
-  assert.equal(project.status, "Active");
-  assert.equal(project.kind, "personal");
-  assert.equal(project.featured, false);
-  assert.doesNotMatch(JSON.stringify(getPublicProjects()), oldJobEngineTitle);
+  assert.deepEqual(
+    getFeaturedProjects().map(({ slug }) => slug),
+    approvedProjectSlugs.slice(0, 3),
+  );
+  assert.deepEqual(
+    getSecurityProjects().map(({ slug }) => slug),
+    approvedProjectSlugs.slice(3),
+  );
+  assert.doesNotMatch(
+    JSON.stringify(getPublicProjects()),
+    excludedPublicContent,
+  );
+});
+
+test("CreditOps exposes its recorded public showcase while keeping source private", async () => {
+  const project = getProjectBySlug("creditops-ai");
+  assert.ok(project);
+  assert.equal(project.website, "https://creditops-ai-showcase.vercel.app");
+  assert.equal(project.sourceVisibility, "private");
+  assert.equal(project.github, undefined);
+  const props = { params: Promise.resolve({ slug: project.slug }) };
+  const html = renderToStaticMarkup(await ProjectPage(props));
+  assert.match(html, /Source private/);
+  assert.match(html, /recorded/i);
+  assert.match(html, /synthetic/i);
+  assert.match(html, /no (?:fresh|new) model or MCP/i);
+  assert.match(html, /unconfirmed/i);
+  assert.match(html, /human review/i);
+  assert.doesNotMatch(
+    html,
+    /SoftwareSourceCode|codeRepository|github\.com\/farhan-shafee\/creditops/i,
+  );
+});
+
+test("retired projects reject routes and metadata and remove publicly served assets", async () => {
+  const isNotFound = (error: unknown) =>
+    error instanceof Error &&
+    "digest" in error &&
+    String(error.digest).includes("404");
+  for (const route of retiredProjectRoutes) {
+    const slug = route.split("/").at(-1)!;
+    assert.equal(getProjectBySlug(slug), undefined);
+    assert.ok(!generateStaticParams().some((entry) => entry.slug === slug));
+    const props = { params: Promise.resolve({ slug }) };
+    await assert.rejects(ProjectPage(props), isNotFound);
+    await assert.rejects(generateMetadata(props), isNotFound);
+  }
+  for (const asset of retiredPublicAssets)
+    assert.ok(
+      !fs.existsSync(path.resolve("public", `.${asset}`)),
+      `${asset} must leave public/`,
+    );
 });
 
 test("absent or whitespace-only content creates no empty case-study modules", () => {
@@ -346,7 +398,7 @@ test("project presentation distinguishes primary and second flagships from suppo
   assert.equal(flagship.match(/<img\b/g)?.length, 1);
   assert.match(flagship, /alt="Test-only interface description"/);
   assert.match(flagship, /<figcaption>Test-only caption\.<\/figcaption>/);
-  assert.doesNotMatch(flagship, /A reviewed technical statement\./);
+  assert.match(flagship, /A reviewed technical statement\./);
   for (const html of [primary, flagship]) {
     assert.match(html, /href="https:\/\/example.com\/source"/);
     assert.doesNotMatch(html, /href="https:\/\/example.com\/details"/);
@@ -368,18 +420,9 @@ test("project presentation distinguishes primary and second flagships from suppo
   }
 });
 
-test("Work puts AegisGraph and CyberBit previews before the supporting engineering work", () => {
+test("Work prioritizes three selected systems before four supporting security projects", () => {
   const html = renderToStaticMarkup(WorkPage());
-  const order = [
-    "aegisgraph",
-    "cyberbit-solutions",
-    "devsecops-pipeline",
-    "detection-security-lab",
-    "vulnerability-management",
-    "cloud-security",
-    "ai-job-intelligence-engine",
-    ...exploringLabSlugs,
-  ];
+  const order = [...approvedProjectSlugs];
   assert.deepEqual(
     getPublicProjects().map(({ slug }) => slug),
     order,
@@ -393,26 +436,26 @@ test("Work puts AegisGraph and CyberBit previews before the supporting engineeri
   assert.equal(html.match(/<img\b/g)?.length, 2);
   assert.deepEqual(
     getFeaturedProjects().map(({ slug }) => slug),
-    order.slice(0, 2),
-    "Homepage selection preserves the two flagships; Work carries the complete set",
+    order.slice(0, 3),
+    "Homepage selection preserves the three primary projects; Work carries the complete set",
   );
   assert.match(html, /id="security-engineering"/);
-  for (const slug of order.slice(0, 2)) {
+  for (const slug of ["aegisgraph", "tradeflow"]) {
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project?.screenshots?.[0]);
     assert.ok(html.includes(project.screenshots[0].src.replace(/\//g, "%2F")));
   }
 });
 
-test("flagship inspection separates public evidence from local capabilities and reviewed samples", () => {
+test("flagship inspection separates live demo, recorded playback, and local test capabilities", () => {
   const aegisgraph = getPublicProjects().find(
     ({ slug }) => slug === "aegisgraph",
   );
-  const cyberbit = getPublicProjects().find(
-    ({ slug }) => slug === "cyberbit-solutions",
-  );
+  const creditops = getProjectBySlug("creditops-ai");
+  const tradeflow = getProjectBySlug("tradeflow");
   assert.ok(aegisgraph?.inspection);
-  assert.ok(cyberbit?.inspection);
+  assert.ok(creditops?.inspection);
+  assert.ok(tradeflow?.inspection);
   const source = "https://github.com/farhan-shafee/aegisgraph";
   const aegisLinks = aegisgraph.inspection.links.map(({ href }) => href);
   for (const href of [
@@ -451,24 +494,19 @@ test("flagship inspection separates public evidence from local capabilities and 
   assert.match(modes.get("Local/interview mode") ?? "", /optional OpenAI/i);
   assert.match(modes.get("Hosting") ?? "", /Vercel.*Railway/i);
 
-  assert.deepEqual(
-    new Set(cyberbit.inspection.links.map(({ href }) => href)),
-    new Set([
-      "https://cyberbitsolutions.com",
-      "https://cyberbitsolutions.com/free-scan",
-      "https://cyberbitsolutions.com/methodology",
-      "https://cyberbitsolutions.com/sample-report",
-    ]),
+  assert.match(creditops.inspection.summary, /recorded/i);
+  assert.match(creditops.inspection.summary, /no fresh model or MCP/i);
+  assert.equal(
+    tradeflow.website,
+    undefined,
+    "A local demonstration must not imply a hosted trading app",
   );
-  assert.match(cyberbit.inspection.summary, /fictional/i);
-  assert.match(cyberbit.inspection.summary, /not a client assessment/i);
-  const workflows = new Map(
-    cyberbit.inspection.facts.map(({ label, value }) => [label, value]),
+  assert.ok(
+    tradeflow.inspection.links.some(({ href }) =>
+      href.endsWith("docs/INTERVIEW_DEMO.md"),
+    ),
   );
-  assert.match(workflows.get("Snapshot") ?? "", /human review/i);
-  assert.match(workflows.get("Paid Brief") ?? "", /reporting.*Stripe/i);
-  assert.match(workflows.get("Paid Brief") ?? "", /configuration/i);
-  for (const project of [aegisgraph, cyberbit]) {
+  for (const project of [aegisgraph, creditops, tradeflow]) {
     const links = project.inspection!.links;
     assert.equal(new Set(links.map(({ href }) => href)).size, links.length);
     assert.ok(
@@ -570,7 +608,7 @@ test("engineering case studies contain reviewed content and architecture evidenc
   for (const slug of engineeringCaseSlugs) {
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project, `${slug} must have a public project record`);
-    assert.equal(project.featured, slug !== "ai-job-intelligence-engine");
+    assert.equal(project.featured, true);
     assert.ok(
       project.technologies.length > 0,
       `${slug} needs a verified stack`,
@@ -606,14 +644,17 @@ test("engineering case studies contain reviewed content and architecture evidenc
         ),
         "AegisGraph uses reviewed portfolio assets from the public image directory",
       );
+    } else if (slug === "tradeflow") {
+      assert.equal(project.screenshots?.length, 2);
     } else {
-      assert.ok(
-        project.architectureDiagrams?.length,
-        `${slug} retains its authored conceptual architecture diagram`,
+      assert.equal(
+        project.screenshots,
+        undefined,
+        "Recorded CreditOps evidence is linked without fabricated images",
       );
     }
     const html = render(project);
-    assert.match(html, /id="architecture">Architecture<\/h2>/);
+    assert.match(html, /id="architecture">[^<]+<\/h2>/);
     assert.match(html, /id="technical-highlights">Technical highlights<\/h2>/);
   }
 });
@@ -772,17 +813,19 @@ test("AegisGraph V2 exposes the investigation workflow with separate review and 
   assert.match(html, /<ol class="case-process"[^>]*>/);
 });
 
-test("unverified labs retain their conservative scope", () => {
-  for (const slug of exploringLabSlugs) {
-    const project = projects.find((entry) => entry.slug === slug);
-    assert.ok(project, `Missing lab record ${slug}`);
-    assert.equal(project.status, "Exploring");
-    assert.deepEqual(project.technologies, []);
-    assert.equal(project.screenshots, undefined);
-    assert.equal(project.architectureDiagrams, undefined);
-    assert.equal(project.technicalHighlights, undefined);
-    assert.equal(project.inspection, undefined);
-    assert.deepEqual(Object.keys(project.caseStudy ?? {}), ["overview"]);
+test("exploratory notebook topics remain questions tied to approved public work", () => {
+  for (const entry of labEntries) {
+    assert.equal(entry.status, "Exploring");
+    assert.deepEqual(entry.technologies, []);
+    assert.equal(entry.date, undefined);
+    assert.doesNotMatch(JSON.stringify(entry), excludedPublicContent);
+    for (const href of [
+      entry.writeup,
+      ...(entry.related?.map(({ href }) => href) ?? []),
+    ]) {
+      if (href?.startsWith("/work/"))
+        assert.ok(getProjectBySlug(href.slice(6)));
+    }
   }
 });
 
@@ -817,6 +860,17 @@ test("every declared project image names a real public asset with full context",
           bytes.readUInt32BE(20),
           image.height,
           `${image.src} height matches its PNG`,
+        );
+      }
+      if (/^\.jpe?g$/.test(path.extname(absolute).toLowerCase())) {
+        const { imageSize } = loadCommonJs("next/dist/compiled/image-size");
+        const dimensions = imageSize(fs.readFileSync(absolute));
+        assert.equal(dimensions.type, "jpg");
+        assert.equal(dimensions.width, image.width, `${image.src} JPEG width`);
+        assert.equal(
+          dimensions.height,
+          image.height,
+          `${image.src} JPEG height`,
         );
       }
       if (path.extname(absolute).toLowerCase() === ".svg") {
@@ -913,6 +967,14 @@ test("public case-study routes retain titles, canonical metadata, and unknown-pa
       assert.equal(work.about["@type"], "SoftwareSourceCode");
       assert.equal(work.about.codeRepository, project.github);
       assert.equal(work.about.url, project.website);
+    } else if (project.sourceVisibility === "private") {
+      assert.ok(work);
+      assert.equal(work.url, `https://farhan-shafee.com/work/${project.slug}`);
+      assert.equal(work.about, undefined);
+      assert.doesNotMatch(
+        JSON.stringify(work),
+        /SoftwareSourceCode|codeRepository/,
+      );
     } else assert.equal(work, undefined);
     assert.match(html, /<dl[^>]*aria-label="Project details"/);
     const inspectionPosition = html.indexOf("Inspect the system");

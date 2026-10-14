@@ -52,9 +52,9 @@ const selectedEvidence = [
     description: "Trust boundaries and residual risks.",
   },
   {
-    label: "CyberBit methodology",
-    href: "https://cyberbitsolutions.com/methodology",
-    description: "Public controls and what they establish.",
+    label: "TradeFlow test strategy",
+    href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/TEST_STRATEGY.md",
+    description: "Fixture ownership, contracts, and failure evidence.",
   },
   {
     label: "Engineering article",
@@ -151,15 +151,7 @@ export default function HomePage() {
               key={project.slug}
               project={project}
               index={index}
-              variant={
-                project.slug === "aegisgraph"
-                  ? "primary"
-                  : project.slug === "cyberbit-solutions"
-                    ? "flagship"
-                    : project.kind === "lab"
-                      ? "supporting"
-                      : "secondary"
-              }
+              variant={project.slug === "aegisgraph" ? "primary" : "flagship"}
             />
           ))}
         </div>
@@ -191,8 +183,8 @@ export default function HomePage() {
           <p className="eyebrow">03 / Engineering notebook</p>
           <h2 id="exploration-heading">Questions under investigation.</h2>
           <p>
-            Detection signals, infrastructure boundaries, and human review in
-            AI-assisted workflows. Exploratory work, with scope kept explicit.
+            Detection signals, test isolation, and human review in AI-assisted
+            workflows. Exploratory work, with scope kept explicit.
           </p>
           <TextLink href="/lab">Open the notebook</TextLink>
         </section>

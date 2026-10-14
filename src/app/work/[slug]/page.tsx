@@ -58,7 +58,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           ],
         }}
       />
-      {project.github && (
+      {(project.github || project.sourceVisibility === "private") && (
         <JsonLd
           data={{
             "@context": "https://schema.org",
@@ -68,12 +68,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             url: absoluteUrl(`/work/${slug}`),
             description: project.description,
             author: { "@id": `${siteConfig.url}/#person` },
-            about: {
-              "@type": "SoftwareSourceCode",
-              name: project.title,
-              codeRepository: project.github,
-              ...(project.website ? { url: project.website } : {}),
-            },
+            ...(project.github
+              ? {
+                  about: {
+                    "@type": "SoftwareSourceCode",
+                    name: project.title,
+                    codeRepository: project.github,
+                    ...(project.website ? { url: project.website } : {}),
+                  },
+                }
+              : {}),
           }}
         />
       )}
@@ -107,6 +111,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <dt>Status</dt>
             <dd>{project.status}</dd>
           </div>
+          {project.sourceVisibility === "private" && (
+            <div className="case-metadata-item">
+              <dt>Source</dt>
+              <dd>Source private</dd>
+            </div>
+          )}
           {project.year && (
             <div className="case-metadata-item">
               <dt>Year</dt>

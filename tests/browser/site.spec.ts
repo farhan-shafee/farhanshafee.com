@@ -9,6 +9,12 @@ import {
   parseArticle,
 } from "../../src/lib/writing";
 import sitemap from "../../src/app/sitemap";
+import {
+  approvedProjectSlugs,
+  excludedPublicContent,
+  retiredProjectRoutes,
+  retiredPublicAssets,
+} from "../portfolio-policy";
 import { siteConfig } from "../../src/config/site";
 
 const coreRoutes = [
@@ -34,31 +40,26 @@ const routes = [
   ...projectsByRoute.keys(),
   ...articlesByRoute.keys(),
 ];
-const engineeringCaseSlugs = [
-  "aegisgraph",
-  "cyberbit-solutions",
-  "ai-job-intelligence-engine",
-];
+const engineeringCaseSlugs = ["aegisgraph", "creditops-ai", "tradeflow"];
 const aegisgraphRoute = "/work/aegisgraph";
 const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
 const aegisgraphCiWorkflow = `${aegisgraphRepository}/actions/workflows/ci.yml`;
 const aegisgraphDemo = "https://aegisgraph.farhan-shafee.com";
 const aegisgraphArticleRoute =
   "/writing/building-an-evidence-grounded-ai-security-investigation-system";
-const jobEngineTitle = "Job Intelligence Engine";
-const jobEngineRoute = "/work/ai-job-intelligence-engine";
+const tradeflowTitle = "TradeFlow";
+const tradeflowRoute = "/work/tradeflow";
 const oldJobEngineTitle = /AI\s+Job\s+Intelligence\s+Engine/i;
 const canonicalOrigin = "https://farhan-shafee.com";
 const oldOrigin = /https?:\/\/(?:www\.)?farhanshafee\.com\b/i;
 const projectOrder = [
   "AegisGraph",
-  "CyberBit Solutions",
+  "CreditOps AI",
+  "TradeFlow",
   "SecurePay / DevSecOps Pipeline",
   "Detection Engineering Lab",
-  "Vulnerability Management",
   "Cloud Security",
-  jobEngineTitle,
-  "Secure Infrastructure & Homelab",
+  "Vulnerability Management",
 ];
 
 async function expectEvidenceLink(link: Locator, href: string) {
@@ -74,7 +75,7 @@ async function expectEvidenceLink(link: Locator, href: string) {
 function imagesForRoute(route: string): ProjectImage[] | undefined {
   if (articlesByRoute.has(route)) return undefined;
   if (route === "/" || route === "/work") {
-    return [aegisgraphRoute, "/work/cyberbit-solutions"].map((projectRoute) => {
+    return [aegisgraphRoute, tradeflowRoute].map((projectRoute) => {
       const preview = projectsByRoute.get(projectRoute)?.screenshots?.[0];
       if (!preview)
         throw new Error(`${projectRoute} needs its reviewed preview image`);
@@ -228,7 +229,7 @@ for (const theme of ["light", "dark"] as const) {
       page.on("request", (request) => {
         const url = new URL(request.url());
         if (
-          /^\/projects\/.+\.png$/i.test(url.pathname) &&
+          /^\/projects\/.+\.(?:png|jpe?g)$/i.test(url.pathname) &&
           url.searchParams.has("_rsc")
         )
           screenshotRscRequests.push(request.url());
@@ -274,7 +275,9 @@ for (const theme of ["light", "dark"] as const) {
           await expect(page).toHaveURL(imageUrl);
           expect(imageResponse.status()).toBe(200);
           expect(imageResponse.headers()["content-type"]).toMatch(
-            /^image\/png\b/i,
+            /\.jpe?g$/i.test(firstScreenshot.src)
+              ? /^image\/jpeg\b/i
+              : /^image\/png\b/i,
           );
           await expect(page.locator("img")).toHaveJSProperty("complete", true);
           await expect(page.locator("img")).toHaveJSProperty(
@@ -305,7 +308,8 @@ test("cold page loads keep image-led layouts stable", async ({
       "/",
       "/work",
       aegisgraphRoute,
-      "/work/cyberbit-solutions",
+      "/work/creditops-ai",
+      tradeflowRoute,
     ]) {
       // A fresh browser context gives each route an empty browser cache.
       const context = await browser.newContext({
@@ -417,13 +421,13 @@ test("keyboard navigation, persisted theme, and mobile links work", async ({
     .click();
   await expect(page).toHaveURL(/\/work$/);
   await page
-    .getByRole("link", { name: "CyberBit Solutions", exact: true })
+    .getByRole("link", { name: tradeflowTitle, exact: true })
     .first()
     .click();
-  await expect(page).toHaveURL(/\/work\/cyberbit-solutions$/);
-  await expect(page.locator("h1")).toHaveText("CyberBit Solutions");
+  await expect(page).toHaveURL(/\/work\/tradeflow$/);
+  await expect(page.locator("h1")).toHaveText(tradeflowTitle);
 
-  for (const route of ["/work/cyberbit-solutions", aegisgraphRoute]) {
+  for (const route of [tradeflowRoute, "/work/creditops-ai", aegisgraphRoute]) {
     await page.goto(route);
     const links = page
       .getByRole("region", { name: "Inspect the system", exact: true })
@@ -764,7 +768,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       await expect(proof).toBeVisible();
       for (const href of [
         `${aegisgraphRepository}/blob/main/docs/threat-model/THREAT_MODEL.md`,
-        "https://cyberbitsolutions.com/methodology",
+        "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/TEST_STRATEGY.md",
         aegisgraphArticleRoute,
       ])
         await expectEvidenceLink(proof.locator(`a[href="${href}"]`), href);
@@ -800,15 +804,15 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         headings
           .map((heading) => heading.trim())
           .filter((heading) => projectOrder.includes(heading)),
-        `${route} preserves the two flagships and the reviewed supporting hierarchy`,
-      ).toEqual(route === "/" ? projectOrder.slice(0, 2) : projectOrder);
+        `${route} preserves three selected systems and four supporting security projects`,
+      ).toEqual(route === "/" ? projectOrder.slice(0, 3) : projectOrder);
       if (route === "/work") {
         await expect(
-          page.getByRole("heading", { name: jobEngineTitle, exact: true }),
+          page.getByRole("heading", { name: tradeflowTitle, exact: true }),
         ).toBeVisible();
         await expect(
-          page.getByRole("link", { name: jobEngineTitle, exact: true }),
-        ).toHaveAttribute("href", jobEngineRoute);
+          page.getByRole("link", { name: tradeflowTitle, exact: true }),
+        ).toHaveAttribute("href", tradeflowRoute);
         await expect(
           page.locator("#security-engineering .project-entry"),
         ).toHaveCount(4);
@@ -861,6 +865,18 @@ test("metadata, internal links, security headers and feeds are valid", async ({
             ...(project.website ? { url: project.website } : {}),
           },
         });
+      } else if (project.sourceVisibility === "private") {
+        expect(work).toMatchObject({
+          url: `${canonicalOrigin}${route}`,
+          author: { "@id": `${canonicalOrigin}/#person` },
+        });
+        expect(work.about).toBeUndefined();
+        await expect(
+          page.getByText("Source private", { exact: true }),
+        ).toBeVisible();
+        expect(JSON.stringify(structuredData)).not.toMatch(
+          /SoftwareSourceCode|codeRepository|github\.com\/farhan-shafee\/creditops/i,
+        );
       } else expect(work).toBeUndefined();
       const inspection = page.getByRole("region", {
         name: "Inspect the system",
@@ -949,19 +965,19 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       ])
         await expect(page.locator(`h2#${id}`)).toBeVisible();
     }
-    if (route === jobEngineRoute) {
+    if (route === tradeflowRoute) {
       expect(response?.status()).toBe(200);
-      await expect(page).toHaveURL(new RegExp(`${jobEngineRoute}$`));
-      await expect(page.locator("h1")).toHaveText(jobEngineTitle);
-      expect(title).toBe(`${jobEngineTitle} | Farhan Shafee`);
-      const project = projectsByRoute.get(jobEngineRoute)!;
+      await expect(page).toHaveURL(new RegExp(`${tradeflowRoute}$`));
+      await expect(page.locator("h1")).toHaveText(tradeflowTitle);
+      expect(title).toBe(`${tradeflowTitle} | Farhan Shafee`);
+      const project = projectsByRoute.get(tradeflowRoute)!;
       for (const selector of [
         'meta[property="og:title"]',
         'meta[name="twitter:title"]',
       ])
         await expect(page.locator(selector)).toHaveAttribute(
           "content",
-          `${jobEngineTitle} | Farhan Shafee`,
+          `${tradeflowTitle} | Farhan Shafee`,
         );
       for (const selector of [
         'meta[name="description"]',
@@ -974,7 +990,7 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         );
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
         "content",
-        `${canonicalOrigin}${jobEngineRoute}`,
+        `${canonicalOrigin}${tradeflowRoute}`,
       );
       const breadcrumbs = structuredData.find(
         (schema) => schema["@type"] === "BreadcrumbList",
@@ -983,8 +999,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       expect(breadcrumbs.itemListElement).toContainEqual({
         "@type": "ListItem",
         position: 2,
-        name: jobEngineTitle,
-        item: `${canonicalOrigin}${jobEngineRoute}`,
+        name: tradeflowTitle,
+        item: `${canonicalOrigin}${tradeflowRoute}`,
       });
     }
     for (const href of await page
@@ -1058,8 +1074,31 @@ test("metadata, internal links, security headers and feeds are valid", async ({
       expect(await tagPage.text()).toContain(`href="/writing/${article.slug}"`);
     }
   }
-  for (const route of [aegisgraphRoute, jobEngineRoute])
-    expect(sitemapXml).toContain(`<loc>${canonicalOrigin}${route}</loc>`);
+  for (const slug of approvedProjectSlugs) {
+    expect(sitemapXml).toContain(`<loc>${canonicalOrigin}/work/${slug}</loc>`);
+    expect(llms).toContain(`${canonicalOrigin}/work/${slug}`);
+  }
+  for (const route of retiredProjectRoutes) {
+    expect(sitemapXml).not.toContain(route);
+    expect(llms).not.toContain(route);
+    expect(rss).not.toContain(route);
+    const response = await request.get(route);
+    expect(response.status(), route).toBe(404);
+    const html = await response.text();
+    expect(html).toContain('name="robots" content="noindex"');
+    // Next's router bootstrap includes the requested URL even for a 404. The
+    // retired route must expose no project content, metadata, or project schema.
+    expect(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")).not.toMatch(
+      excludedPublicContent,
+    );
+    expect(html).not.toMatch(/CreativeWork|SoftwareSourceCode|BreadcrumbList/);
+  }
+  for (const asset of retiredPublicAssets)
+    expect((await request.get(asset)).status(), asset).toBe(404);
+  for (const [route, html] of publicHtml)
+    expect(html, route).not.toMatch(excludedPublicContent);
+  expect(llms).not.toMatch(excludedPublicContent);
+  expect(llms).toContain("Source private");
   expect(sitemapXml).not.toContain(
     `<loc>${canonicalOrigin}/work/job-intelligence-engine</loc>`,
   );
@@ -1101,7 +1140,7 @@ test("www redirects permanently while preserving paths and queries without redir
 }) => {
   const paths = [
     "/",
-    `${jobEngineRoute}?source=domain-check&return=%2Fwork%3Fview%3Dall`,
+    `${tradeflowRoute}?source=domain-check&return=%2Fwork%3Fview%3Dall`,
   ];
   for (const route of paths) {
     const response = await request.get(route, {

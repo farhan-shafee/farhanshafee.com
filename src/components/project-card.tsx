@@ -21,7 +21,11 @@ export function ProjectCard({
       ? project.screenshots?.[0]
       : undefined;
   const highlights =
-    variant === "primary" ? (project.technicalHighlights ?? []) : [];
+    variant === "primary"
+      ? (project.technicalHighlights ?? [])
+      : variant === "flagship"
+        ? (project.technicalHighlights ?? []).slice(0, 1)
+        : [];
   const selectedEvidence = (
     <EvidenceLinks
       links={project.inspection?.links.filter((link) => link.featured) ?? []}
@@ -51,6 +55,9 @@ export function ProjectCard({
             </Link>
           </Heading>
           <span className="project-entry-status">{project.status}</span>
+          {project.sourceVisibility === "private" && (
+            <span className="project-entry-status"> · Source private</span>
+          )}
         </div>
         <div className="project-entry-summary">
           <p>{project.description}</p>

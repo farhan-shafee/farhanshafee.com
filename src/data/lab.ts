@@ -25,13 +25,14 @@ export const labEntries: LabEntry[] = [
     description:
       "What can an automated finding establish, and which decisions still belong to an analyst?",
     evidence:
-      "AegisGraph validates bounded AI claims against incident evidence. Its article documents the local live-provider checks and their limits.",
+      "AegisGraph validates bounded AI claims against incident evidence. CreditOps exposes recorded proposals and advisories for human review. The AegisGraph article preserves its original local live-provider checks and their limits.",
     openQuestion:
       "How well do those boundaries hold across repeated model runs and a broader set of incidents?",
     status: "Exploring",
     technologies: [],
     category: "AI / Automation",
     related: [
+      { label: "Recorded trading investigations", href: "/work/creditops-ai" },
       {
         label: "Related implementation",
         href: "/work/aegisgraph",
@@ -62,16 +63,16 @@ export const labEntries: LabEntry[] = [
     ],
   },
   {
-    title: "Secure infrastructure",
+    title: "Test isolation & contract boundaries",
     description:
-      "How should workload isolation, management access, and maintenance fit together in a personal lab?",
+      "What makes a passing test meaningful when requests, sessions, and order state can change concurrently?",
     evidence:
-      "The public record currently describes the scope; configurations and results are not yet documented.",
+      "TradeFlow uses test-scoped sessions, exact-record assertions, independent OpenAPI validation, and controlled stale-response regressions across three browser engines.",
     openQuestion:
-      "Which configuration and reproducible checks would provide enough evidence to explain the access and isolation boundaries?",
+      "Which additional asynchronous failure cases would reveal gaps beyond the lab's finite synthetic workflows?",
     status: "Exploring",
     technologies: [],
-    category: "Infrastructure",
-    writeup: "/work/secure-infrastructure-homelab",
+    category: "Fintech / Test engineering",
+    writeup: "/work/tradeflow",
   },
 ];
