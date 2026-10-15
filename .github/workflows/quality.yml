@@ -1,0 +1,60 @@
+name: Portfolio quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: portfolio-quality-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Clean install
+        run: npm ci
+      - name: Unit and lint-toolchain regression tests
+        shell: bash
+        run: |
+          mkdir -p quality-artifacts
+          npm test 2>&1 | tee quality-artifacts/unit.log
+      - name: Lint, types and formatting
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run format:check
+      - name: Production build
+        run: npm run build
+      - name: Audit full dependency tree
+        shell: bash
+        run: npm audit --json > quality-artifacts/audit-full.json
+      - name: Audit production dependency tree
+        shell: bash
+        run: npm audit --omit=dev --json > quality-artifacts/audit-production.json
+      - name: Set up test browser
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Browser regression suite
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: quality-artifacts/browser.json
+        run: npm run test:browser -- --workers=1 --reporter=list,json
+      - name: Preserve execution evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: portfolio-quality-${{ github.sha }}
+          path: |
+            quality-artifacts/
+            test-results/
+          if-no-files-found: error
+          retention-days: 14

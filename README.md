@@ -22,9 +22,13 @@ npm run typecheck
 npm test
 npm run build
 npm run test:browser
+npm audit
+npm audit --omit=dev
 ```
 
 Browser checks use Playwright and axe. Install Chromium once with `npx playwright install chromium`. The suite starts the production build on port 3100. Set `PLAYWRIGHT_BASE_URL` to an existing local or production server when verifying that deployment. Use `npm run format` to apply formatting. Command output supplies current validation results; historical records do not replace a fresh run.
+
+The Next.js lint plugin is a reviewed local security patch that removes an unpatched development dependency chain while preserving its rules. Read [the patch provenance and maintenance procedure](tooling/next-eslint-plugin/README.md) before updating Next lint tooling. The quality workflow runs clean installation, regression tests, audits and browser checks on Node.js 24.
 
 ## Architecture
 

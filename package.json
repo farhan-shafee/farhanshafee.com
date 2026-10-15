@@ -42,6 +42,10 @@
     "prettier": "^3.6.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.20.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "@next/eslint-plugin-next": "file:tooling/next-eslint-plugin"
+  },
+  "overrides": {
+    "@next/eslint-plugin-next": "$@next/eslint-plugin-next"
   }
 }
