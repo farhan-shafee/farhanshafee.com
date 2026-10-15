@@ -6,6 +6,8 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   globalIgnores([
+    // Vendored upstream plugin code is hash-checked by lint-toolchain tests.
+    "tooling/next-eslint-plugin/dist/**",
     ".next/**",
     "out/**",
     "next-env.d.ts",

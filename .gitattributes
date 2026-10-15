@@ -1,1 +1,3 @@
 * text=auto eol=lf
+# Preserve authenticated upstream bytes on every operating system.
+tooling/next-eslint-plugin/dist/** -text

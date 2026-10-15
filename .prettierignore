@@ -6,3 +6,7 @@ next-env.d.ts
 playwright-report
 test-results
 .artifacts
+
+# Preserve registry-authenticated upstream compiled rule bytes.
+tooling/next-eslint-plugin/dist/
+tooling/next-eslint-plugin/LICENSE.md
