@@ -10,3 +10,5 @@ test-results
 # Preserve registry-authenticated upstream compiled rule bytes.
 tooling/next-eslint-plugin/dist/
 tooling/next-eslint-plugin/LICENSE.md
+
+quality-artifacts/

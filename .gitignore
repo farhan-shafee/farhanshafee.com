@@ -13,3 +13,5 @@ test-results/
 *.log
 .DS_Store
 Thumbs.db
+
+quality-artifacts/

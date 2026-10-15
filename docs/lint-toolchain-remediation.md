@@ -29,3 +29,7 @@ Review then exposed missing roots in bracket-containing checkouts, singleton cha
 ## Maintenance boundary
 
 This is a maintained local fork, not an official Next release. Rebase and review it when upgrading the upstream plugin; remove it when a tested official release removes the vulnerable chain. Audit results do not cover every possible denial-of-service pattern, external CLI or platform dependency. Existing ESLint deprecation/install-script warnings remain visible. No system installation, DNS, resource, billing or unrelated project change was required.
+
+## First CI packaging correction
+
+[Actions run 38803557382](https://github.com/farhan-shafee/farhanshafee.com/actions/runs/38803557382) passed the test, build and audit gates, then failed artifact publication because the output directory was hidden and excluded by the upload action. [The failure receipt](lint-toolchain-ci-attempt1.json) preserves that result. CI now writes to the scoped non-hidden quality-artifacts directory; missing reports still fail the job. No test, audit or upload failure gate was disabled.

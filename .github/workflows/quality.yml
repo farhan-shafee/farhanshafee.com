@@ -27,8 +27,8 @@ jobs:
       - name: Unit and lint-toolchain regression tests
         shell: bash
         run: |
-          mkdir -p .artifacts
-          npm test 2>&1 | tee .artifacts/unit.log
+          mkdir -p quality-artifacts
+          npm test 2>&1 | tee quality-artifacts/unit.log
       - name: Lint, types and formatting
         run: |
           npm run lint
@@ -38,15 +38,15 @@ jobs:
         run: npm run build
       - name: Audit full dependency tree
         shell: bash
-        run: npm audit --json > .artifacts/audit-full.json
+        run: npm audit --json > quality-artifacts/audit-full.json
       - name: Audit production dependency tree
         shell: bash
-        run: npm audit --omit=dev --json > .artifacts/audit-production.json
+        run: npm audit --omit=dev --json > quality-artifacts/audit-production.json
       - name: Set up test browser
         run: npx --no-install playwright install --with-deps chromium
       - name: Browser regression suite
         env:
-          PLAYWRIGHT_JSON_OUTPUT_NAME: .artifacts/browser.json
+          PLAYWRIGHT_JSON_OUTPUT_NAME: quality-artifacts/browser.json
         run: npm run test:browser -- --workers=1 --reporter=list,json
       - name: Preserve execution evidence
         if: always()
@@ -54,7 +54,7 @@ jobs:
         with:
           name: portfolio-quality-${{ github.sha }}
           path: |
-            .artifacts/
+            quality-artifacts/
             test-results/
           if-no-files-found: error
           retention-days: 14
