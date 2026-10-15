@@ -61,7 +61,7 @@ export const creditflowProject: Project = {
       {
         label: "UI and CI",
         value:
-          "Java Selenium/Playwright, Bruno and GitHub Actions; Jenkinsfile syntax checked, server execution unverified.",
+          "Java Selenium/Playwright, Bruno and GitHub Actions; Jenkins pipeline executed on an isolated local controller.",
       },
     ],
   },
@@ -83,7 +83,7 @@ export const creditflowProject: Project = {
     },
     lessonsConstraints: {
       paragraphs: [
-        "Synthetic data only; no real cards, funds, settlement or regulatory-compliance claim. Sessions expire after 30 minutes, public quotas are conservative and idle services can take time to wake. Jenkins server execution and sustained-load behavior remain unverified.",
+        "Synthetic data only; no real cards, funds, settlement or regulatory-compliance claim. Sessions expire after 30 minutes, public quotas are conservative and idle services can take time to wake. Local Jenkins execution is recorded; sustained-load behavior and availability/SLA remain unverified.",
       ],
     },
   },

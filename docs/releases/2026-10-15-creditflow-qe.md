@@ -42,3 +42,13 @@ Official advisories:
 - https://github.com/advisories/GHSA-hp3w-g68c-fv3c
 
 No scanner result establishes production security or regulatory compliance. This release changes portfolio content and compatible dependency patches; it does not alter the CreditFlow services, DNS, billing, credentials or other deployed projects.
+
+## Jenkins execution scope update — 2026-10-15, 18:53 UTC
+
+The earlier integration record above retains its historical unverified-Jenkins boundary. A later [Jenkins execution receipt](https://github.com/farhan-shafee/creditflow-qe/blob/feat/provider-pilot/docs/evidence/jenkins-execution.md) records Jenkins 2.580.1 local job `creditflow-qe-verify`, build 1, executing pinned CreditFlow source `47984ef34e444268d9315d4aa596fb6b8be8590d` on an isolated local controller. The job finished at `2026-10-15T18:53:55.642Z` after 363,781 ms.
+
+The local execution published 123 cases: 31 unit, 18 PostgreSQL integration, 31 private and 31 public Cucumber scenarios, and 12 TestNG tests. All 13 published XML reports contained zero failures, errors or skips. The separate evidence framework passed 32 tests. Independent core, public-demo and quality-framework scope checks completed, and all 147 report/log hashes matched their three manifests.
+
+Current portfolio copy now records this bounded local execution. Browser, web and Bruno results remain separate GitHub Actions evidence. The receipt does not prove Jenkins execution for later revisions, a permanent/public Jenkins service, sustained-load behavior, availability/SLA or production banking. Existing synthetic-data, AI-assistance and session-expiry disclosures remain in place. This update does not change the historical `9867fd2` dependency review or the later runtime dependency follow-up.
+
+Portfolio follow-up validation: 42 unit tests and the four existing engineering-evidence browser cases passed (light/dark, 375/1440px). Build, TypeScript, ESLint, Prettier and `git diff --check` passed. No rendering behavior or test assertions changed; the full 26-case browser suite was not repeated for this copy-only update.
