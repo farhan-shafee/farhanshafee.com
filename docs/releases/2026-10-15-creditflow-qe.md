@@ -21,6 +21,8 @@ Source validation completed against base 562d534160d7aee07e200dcb49fe77ec994551e
 
 ## Dependency review — REVIEW, not a clean audit
 
+The following inventory records integration commit `9867fd2`. The [frontmatter dependency follow-up](./2026-10-15-frontmatter-dependencies.md) records the later runtime remediation and remaining development finding.
+
 The initial unchanged dependency inventory reported 1 critical, 7 high and 4 moderate affected-package entries. Project-local compatible patches update Next.js/eslint-config-next 16.3.5 → 16.3.8, Sharp 0.35.4 → 0.35.5 and source-map-js 1.2.1 → 1.2.2, with matching native packages in the lockfile. No system software, global configuration or dependency in the original checkout was changed.
 
 The critical Next.js ImageResponse advisory requires attacker-controlled SVG values. The inspected static Open Graph image uses repository-owned site configuration rather than request content; the supported patch was applied regardless. No remote image allowlist is configured. These source observations do not constitute an exploitability guarantee.
