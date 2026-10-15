@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { createProcessor } from "@mdx-js/mdx";
-import matter from "gray-matter";
+import { load } from "js-yaml";
 import GithubSlugger from "github-slugger";
 import remarkGfm from "remark-gfm";
 
@@ -132,9 +132,33 @@ export function getTableOfContents(body: string): TocItem[] {
   return headings;
 }
 
+function parseFrontmatter(source: string, filename: string) {
+  const input = source.replace(/^\uFEFF/, "");
+  const opening = /^---[ \t]*\r?\n/.exec(input);
+  if (!opening) return { data: {} as Record<string, unknown>, content: input };
+
+  const remainder = input.slice(opening[0].length);
+  const closing = /^---[ \t]*\r?$/m.exec(remainder);
+  if (!closing) {
+    throw new Error(
+      `${filename}: frontmatter requires a closing --- delimiter.`,
+    );
+  }
+  const parsed: unknown = load(remainder.slice(0, closing.index), { filename });
+  if (parsed != null && (typeof parsed !== "object" || Array.isArray(parsed))) {
+    throw new Error(`${filename}: frontmatter must be a YAML mapping.`);
+  }
+  return {
+    data: (parsed ?? {}) as Record<string, unknown>,
+    content: remainder
+      .slice(closing.index + closing[0].length)
+      .replace(/^\n/, ""),
+  };
+}
+
 /** Only trusted, repository-authored MDX is accepted; never pass remote/user input. */
 export function parseArticle(source: string, filename: string): Article {
-  const { data, content } = matter(source);
+  const { data, content } = parseFrontmatter(source, filename);
   const title = requiredText(data.title, "title", filename);
   const description = requiredText(data.description, "description", filename);
   const slug = requiredText(data.slug, "slug", filename);

@@ -12,7 +12,9 @@ export const metadata = pageMetadata(
 export default function WorkPage() {
   const projects = getPublicProjects();
   const flagships = projects.filter((project) =>
-    ["aegisgraph", "creditops-ai", "tradeflow"].includes(project.slug),
+    ["aegisgraph", "creditops-ai", "tradeflow", "creditflow-qe"].includes(
+      project.slug,
+    ),
   );
   const securityProjects = getSecurityProjects();
 
@@ -21,7 +23,7 @@ export default function WorkPage() {
       <PageIntro
         eyebrow="Work / Systems & projects"
         title="Systems and engineering work."
-        description="AegisGraph makes security investigation inspectable. CreditOps AI presents recorded trading-incident analysis. TradeFlow makes trading-workflow tests and their evidence visible."
+        description="AegisGraph makes security investigation inspectable. CreditOps AI presents recorded trading-incident analysis. TradeFlow makes trading-workflow tests and their evidence visible. CreditFlow QE connects a banking simulator to independent Java API automation."
       />
       {flagships.length > 0 && (
         <section

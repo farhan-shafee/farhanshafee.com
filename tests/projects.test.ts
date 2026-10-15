@@ -86,11 +86,11 @@ test("public portfolio follows the deliberately selected GitHub hierarchy", () =
   );
   assert.deepEqual(
     getFeaturedProjects().map(({ slug }) => slug),
-    approvedProjectSlugs.slice(0, 3),
+    approvedProjectSlugs.slice(0, 4),
   );
   assert.deepEqual(
     getSecurityProjects().map(({ slug }) => slug),
-    approvedProjectSlugs.slice(3),
+    approvedProjectSlugs.slice(4),
   );
   assert.doesNotMatch(
     JSON.stringify(getPublicProjects()),
@@ -420,7 +420,7 @@ test("project presentation distinguishes primary and second flagships from suppo
   }
 });
 
-test("Work prioritizes three selected systems before four supporting security projects", () => {
+test("Work prioritizes four selected systems before four supporting security projects", () => {
   const html = renderToStaticMarkup(WorkPage());
   const order = [...approvedProjectSlugs];
   assert.deepEqual(
@@ -433,14 +433,14 @@ test("Work prioritizes three selected systems before four supporting security pr
     if (index > 0)
       assert.ok(position > html.indexOf(`href="/work/${order[index - 1]}"`));
   }
-  assert.equal(html.match(/<img\b/g)?.length, 2);
+  assert.equal(html.match(/<img\b/g)?.length, 3);
   assert.deepEqual(
     getFeaturedProjects().map(({ slug }) => slug),
-    order.slice(0, 3),
-    "Homepage selection preserves the three primary projects; Work carries the complete set",
+    order.slice(0, 4),
+    "Homepage selection preserves the four primary projects; Work carries the complete set",
   );
   assert.match(html, /id="security-engineering"/);
-  for (const slug of ["aegisgraph", "tradeflow"]) {
+  for (const slug of ["aegisgraph", "tradeflow", "creditflow-qe"]) {
     const project = getPublicProjects().find((entry) => entry.slug === slug);
     assert.ok(project?.screenshots?.[0]);
     assert.ok(html.includes(project.screenshots[0].src.replace(/\//g, "%2F")));

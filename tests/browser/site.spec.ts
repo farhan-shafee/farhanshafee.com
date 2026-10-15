@@ -40,7 +40,12 @@ const routes = [
   ...projectsByRoute.keys(),
   ...articlesByRoute.keys(),
 ];
-const engineeringCaseSlugs = ["aegisgraph", "creditops-ai", "tradeflow"];
+const engineeringCaseSlugs = [
+  "aegisgraph",
+  "creditops-ai",
+  "tradeflow",
+  "creditflow-qe",
+];
 const aegisgraphRoute = "/work/aegisgraph";
 const aegisgraphRepository = "https://github.com/farhan-shafee/aegisgraph";
 const aegisgraphCiWorkflow = `${aegisgraphRepository}/actions/workflows/ci.yml`;
@@ -56,6 +61,7 @@ const projectOrder = [
   "AegisGraph",
   "CreditOps AI",
   "TradeFlow",
+  "CreditFlow QE",
   "SecurePay / DevSecOps Pipeline",
   "Detection Engineering Lab",
   "Cloud Security",
@@ -75,12 +81,14 @@ async function expectEvidenceLink(link: Locator, href: string) {
 function imagesForRoute(route: string): ProjectImage[] | undefined {
   if (articlesByRoute.has(route)) return undefined;
   if (route === "/" || route === "/work") {
-    return [aegisgraphRoute, tradeflowRoute].map((projectRoute) => {
-      const preview = projectsByRoute.get(projectRoute)?.screenshots?.[0];
-      if (!preview)
-        throw new Error(`${projectRoute} needs its reviewed preview image`);
-      return preview;
-    });
+    return [aegisgraphRoute, tradeflowRoute, "/work/creditflow-qe"].map(
+      (projectRoute) => {
+        const preview = projectsByRoute.get(projectRoute)?.screenshots?.[0];
+        if (!preview)
+          throw new Error(`${projectRoute} needs its reviewed preview image`);
+        return preview;
+      },
+    );
   }
   const project = projectsByRoute.get(route);
   return [
@@ -310,6 +318,7 @@ test("cold page loads keep image-led layouts stable", async ({
       aegisgraphRoute,
       "/work/creditops-ai",
       tradeflowRoute,
+      "/work/creditflow-qe",
     ]) {
       // A fresh browser context gives each route an empty browser cache.
       const context = await browser.newContext({
@@ -804,8 +813,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
         headings
           .map((heading) => heading.trim())
           .filter((heading) => projectOrder.includes(heading)),
-        `${route} preserves three selected systems and four supporting security projects`,
-      ).toEqual(route === "/" ? projectOrder.slice(0, 3) : projectOrder);
+        `${route} preserves four selected systems and four supporting security projects`,
+      ).toEqual(route === "/" ? projectOrder.slice(0, 4) : projectOrder);
       if (route === "/work") {
         await expect(
           page.getByRole("heading", { name: tradeflowTitle, exact: true }),
