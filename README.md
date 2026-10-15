@@ -53,31 +53,32 @@ Public routes include `/`, `/about`, `/work`, approved `/work/[slug]` pages, `/w
 
 ## Maintain the public portfolio
 
-The October 14, 2026 public-profile review at `d49cceae12f60252a6a372cc0b03122fa70babc5` establishes seven included projects:
+The October 14, 2026 public-profile review at `d49cceae12f60252a6a372cc0b03122fa70babc5` establishes the original seven included projects. The approved October 15 CreditFlow QE integration adds the fourth flagship, for eight included projects:
 
-| Order | Project                  | Presentation                                           |
-| ----- | ------------------------ | ------------------------------------------------------ |
-| 1     | AegisGraph               | Primary flagship; public demo and source               |
-| 2     | CreditOps AI             | Recorded public showcase; source private               |
-| 3     | TradeFlow                | Local synthetic SDET lab; public source and demo guide |
-| 4     | SecurePay / DevSecOps    | Supporting security engineering                        |
-| 5     | Detection Engineering    | Supporting security engineering                        |
-| 6     | Cloud Security           | Supporting security engineering                        |
-| 7     | Vulnerability Management | Supporting security engineering                        |
+| Order | Project                  | Presentation                                                                |
+| ----- | ------------------------ | --------------------------------------------------------------------------- |
+| 1     | AegisGraph               | Primary flagship; public demo and source                                    |
+| 2     | CreditOps AI             | Recorded public showcase; source private                                    |
+| 3     | TradeFlow                | Local synthetic SDET lab; public source and demo guide                      |
+| 4     | CreditFlow QE            | Synthetic banking simulator; public demo, source and executed test evidence |
+| 5     | SecurePay / DevSecOps    | Supporting security engineering                                             |
+| 6     | Detection Engineering    | Supporting security engineering                                             |
+| 7     | Cloud Security           | Supporting security engineering                                             |
+| 8     | Vulnerability Management | Supporting security engineering                                             |
 
-The homepage features the three primary projects and a restrained entry to supporting security work. `/work` preserves those groups. Additional public playbook links can provide depth without becoming flagship case studies. Keep the established premium presentation and AegisGraph's strongest emphasis.
+The homepage features the four primary projects and a restrained entry to supporting security work. `/work` preserves those groups. Additional public playbook links can provide depth without becoming flagship case studies. Keep the established premium presentation and AegisGraph's strongest emphasis.
 
 Project inclusion follows the deliberately curated public profile, not ownership or authenticated repository access. Do not add unrelated businesses, private applications, or personal experiments. Previously excluded project routes stay retired with 404 responses, without unrelated redirects. Remove their obsolete assets from `public/` as well as their records: deleting a card alone does not stop an image or diagram from being served. `tests/portfolio-policy.ts` records those retirement expectations. Historical documents and unpublished drafts do not authorize renewed public promotion.
 
 Typed records use unique lowercase slugs. `visibility: "public"` permits a case-study route, Work entry, and sitemap URL; `featured: true` includes the project on the homepage. Private presentation records have no public detail route. `sourceVisibility` describes source availability independently: CreditOps has a public presentation with `sourceVisibility: "private"`, a plain **Source private** label, and no `github` URL. Never invent or link a private repository URL, or attach source-code schema to private source. Public-source projects use verified `github` links.
 
-Statuses share one vocabulary: `Active`, `Production`, `Completed`, `Exploring`, and `Archived`. AegisGraph is Active. CreditOps' approved recorded showcase, TradeFlow's local deliverable, and the four supporting labs are Completed within their documented scopes. These statuses do not establish production trading, SOC, cloud, or enterprise operation. A demo URL alone cannot support a Production status.
+Statuses share one vocabulary: `Active`, `Production`, `Completed`, `Exploring`, and `Archived`. AegisGraph and CreditFlow QE are Active. CreditOps' approved recorded showcase, TradeFlow's local deliverable, and the four supporting labs are Completed within their documented scopes. These statuses do not establish production trading, SOC, cloud, or enterprise operation. A demo URL alone cannot support a Production status.
 
 `projects.ts` assembles the approved order; `getSecurityProjects()` selects the supporting group. Preserve the established Detection slug. Add implementation facts only after reviewing public source, public documentation, or an explicitly approved artifact. For CreditOps, use only the public profile and showcase: do not inspect or copy private implementation into this site.
 
 The optional `caseStudy` sections accept reviewed `paragraphs`, `bullets`, and ordered `steps`, with an optional editorial `title` that preserves the section anchor. Only populated sections render. Omit unanswered sections rather than adding placeholders. `technicalHighlights` and `technologies` contain verified project-specific facts.
 
-`screenshots` and `architectureDiagrams` require existing reviewed local assets, descriptive alt text, intrinsic dimensions, and factual captions. Store them under `public/`, preserve aspect ratios, and exclude secrets or private data. TradeFlow's two images come from its public synthetic workstation captures. Do not generate implementation evidence or imply that local screenshots establish a hosted service.
+`screenshots` and `architectureDiagrams` require existing reviewed local assets, descriptive alt text, intrinsic dimensions, and factual captions. Store them under `public/`, preserve aspect ratios, and exclude secrets or private data. TradeFlow's two images come from its public synthetic workstation captures. CreditFlow QE uses the reviewed actual custom-host payment capture, with synthetic account data and no credentials. Do not generate implementation evidence or imply that local screenshots establish a hosted service.
 
 `website`, `github`, and labeled `links` supply public references. Optional `inspection` data supplies a summary, evidence links, and system facts; `guidedLinks` adds a restrained inspection group. Mark a link `featured: true` for card display. Supporting cards expose source links without preview galleries. These components are server-rendered and fetch no external evidence at runtime.
 

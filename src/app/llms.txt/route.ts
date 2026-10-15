@@ -20,7 +20,7 @@ ${siteConfig.name} builds security tools, automation systems, and technical infr
 ## Important resources
 
 - [About](${absoluteUrl("/about")}): Professional background and technical focus.
-- [Work](${absoluteUrl("/work")}): AegisGraph, CreditOps AI, TradeFlow, and four supporting public security projects. Each entry identifies its evidence and limitations.
+- [Work](${absoluteUrl("/work")}): AegisGraph, CreditOps AI, TradeFlow, CreditFlow QE, and four supporting public security projects. Each entry identifies its evidence and limitations.
 - [Writing](${absoluteUrl("/writing")}): Published technical articles. Draft outlines are not public.
 - [Lab](${absoluteUrl("/lab")}): Public-evidence questions in detection, AI-assisted investigation, and test isolation. Implemented security projects and their validation are documented under Work.
 - [Now](${absoluteUrl("/now")}): Current building, studying, and investigation priorities.
@@ -48,6 +48,17 @@ ${creditops?.inspection ? `\n${creditops.inspection.links.map((link) => `- [${li
 
 A local, in-memory synthetic trading workstation with strict TypeScript, a Node.js server, test-owned sessions and records, runtime schemas, independently interpreted OpenAPI contracts, and Playwright UI/API/contract/integration coverage. Chromium, Firefox, and WebKit check the browser workflows. Documented AI assistance remains human-reviewed; deterministic checks decide acceptance. There is no live brokerage, exchange execution, matching engine, real P&L, or employer data. Browser activity is not a durable audit history.
 ${tradeflow?.inspection ? `\n${tradeflow.inspection.links.map((link) => `- [${link.label}](${link.href})`).join("\n")}\n` : ""}
+
+## CreditFlow QE
+
+[CreditFlow QE](https://farhan-shafee.com/work/creditflow-qe): A transactional credit-card simulator with independent Java, Cucumber and REST Assured automation, plus executed CI and browser-test evidence.
+
+An AI-assisted synthetic banking application with exact monetary values, transactional PostgreSQL state, original payment receipt replay and independent Java API/browser automation. Public accounts are isolated and expire after 30 minutes; quotas are conservative and idle services can take time to wake. No real cards, funds, settlement or regulatory-compliance claim. Jenkinsfile syntax is checked; Jenkins server execution and sustained-load behavior remain unverified.
+
+- [Live demo](https://creditflow.farhan-shafee.com)
+- [View source](https://github.com/farhan-shafee/creditflow-qe/tree/feat/provider-pilot)
+- [Verified CI](https://github.com/farhan-shafee/creditflow-qe/actions/runs/38682147631)
+- [Release verification](https://github.com/farhan-shafee/creditflow-qe/blob/feat/provider-pilot/docs/evidence/custom-domain.md)
 
 ## Supporting security engineering
 

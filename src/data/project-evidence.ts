@@ -136,6 +136,37 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
       },
     ],
   },
+  "creditflow-qe": {
+    sources: [
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/a90df14c6d82f90b81cafeb8f5db00d3ef0b762b/docs/evidence/custom-domain.md",
+        supports:
+          "October 15, 2026 custom-domain release receipt binds frontend 39e1728 and API 20c91f5 to the Vercel, Railway and isolated Neon deployment. Trusted HTTPS, 5 cold-start checks, 10 banking checks and the complete 11-test Java UI/BFF module passed against the actual hosted path. The synthetic $50 payment screenshot has SHA-256 8ebe78c28fa161da2737c0c5a97eae410ee3d4a63eef29c3eae1b078a41aba4d. The single cold-start sample is not an SLA.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38682147631",
+        supports:
+          "Successful source-39e1728 CI for the deployed frontend: 31 unit, 18 PostgreSQL integration and 31 Cucumber scenarios / 154 steps in each private/public mode; independent TestNG, Selenium, Playwright, BFF, Bruno and frontend checks. The final documentation head a90df14 also passed run 38770426780 after one unchanged-source retry of a pre-test dependency-fetch failure; original failure evidence was preserved. No Jenkins server execution or production-banking claim.",
+      },
+      {
+        path: "public/projects/creditflow-qe/payment.png",
+        supports:
+          "Reviewed actual Playwright capture from the custom hostname. Synthetic $50 payment leaves $200 outstanding, $800 available and one committed payment; no real cards, funds or credentials.",
+      },
+    ],
+    statusReview: {
+      status: "Active",
+      reason:
+        "Implemented, tested and publicly deployed synthetic engineering demonstration. Active does not mean a real bank, production financial service, regulatory compliance or proven availability.",
+    },
+    todos: [
+      {
+        area: "remaining-runtime-validation",
+        prompt:
+          "TODO: Record actual Jenkins server execution and sustained-load evidence before making those claims; preserve exact source provenance and AI-assistance disclosure.",
+      },
+    ],
+  },
   "devsecops-pipeline": {
     sources: [
       {

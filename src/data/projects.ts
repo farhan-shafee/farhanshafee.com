@@ -1,5 +1,6 @@
 import { creditopsProject } from "./creditops-project";
 import { tradeflowProject } from "./tradeflow-project";
+import { creditflowProject } from "./creditflow-project";
 import { applicationSecurityProjects } from "./security-projects-core";
 import { verificationSecurityProjects } from "./security-projects-verification";
 
@@ -380,6 +381,7 @@ export const projects: Project[] = [
   },
   creditopsProject,
   tradeflowProject,
+  creditflowProject,
   ...applicationSecurityProjects,
   ...verificationSecurityProjects,
 ];

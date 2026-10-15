@@ -1,8 +1,9 @@
-/** Independent expectations from the reviewed October 14 public-profile brief. */
+/** Independent expectations from the reviewed October 14 brief and approved October 15 CreditFlow addition. */
 export const approvedProjectSlugs = [
   "aegisgraph",
   "creditops-ai",
   "tradeflow",
+  "creditflow-qe",
   "devsecops-pipeline",
   "detection-security-lab",
   "cloud-security",
