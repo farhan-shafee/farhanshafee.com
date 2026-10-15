@@ -1,0 +1,12 @@
+.git/
+.next/
+node_modules/
+.env*
+.vercel/
+.artifacts/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts
+.npm-cache/
+*.log
