@@ -1,4 +1,4 @@
-/** Independent expectations from the reviewed October 14 brief and approved October 15 CreditFlow addition. */
+/** Independent public-project expectations reaffirmed in the October 20 portfolio synchronization. */
 export const approvedProjectSlugs = [
   "aegisgraph",
   "creditops-ai",

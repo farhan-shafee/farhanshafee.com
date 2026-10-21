@@ -16,20 +16,20 @@ export const creditopsProject: Project = {
     links: [
       {
         label: "Public showcase",
-        href: "https://creditops-ai-showcase.vercel.app",
+        href: "https://creditops.farhan-shafee.com",
         featured: true,
       },
       {
         label: "Recorded investigations",
-        href: "https://creditops-ai-showcase.vercel.app/investigator",
+        href: "https://creditops.farhan-shafee.com/investigator",
       },
       {
         label: "Public architecture",
-        href: "https://creditops-ai-showcase.vercel.app/architecture",
+        href: "https://creditops.farhan-shafee.com/architecture",
       },
       {
         label: "Scope and limitations",
-        href: "https://creditops-ai-showcase.vercel.app/about",
+        href: "https://creditops.farhan-shafee.com/about",
       },
     ],
     facts: [
@@ -99,7 +99,7 @@ export const creditopsProject: Project = {
     "Recorded playback makes no fresh model or MCP diagnostic calls; accepted assessments remain advisory and require human review.",
   ],
   technologies: ["Python", "FastAPI", "MCP", "Next.js", "PostgreSQL"],
-  website: "https://creditops-ai-showcase.vercel.app",
+  website: "https://creditops.farhan-shafee.com",
   sourceVisibility: "private",
   featured: true,
   visibility: "public",

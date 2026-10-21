@@ -72,14 +72,14 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   "creditops-ai": {
     sources: [
       {
-        url: "https://github.com/farhan-shafee/farhan-shafee/blob/d49cceae12f60252a6a372cc0b03122fa70babc5/README.md",
+        url: "https://github.com/farhan-shafee/farhan-shafee/blob/51fb4c6ba552ee622b019eca0752413e99c38361/README.md",
         supports:
-          "October 14, 2026 current public profile deliberately presents CreditOps AI second and labels its source private. Approved public scope covers synthetic pricing/Kafka backlog, FIX instability, database-pool exhaustion, RFQ/order impact, linked diagnostic evidence, original-versus-validated assessments, and technical/stakeholder handoffs. Published technology is Python/FastAPI, read-only MCP tools, Next.js, and PostgreSQL. Recorded model-assisted showcase playback makes no fresh model or MCP diagnostic calls; recordings do not demonstrate model-directed follow-ups, initiating causes remain unconfirmed, and human review is required.",
+          "October 20, 2026 reviewed public profile continues to present CreditOps AI second and labels its source private. Approved public scope covers synthetic pricing/Kafka backlog, FIX instability, database-pool exhaustion, RFQ/order impact, linked diagnostic evidence, original-versus-validated assessments, and technical/stakeholder handoffs. Published technology is Python/FastAPI, read-only MCP tools, Next.js, and PostgreSQL. Recorded model-assisted showcase playback makes no fresh model or MCP diagnostic calls; recordings do not demonstrate model-directed follow-ups, initiating causes remain unconfirmed, and human review is required.",
       },
       {
-        url: "https://creditops-ai-showcase.vercel.app",
+        url: "https://creditops.farhan-shafee.com",
         supports:
-          "October 14, 2026 the public showcase homepage returned HTTP 200 and explicitly labeled its trading environment synthetic, its diagnostic tools read-only, and operational authority human-controlled. Reachable presentation is distinct from fresh authorized diagnostics or production operation. The public profile supplies the recorded-playback qualification; no private repository, implementation, credential, or internal architecture was inspected or linked for this site record.",
+          "October 20, 2026 the branded showcase home, investigator, architecture, and about routes returned HTTP 200 and explicitly labeled its trading environment synthetic, its diagnostic tools read-only, and operational authority human-controlled. Reachable presentation is distinct from fresh authorized diagnostics or production operation. The public profile supplies the recorded-playback qualification; no private repository, implementation, credential, or internal architecture was inspected or linked for this site record.",
       },
     ],
     statusReview: {
@@ -139,6 +139,16 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   "creditflow-qe": {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
+        supports:
+          "October 15, 2026 GitHub Actions at main commit 631948a85f54e00f9fc8fae7fa844807e643847a completed successfully for both core and browser jobs. This is current-main evidence reviewed October 20, separate from earlier hosted-release and local Jenkins records.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md",
+        supports:
+          "Public main retains dated evidence distinguishing the hosted banking release, isolated local Jenkins execution, portfolio dependency remediation, and subsequent maintenance verification. These point-in-time receipts do not establish sustained-load or production banking assurances.",
+      },
+      {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/a90df14c6d82f90b81cafeb8f5db00d3ef0b762b/docs/evidence/custom-domain.md",
         supports:
           "October 15, 2026 custom-domain release receipt binds frontend 39e1728 and API 20c91f5 to the Vercel, Railway and isolated Neon deployment. Trusted HTTPS, 5 cold-start checks, 10 banking checks and the complete 11-test Java UI/BFF module passed against the actual hosted path. The synthetic $50 payment screenshot has SHA-256 8ebe78c28fa161da2737c0c5a97eae410ee3d4a63eef29c3eae1b078a41aba4d. The single cold-start sample is not an SLA.",
@@ -149,7 +159,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
           "Successful source-39e1728 CI for the deployed frontend: 31 unit, 18 PostgreSQL integration and 31 Cucumber scenarios / 154 steps in each private/public mode; independent TestNG, Selenium, Playwright, BFF, Bruno and frontend checks. The final documentation head a90df14 also passed run 38770426780 after one unchanged-source retry of a pre-test dependency-fetch failure; original failure evidence was preserved. This Actions run is not Jenkins execution proof. No production-banking claim.",
       },
       {
-        url: "https://github.com/farhan-shafee/creditflow-qe/blob/feat/provider-pilot/docs/evidence/jenkins-execution.md",
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/jenkins-execution.md",
         supports:
           "October 15, 2026 Jenkins 2.580.1 local job creditflow-qe-verify build 1 executed pinned source 47984ef34e444268d9315d4aa596fb6b8be8590d on an isolated local controller. Published 123 cases: 31 unit, 18 PostgreSQL integration, 31 private and 31 public Cucumber scenarios, and 12 TestNG tests. The separate evidence framework passed 32 tests. All 13 archived JUnit-format reports had zero failures, errors or skips; all 147 report/log hashes matched across the core, public-demo and quality-framework scope manifests. Browser, web and Bruno execution remain separate GitHub Actions evidence. This receipt does not establish Jenkins execution for later source revisions, a permanent/public Jenkins service, sustained-load behavior, availability/SLA or production banking.",
       },

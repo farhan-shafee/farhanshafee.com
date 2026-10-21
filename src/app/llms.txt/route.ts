@@ -53,12 +53,13 @@ ${tradeflow?.inspection ? `\n${tradeflow.inspection.links.map((link) => `- [${li
 
 [CreditFlow QE](https://farhan-shafee.com/work/creditflow-qe): A transactional credit-card simulator with independent Java, Cucumber and REST Assured automation, plus executed CI and browser-test evidence.
 
-An AI-assisted synthetic banking application with exact monetary values, transactional PostgreSQL state, original payment receipt replay and independent Java API/browser automation. Public accounts are isolated and expire after 30 minutes; quotas are conservative and idle services can take time to wake. No real cards, funds, settlement or regulatory-compliance claim. Jenkinsfile syntax is checked; Jenkins server execution and sustained-load behavior remain unverified.
+An AI-assisted synthetic banking application with exact monetary values, transactional PostgreSQL state, original payment receipt replay and independent Java API/browser automation. Public accounts are isolated and expire after 30 minutes; quotas are conservative and idle services can take time to wake. No real cards, funds, settlement or regulatory-compliance claim. A dated isolated local Jenkins execution is documented separately from current GitHub CI; sustained-load behavior and availability/SLA remain unverified.
 
 - [Live demo](https://creditflow.farhan-shafee.com)
-- [View source](https://github.com/farhan-shafee/creditflow-qe/tree/feat/provider-pilot)
-- [Verified CI](https://github.com/farhan-shafee/creditflow-qe/actions/runs/38682147631)
-- [Release verification](https://github.com/farhan-shafee/creditflow-qe/blob/feat/provider-pilot/docs/evidence/custom-domain.md)
+- [View source](https://github.com/farhan-shafee/creditflow-qe)
+- [Verified CI](https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474)
+- [Validation history](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md)
+- [Local Jenkins execution](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/jenkins-execution.md)
 
 ## Supporting security engineering
 

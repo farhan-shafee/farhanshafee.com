@@ -35,16 +35,20 @@ export const creditflowProject: Project = {
       },
       {
         label: "View source",
-        href: "https://github.com/farhan-shafee/creditflow-qe/tree/feat/provider-pilot",
+        href: "https://github.com/farhan-shafee/creditflow-qe",
         featured: true,
       },
       {
         label: "Verified CI",
-        href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38682147631",
+        href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
       },
       {
-        label: "Release verification",
-        href: "https://github.com/farhan-shafee/creditflow-qe/blob/feat/provider-pilot/docs/evidence/custom-domain.md",
+        label: "Validation history",
+        href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md",
+      },
+      {
+        label: "Local Jenkins execution",
+        href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/jenkins-execution.md",
       },
     ],
     facts: [
@@ -66,19 +70,20 @@ export const creditflowProject: Project = {
     ],
   },
   technicalHighlights: [
-    "Independent Java/Cucumber automation validates a real transactional credit-card API.",
+    "Independent Java/Cucumber automation validates a synthetic transactional credit-card API.",
     "Real PostgreSQL rollback, ownership, idempotency and concurrency checks.",
     "Custom-host HTTPS, isolated synthetic sessions and genuine test evidence.",
   ],
   caseStudy: {
     overview: {
       paragraphs: [
-        "An AI-assisted synthetic banking application and independent automation framework built for reproducible engineering and interview practice.",
+        "A synthetic banking application and independent automation framework built with AI-assisted development and human-reviewed validation for reproducible engineering and interview practice.",
       ],
     },
     validation: {
       paragraphs: [
-        "Source CI verifies 31 unit tests, 18 real PostgreSQL integration tests and 31 Cucumber scenarios in each private/public mode. The custom-host release passed 10 banking checks and the complete 11-test Java UI/BFF module.",
+        "Recorded October 15 source verification passed 31 application unit tests, 18 PostgreSQL integration tests, and 31 Cucumber scenarios in each private/public mode. The hosted release separately passed ten banking checks and eleven Java UI/BFF tests. These are distinct dated executions, not one aggregate current test total.",
+        "GitHub Actions run 38820309474 passed core and browser jobs at main revision 631948a. A separate isolated local Jenkins build published 123 passing cases, with 32 separate evidence-framework tests, from an earlier pinned source revision. Neither the Jenkins record nor historical hosted checks establish current production banking operation or availability guarantees.",
       ],
     },
     lessonsConstraints: {

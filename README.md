@@ -70,6 +70,8 @@ The October 14, 2026 public-profile review at `d49cceae12f60252a6a372cc0b03122fa
 | 7     | Cloud Security           | Supporting security engineering                                             |
 | 8     | Vulnerability Management | Supporting security engineering                                             |
 
+As of the October 20, 2026 synchronization, the public GitHub profile also features CreditFlow QE alongside the original three headline systems. CreditOps AI links use the verified branded showcase at https://creditops.farhan-shafee.com; CreditFlow source, CI, and validation references now use reviewed public main evidence instead of the historical provider-pilot branch. Dated historical records remain intact.
+
 The homepage features the four primary projects and a restrained entry to supporting security work. `/work` preserves those groups. Additional public playbook links can provide depth without becoming flagship case studies. Keep the established premium presentation and AegisGraph's strongest emphasis.
 
 Project inclusion follows the deliberately curated public profile, not ownership or authenticated repository access. Do not add unrelated businesses, private applications, or personal experiments. Previously excluded project routes stay retired with 404 responses, without unrelated redirects. Remove their obsolete assets from `public/` as well as their records: deleting a card alone does not stop an image or diagram from being served. `tests/portfolio-policy.ts` records those retirement expectations. Historical documents and unpublished drafts do not authorize renewed public promotion.

@@ -6,11 +6,11 @@ type NowSection = {
 
 /** Update this date only when the content is reviewed; do not use build time. */
 export const now: { updated: string; sections: NowSection[] } = {
-  updated: "2026-10-14",
+  updated: "2026-10-20",
   sections: [
     {
       title: "Current systems",
-      text: "My public engineering portfolio centers on AegisGraph, CreditOps AI, and TradeFlow. AegisGraph's hosted replay remains read-only and deterministic. CreditOps presents recorded synthetic trading investigations with private source. TradeFlow is a local synthetic workstation whose session ownership, contracts, and browser tests can be inspected in public source.",
+      text: "My public engineering portfolio centers on AegisGraph, CreditOps AI, TradeFlow, and CreditFlow QE. AegisGraph presents deterministic security investigation, CreditOps a recorded synthetic trading-incident showcase with private source, and TradeFlow reproducible local trading-workflow tests. CreditFlow QE adds a public synthetic banking simulator with Java API/browser automation and separately recorded hosted and local validation.",
       links: [
         { label: "AegisGraph case study", href: "/work/aegisgraph" },
         {
@@ -18,6 +18,7 @@ export const now: { updated: string; sections: NowSection[] } = {
           href: "/work/creditops-ai",
         },
         { label: "TradeFlow case study", href: "/work/tradeflow" },
+        { label: "CreditFlow QE case study", href: "/work/creditflow-qe" },
       ],
     },
     {
@@ -36,7 +37,7 @@ export const now: { updated: string; sections: NowSection[] } = {
     },
     {
       title: "Open boundaries",
-      text: "Broader live-model evaluation and authenticated tenant controls remain outside AegisGraph's public demo. CreditOps recordings leave initiating causes unconfirmed. TradeFlow's tests establish finite synthetic behavior, without exchange execution or operational trading guarantees. The lab notebook keeps those open questions tied to public evidence.",
+      text: "Broader live-model evaluation and authenticated tenant controls remain outside AegisGraph's public demo. CreditOps recordings leave initiating causes unconfirmed. TradeFlow's tests establish finite synthetic behavior without exchange execution; CreditFlow QE similarly has no real card or funds movement or banking SLA. The lab notebook keeps those open questions tied to public evidence.",
       links: [{ label: "Questions in the lab", href: "/lab" }],
     },
   ],

@@ -55,12 +55,14 @@ export default function AboutPage() {
               TradeFlow makes my approach to quality engineering inspectable:
               each test owns its authenticated session and order records,
               independent contracts validate responses, and cross-layer checks
-              follow the exact record through a workflow. Its trading
-              workstation and data are synthetic. The source, test strategy, and
-              failure evidence show the engineering decisions without claiming
-              employer infrastructure or live trading.
+              follow the exact record through a workflow. CreditFlow QE extends
+              that evidence to a synthetic Java banking ledger with PostgreSQL
+              transaction checks, independent API automation, and recorded
+              browser/Jenkins execution. Both are synthetic engineering
+              projects, not employer infrastructure or live financial services.
             </p>
             <TextLink href="/work/tradeflow">Inside TradeFlow</TextLink>
+            <TextLink href="/work/creditflow-qe">Inside CreditFlow QE</TextLink>
           </div>
         </section>
         <section

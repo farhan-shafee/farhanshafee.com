@@ -101,7 +101,7 @@ test("public portfolio follows the deliberately selected GitHub hierarchy", () =
 test("CreditOps exposes its recorded public showcase while keeping source private", async () => {
   const project = getProjectBySlug("creditops-ai");
   assert.ok(project);
-  assert.equal(project.website, "https://creditops-ai-showcase.vercel.app");
+  assert.equal(project.website, "https://creditops.farhan-shafee.com");
   assert.equal(project.sourceVisibility, "private");
   assert.equal(project.github, undefined);
   const props = { params: Promise.resolve({ slug: project.slug }) };
@@ -116,6 +116,23 @@ test("CreditOps exposes its recorded public showcase while keeping source privat
     html,
     /SoftwareSourceCode|codeRepository|github\.com\/farhan-shafee\/creditops/i,
   );
+});
+
+test("CreditFlow QE uses current main evidence with separate local Jenkins proof", () => {
+  const project = getProjectBySlug("creditflow-qe");
+  assert.ok(project);
+  assert.equal(
+    project.github,
+    "https://github.com/farhan-shafee/creditflow-qe",
+  );
+  assert.equal(project.website, "https://creditflow.farhan-shafee.com");
+  const contents = JSON.stringify(project);
+  assert.ok(!contents.includes("feat/provider-pilot"));
+  assert.ok(!contents.includes("38682147631"));
+  assert.ok(contents.includes("actions/runs/38820309474"));
+  assert.ok(contents.includes("docs/evidence/STATUS.md"));
+  assert.ok(contents.includes("docs/evidence/jenkins-execution.md"));
+  assert.match(contents, /synthetic/i);
 });
 
 test("retired projects reject routes and metadata and remove publicly served assets", async () => {
