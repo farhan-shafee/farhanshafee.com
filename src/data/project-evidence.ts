@@ -98,6 +98,11 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   tradeflow: {
     sources: [
       {
+        url: "https://tradeflow.farhan-shafee.com",
+        supports:
+          "October 20, 2026 HTTPS reachability returned 200. Does not prove exact deployed SHA, platform configuration, uptime, or live trading.",
+      },
+      {
         url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/dc8ac09d5eea4f1a51b0cc32248d7a205fc67221/docs/TEST_STRATEGY.md",
         supports:
           "October 14, 2026 current public main dc8ac09d5eea4f1a51b0cc32248d7a205fc67221 supports the synthetic local trading workstation, authenticated order operations, session-isolated fixtures, strict TypeScript, unit/API/contract/integration/browser layers, runtime/OpenAPI validation, failure triage, and Chromium/Firefox/WebKit execution. Public documentation distinguishes human-reviewed AI assistance from deterministic test oracles and excludes live brokerage, exchange execution, matching, real P&L, employer systems, and proprietary data.",

@@ -118,6 +118,19 @@ test("CreditOps exposes its recorded public showcase while keeping source privat
   );
 });
 
+test("TradeFlow features its public synthetic demo", () => {
+  const project = getProjectBySlug("tradeflow");
+  assert.ok(project);
+  assert.equal(project.website, "https://tradeflow.farhan-shafee.com");
+  assert.ok(
+    project.inspection?.links.some(
+      (link) =>
+        link.featured && link.href === "https://tradeflow.farhan-shafee.com",
+    ),
+  );
+  assert.match(JSON.stringify(project), /synthetic/i);
+});
+
 test("CreditFlow QE uses current main evidence with separate local Jenkins proof", () => {
   const project = getProjectBySlug("creditflow-qe");
   assert.ok(project);
@@ -515,8 +528,8 @@ test("flagship inspection separates live demo, recorded playback, and local test
   assert.match(creditops.inspection.summary, /no fresh model or MCP/i);
   assert.equal(
     tradeflow.website,
-    undefined,
-    "A local demonstration must not imply a hosted trading app",
+    "https://tradeflow.farhan-shafee.com",
+    "The verified public synthetic demo should be linked",
   );
   assert.ok(
     tradeflow.inspection.links.some(({ href }) =>

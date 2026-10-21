@@ -10,7 +10,7 @@ export const now: { updated: string; sections: NowSection[] } = {
   sections: [
     {
       title: "Current systems",
-      text: "My public engineering portfolio centers on AegisGraph, CreditOps AI, TradeFlow, and CreditFlow QE. AegisGraph presents deterministic security investigation, CreditOps a recorded synthetic trading-incident showcase with private source, and TradeFlow reproducible local trading-workflow tests. CreditFlow QE adds a public synthetic banking simulator with Java API/browser automation and separately recorded hosted and local validation.",
+      text: "My public engineering portfolio centers on AegisGraph, CreditOps AI, TradeFlow, and CreditFlow QE. AegisGraph presents deterministic security investigation, CreditOps a recorded synthetic trading-incident showcase with private source, and TradeFlow reproducible trading-workflow tests with a reachable synthetic demo. CreditFlow QE adds a public synthetic banking simulator with Java API/browser automation and separately recorded hosted and local validation.",
       links: [
         { label: "AegisGraph case study", href: "/work/aegisgraph" },
         {

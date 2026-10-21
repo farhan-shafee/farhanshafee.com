@@ -10,10 +10,16 @@ export const tradeflowProject: Project = {
   description:
     "A synthetic trading workstation that makes test ownership, API contracts, and three-browser workflow validation inspectable.",
   sourceVisibility: "public",
+  website: "https://tradeflow.farhan-shafee.com",
   inspection: {
     summary:
-      "Inspect a completed local SDET lab: synthetic order workflows, isolated fixtures, independent contract checks, and hosted cross-browser evidence.",
+      "Inspect the reachable synthetic workstation and the completed SDET lab: isolated fixtures, independent contract checks, and cross-browser evidence.",
     links: [
+      {
+        label: "Live demo",
+        href: "https://tradeflow.farhan-shafee.com",
+        featured: true,
+      },
       {
         label: "View source",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab",
@@ -49,14 +55,14 @@ export const tradeflowProject: Project = {
       {
         label: "Boundary",
         value:
-          "Local synthetic data and in-memory state; no financial connectivity.",
+          "Synthetic in-memory sessions; public demo reachable, no financial connectivity.",
       },
     ],
   },
   caseStudy: {
     overview: {
       paragraphs: [
-        "I built TradeFlow to make test engineering inspectable through a small trading workstation. Its order workflow gives unit, API, contract, integration, and browser tests concrete behavior to check. Every credential, order, position, and quote is synthetic; the application runs locally.",
+        "I built TradeFlow to make test engineering inspectable through a small trading workstation. Its order workflow gives unit, API, contract, integration, and browser tests concrete behavior to check. Every credential, order, position, and quote is synthetic. A public demo is reachable; session books remain process-local and ephemeral.",
       ],
     },
     problem: {
@@ -102,7 +108,7 @@ export const tradeflowProject: Project = {
     },
     lessonsConstraints: {
       paragraphs: [
-        "This completed lab uses one local process with in-memory sessions and books. There is no broker or exchange connection, live market feed, matching engine, execution simulation, persistence, reconciliation, or P&L. Positions remain static after submission. Browser activity is not a durable audit trail. Production identity, distributed resilience, and trading capacity are outside the implemented scope; no employer or customer data is used.",
+        "This completed lab uses one process with ephemeral in-memory sessions and books. The branded public demo is reachable, without an uptime or capacity guarantee. There is no broker or exchange connection, live market feed, matching engine, execution simulation, persistence, reconciliation, or P&L. Positions remain static after submission. Browser activity is not a durable audit trail. Production identity, distributed resilience, and trading capacity are outside the implemented scope; no employer or customer data is used.",
       ],
     },
   },

@@ -46,7 +46,7 @@ ${creditops?.inspection ? `\n${creditops.inspection.links.map((link) => `- [${li
 
 [TradeFlow](${absoluteUrl("/work/tradeflow")}): ${tradeflow?.description}
 
-A local, in-memory synthetic trading workstation with strict TypeScript, a Node.js server, test-owned sessions and records, runtime schemas, independently interpreted OpenAPI contracts, and Playwright UI/API/contract/integration coverage. Chromium, Firefox, and WebKit check the browser workflows. Documented AI assistance remains human-reviewed; deterministic checks decide acceptance. There is no live brokerage, exchange execution, matching engine, real P&L, or employer data. Browser activity is not a durable audit history.
+A reachable public synthetic trading workstation at https://tradeflow.farhan-shafee.com with in-memory sessions and strict TypeScript, a Node.js server, test-owned sessions and records, runtime schemas, independently interpreted OpenAPI contracts, and Playwright UI/API/contract/integration coverage. Chromium, Firefox, and WebKit check the browser workflows. Documented AI assistance remains human-reviewed; deterministic checks decide acceptance. There is no live brokerage, exchange execution, matching engine, real P&L, or employer data. Browser activity is not a durable audit history.
 ${tradeflow?.inspection ? `\n${tradeflow.inspection.links.map((link) => `- [${link.label}](${link.href})`).join("\n")}\n` : ""}
 
 ## CreditFlow QE
