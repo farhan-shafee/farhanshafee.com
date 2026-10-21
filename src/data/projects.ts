@@ -116,6 +116,10 @@ export const projects: Project[] = [
           featured: true,
         },
         {
+          label: "Seven-minute walkthrough",
+          href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md",
+        },
+        {
           label: "Architecture",
           href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/architecture/SYSTEM.md",
         },
@@ -369,13 +373,7 @@ export const projects: Project[] = [
     ],
     website: "https://aegisgraph.farhan-shafee.com",
     github: "https://github.com/farhan-shafee/aegisgraph",
-    links: [
-      {
-        label: "Seven-minute walkthrough",
-        href: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md",
-      },
-      { label: "Discuss this project", href: "/contact" },
-    ],
+    links: [{ label: "Discuss this project", href: "/contact" }],
     featured: true,
     visibility: "public",
   },

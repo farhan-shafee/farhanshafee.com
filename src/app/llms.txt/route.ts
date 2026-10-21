@@ -56,6 +56,7 @@ ${tradeflow?.inspection ? `\n${tradeflow.inspection.links.map((link) => `- [${li
 An AI-assisted synthetic banking application with exact monetary values, transactional PostgreSQL state, original payment receipt replay and independent Java API/browser automation. Public accounts are isolated and expire after 30 minutes; quotas are conservative and idle services can take time to wake. No real cards, funds, settlement or regulatory-compliance claim. A dated isolated local Jenkins execution is documented separately from current GitHub CI; sustained-load behavior and availability/SLA remain unverified.
 
 - [Live demo](https://creditflow.farhan-shafee.com)
+- [Five-minute walkthrough](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md)
 - [View source](https://github.com/farhan-shafee/creditflow-qe)
 - [Verified CI](https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474)
 - [Validation history](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md)

@@ -144,6 +144,16 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   "creditflow-qe": {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/architecture/core-design.md",
+        supports:
+          "Public source documents exact BigDecimal monetary rules, PostgreSQL row locking and uniqueness constraints, account-scoped idempotency and original receipt replay, independent HTTP automation, and an isolated test-database rollback failure. These are bounded implementation and test facts, not real banking or general concurrency guarantees.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md",
+        supports:
+          "Source-backed five-minute interview walkthrough covers the synthetic transaction, exact-money rules, atomic ledger/idempotency, independent Cucumber testing, dated reports and deployment limitations.",
+      },
+      {
         url: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
         supports:
           "October 15, 2026 GitHub Actions at main commit 631948a85f54e00f9fc8fae7fa844807e643847a completed successfully for both core and browser jobs. This is current-main evidence reviewed October 20, separate from earlier hosted-release and local Jenkins records.",

@@ -39,6 +39,10 @@ export const creditflowProject: Project = {
         featured: true,
       },
       {
+        label: "Five-minute walkthrough",
+        href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md",
+      },
+      {
         label: "Verified CI",
         href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
       },
@@ -78,6 +82,41 @@ export const creditflowProject: Project = {
     overview: {
       paragraphs: [
         "A synthetic banking application and independent automation framework built with AI-assisted development and human-reviewed validation for reproducible engineering and interview practice.",
+      ],
+    },
+    problem: {
+      paragraphs: [
+        "A successful HTTP response does not prove a correct financial ledger. Duplicate requests, concurrent updates, and database failures can change balances twice or leave a receipt inconsistent with account state. This project tests those failures instead of relying only on happy-path purchases and payments.",
+      ],
+    },
+    system: {
+      title: "From transaction to verification",
+      steps: [
+        "Create a short-lived synthetic account",
+        "Validate ownership, exact USD input, and available balance",
+        "Lock account state and atomically post a ledger entry",
+        "Return the original receipt or an explicit error",
+        "Recheck API behavior, PostgreSQL state, and browser workflow",
+      ],
+      paragraphs: [
+        "The sandbox models purchases and payments against a fixed synthetic credit limit. Account-scoped idempotency checks the operation and normalized amount. An identical retry returns its original receipt, even when later activity has changed the current balance; conflicting key reuse returns HTTP 409.",
+      ],
+    },
+    architecture: {
+      paragraphs: [
+        "A Java 21 / Spring Boot service implements exact BigDecimal money rules and stores the ledger in PostgreSQL with Flyway migrations. A Next.js command center mediates selected synthetic visitor workflows. Cucumber/REST Assured and TestNG modules exercise the running HTTP API independently of application source; Java Selenium and Playwright cover selected UI journeys.",
+      ],
+    },
+    whatIBuilt: {
+      paragraphs: [
+        "Recorded tests exercise per-account row locking, original-receipt replay after intervening activity, and rollback when a deliberately injected database insert failure occurs in an isolated integration database. Browser tests cover ambiguous response handling and safe retry/reconciliation. These checks prove specified scenarios, not every possible concurrency interleaving.",
+      ],
+    },
+    engineeringDecisions: {
+      bullets: [
+        "Use actual PostgreSQL rather than an in-memory substitute so integration checks exercise locks, uniqueness constraints, and transaction rollback.",
+        "Use one transactional API instead of unneeded microservices; make the external HTTP test clients independent of application implementation classes.",
+        "Keep dated, source-bound reports and hashes so historical CI and Jenkins evidence cannot be mistaken for validation of later changes.",
       ],
     },
     validation: {

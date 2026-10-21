@@ -131,6 +131,44 @@ test("TradeFlow features its public synthetic demo", () => {
   assert.match(JSON.stringify(project), /synthetic/i);
 });
 
+test("flagship case studies include inspectable quick guides and current proof", () => {
+  const aegisgraph = getProjectBySlug("aegisgraph");
+  const tradeflow = getProjectBySlug("tradeflow");
+  const creditflow = getProjectBySlug("creditflow-qe");
+  assert.ok(aegisgraph && tradeflow && creditflow);
+  assert.ok(
+    aegisgraph.inspection?.links.some((link) =>
+      link.href.endsWith("/docs/DEMO.md"),
+    ),
+  );
+  assert.ok(
+    creditflow.inspection?.links.some((link) =>
+      link.href.endsWith("/docs/interview-guide/five-minute-walkthrough.md"),
+    ),
+  );
+  for (const section of [
+    "problem",
+    "system",
+    "architecture",
+    "whatIBuilt",
+    "engineeringDecisions",
+  ] as const) {
+    assert.ok(
+      creditflow.caseStudy?.[section],
+      "Missing CreditFlow section: " + section,
+    );
+  }
+  assert.ok(
+    tradeflow.inspection?.links.some((link) =>
+      link.href.includes("39537782961"),
+    ),
+  );
+  assert.match(
+    tradeflow.caseStudy?.validation?.paragraphs?.join(" ") ?? "",
+    /54 unit checks and 211 Playwright executions/,
+  );
+});
+
 test("CreditFlow QE uses current main evidence with separate local Jenkins proof", () => {
   const project = getProjectBySlug("creditflow-qe");
   assert.ok(project);

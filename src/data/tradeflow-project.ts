@@ -38,8 +38,8 @@ export const tradeflowProject: Project = {
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/workflows/quality.yml?query=branch%3Amain",
       },
       {
-        label: "October 13 CI",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/38339620878",
+        label: "Latest checked CI",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/39537782961",
       },
     ],
     facts: [
@@ -103,7 +103,8 @@ export const tradeflowProject: Project = {
     },
     validation: {
       paragraphs: [
-        "October 13, 2026 hosted CI at dc8ac09 passed 34 unit checks and 205 Playwright executions: 42 API, 22 contract, and 47 on each of Chromium, Firefox, and WebKit. Compiler, lint, formatting, OpenAPI, and workflow-structure gates also passed. CI rejects flaky results even when a diagnostic retry passes. These counts belong to that source revision and checked scenarios.",
+        "October 13, 2026 hosted CI at dc8ac09 passed 34 unit checks and 205 Playwright executions: 42 API, 22 contract, and 47 on each of Chromium, Firefox, and WebKit. Compiler, lint, formatting, OpenAPI, and workflow-structure gates also passed. CI rejects flaky results even when a diagnostic retry passes. These are historical, revision-specific results.",
+        "A subsequent October 15 deployment-readiness revision (8c228d8) expanded the documented suite to 54 unit checks and 211 Playwright executions, including browser-free hosted-boundary cases; CI run 38673501021 passed. The latest October 21 documentation commit 284a474 also passed CI run 39537782961. These finite synthetic checks do not establish production trading, sustained capacity, or the exact revision running on the public hostname.",
       ],
     },
     lessonsConstraints: {

@@ -57,6 +57,8 @@ Public routes include `/`, `/about`, `/work`, approved `/work/[slug]` pages, `/w
 
 ## Maintain the public portfolio
 
+For a source-linked rehearsal path and external-review questionnaire, see [Interview portfolio briefing](docs/INTERVIEW_PORTFOLIO_BRIEFING.md). It is preparation material, not a published website page or evidence of actual third-party feedback.
+
 The October 14, 2026 public-profile review at `d49cceae12f60252a6a372cc0b03122fa70babc5` establishes the original seven included projects. The approved October 15 CreditFlow QE integration adds the fourth flagship, for eight included projects:
 
 | Order | Project                  | Presentation                                                                |
