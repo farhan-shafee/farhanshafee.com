@@ -28,7 +28,8 @@ repository's deployment events.
 4. Check public pages, articles, assets, feeds and security headers.
 5. Check public indexing and the permanent `www` redirect with path/query intact.
 
-Use Railway's **Wait for CI** setting when enabling automatic releases.
+Production follows `main` with **Wait for CI** enabled.
+Production releases wait for the repository's GitHub Actions checks.
 Do not treat source configuration alone as proof of webhook delivery.
 If a push produces no deployment, inspect branch settings, watch paths and
 Railway GitHub App repository access. A commit with no file changes may be
