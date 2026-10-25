@@ -1,6 +1,6 @@
 # farhan-shafee.com
 
-Farhan Shafee's personal engineering portfolio: **Security Engineering × AI Automation × Fintech Systems**. The site presents the work deliberately selected on the current [public GitHub profile](https://github.com/farhan-shafee/farhan-shafee), with reviewed evidence and technical writing. This site repository is private; the deployed pages are public.
+Farhan Shafee's personal engineering portfolio: **Security Engineering × AI Automation × Fintech Systems**. The site presents the work deliberately selected on the current [public GitHub profile](https://github.com/farhan-shafee/farhan-shafee), with reviewed evidence and technical writing. This site repository and deployed pages are public. Railway serves the canonical apex/www site with GitHub main → successful CI → automatic production deployment.
 
 ## Develop and verify
 
@@ -40,7 +40,7 @@ Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, and system fonts. P
 | `src/components/`                            | Shared interface and article rendering                                             |
 | `src/config/site.ts`                         | Public identity, canonical domain, verified social links, optional contact address |
 | `src/data/projects.ts`                       | Project model, AegisGraph case study, public ordering and selectors                |
-| `src/data/creditops-project.ts`              | Publicly approved CreditOps AI presentation with private-source boundary           |
+| `src/data/creditops-project.ts`              | Public-source CreditOps AI presentation and recorded-playback boundaries           |
 | `src/data/tradeflow-project.ts`              | Public-source TradeFlow case study and reviewed screenshots                        |
 | `src/data/security-projects-core.ts`         | Supporting DevSecOps and Detection case studies                                    |
 | `src/data/security-projects-verification.ts` | Supporting Cloud Security and Vulnerability Management case studies                |
@@ -64,25 +64,25 @@ The October 14, 2026 public-profile review at `d49cceae12f60252a6a372cc0b03122fa
 | Order | Project                  | Presentation                                                                |
 | ----- | ------------------------ | --------------------------------------------------------------------------- |
 | 1     | AegisGraph               | Primary flagship; public demo and source                                    |
-| 2     | CreditOps AI             | Recorded public showcase; source private                                    |
-| 3     | TradeFlow                | Local synthetic SDET lab; public source and demo guide                      |
+| 2     | CreditOps AI             | Recorded public showcase; public source and Railway hosting                 |
+| 3     | TradeFlow                | Synthetic SDET lab; Railway/Cloudflare demo, public source and guide        |
 | 4     | CreditFlow QE            | Synthetic banking simulator; public demo, source and executed test evidence |
 | 5     | SecurePay / DevSecOps    | Supporting security engineering                                             |
 | 6     | Detection Engineering    | Supporting security engineering                                             |
 | 7     | Cloud Security           | Supporting security engineering                                             |
 | 8     | Vulnerability Management | Supporting security engineering                                             |
 
-As of the October 20, 2026 synchronization, the public GitHub profile also features CreditFlow QE alongside the original three headline systems. CreditOps AI links use the verified branded showcase at https://creditops.farhan-shafee.com; CreditFlow source, CI, and validation references now use reviewed public main evidence instead of the historical provider-pilot branch. Dated historical records remain intact.
+As of the October 25, 2026 deployment/source synchronization, the public GitHub profile also features CreditFlow QE alongside the original three headline systems. CreditOps AI links use the verified branded showcase at https://creditops.farhan-shafee.com; CreditFlow source, CI, and validation references now use reviewed public main evidence instead of the historical provider-pilot branch. All four flagship applications run on Railway; the current repository runbooks describe TLS, backup/recovery, pinned-release and remaining closeout boundaries. Dated historical records remain intact.
 
 The homepage features the four primary projects and a restrained entry to supporting security work. `/work` preserves those groups. Additional public playbook links can provide depth without becoming flagship case studies. Keep the established premium presentation and AegisGraph's strongest emphasis.
 
 Project inclusion follows the deliberately curated public profile, not ownership or authenticated repository access. Do not add unrelated businesses, private applications, or personal experiments. Previously excluded project routes stay retired with 404 responses, without unrelated redirects. Remove their obsolete assets from `public/` as well as their records: deleting a card alone does not stop an image or diagram from being served. `tests/portfolio-policy.ts` records those retirement expectations. Historical documents and unpublished drafts do not authorize renewed public promotion.
 
-Typed records use unique lowercase slugs. `visibility: "public"` permits a case-study route, Work entry, and sitemap URL; `featured: true` includes the project on the homepage. Private presentation records have no public detail route. `sourceVisibility` describes source availability independently: CreditOps has a public presentation with `sourceVisibility: "private"`, a plain **Source private** label, and no `github` URL. Never invent or link a private repository URL, or attach source-code schema to private source. Public-source projects use verified `github` links.
+Typed records use unique lowercase slugs. `visibility: "public"` permits a case-study route, Work entry, and sitemap URL; `featured: true` includes the project on the homepage. Private presentation records have no public detail route. `sourceVisibility` describes source availability independently: CreditOps now has `sourceVisibility: "public"` and its verified public `github` URL, so cards, inspection links and source-code schema can expose it. Private-source projects must still omit repository URLs and source-code schema; do not infer visibility from ownership.
 
-Statuses share one vocabulary: `Active`, `Production`, `Completed`, `Exploring`, and `Archived`. AegisGraph and CreditFlow QE are Active. CreditOps' approved recorded showcase, TradeFlow's local deliverable, and the four supporting labs are Completed within their documented scopes. These statuses do not establish production trading, SOC, cloud, or enterprise operation. A demo URL alone cannot support a Production status.
+Statuses share one vocabulary: `Active`, `Production`, `Completed`, `Exploring`, and `Archived`. AegisGraph and CreditFlow QE are Active. CreditOps' approved recorded showcase, TradeFlow's synthetic deliverable and public hosting, and the four supporting labs are Completed within their documented scopes. These statuses do not establish production trading, SOC, cloud, or enterprise operation. A demo URL alone cannot support a Production status.
 
-`projects.ts` assembles the approved order; `getSecurityProjects()` selects the supporting group. Preserve the established Detection slug. Add implementation facts only after reviewing public source, public documentation, or an explicitly approved artifact. For CreditOps, use only the public profile and showcase: do not inspect or copy private implementation into this site.
+`projects.ts` assembles the approved order; `getSecurityProjects()` selects the supporting group. Preserve the established Detection slug. Add implementation facts only after reviewing public source, public documentation, or an explicitly approved artifact. For CreditOps, the now-public repository, recorded showcase and current deployment runbook support public source links and reviewed architecture facts. Preserve recorded-playback, uncertainty and human-review limitations.
 
 The optional `caseStudy` sections accept reviewed `paragraphs`, `bullets`, and ordered `steps`, with an optional editorial `title` that preserves the section anchor. Only populated sections render. Omit unanswered sections rather than adding placeholders. `technicalHighlights` and `technologies` contain verified project-specific facts.
 
@@ -90,7 +90,7 @@ The optional `caseStudy` sections accept reviewed `paragraphs`, `bullets`, and o
 
 `website`, `github`, and labeled `links` supply public references. Optional `inspection` data supplies a summary, evidence links, and system facts; `guidedLinks` adds a restrained inspection group. Mark a link `featured: true` for card display. Supporting cards expose source links without preview galleries. These components are server-rendered and fetch no external evidence at runtime.
 
-Keep provenance and unresolved requests in `src/data/project-evidence.ts`. Its exclusive `path`/`url` source records bind claims to inspected artifacts or public revisions. Never import it into application code or serialize its TODOs into pages, metadata, feeds, or bundles. The private site repository still must not contain credentials, confidential source, private contact details, or sensitive infrastructure information.
+Keep provenance and unresolved requests in `src/data/project-evidence.ts`. Its exclusive `path`/`url` source records bind claims to inspected artifacts or public revisions. Never import it into application code or serialize its TODOs into pages, metadata, feeds, or bundles. The public site repository must not contain credentials, confidential source, private contact details, or sensitive infrastructure information.
 
 Edit `lab.ts` for evidence-backed open questions, `uses.ts` for confirmed tools, and `now.ts` for current relevant work. Change the Now date only after reviewing its content. Language experience and project stacks do not establish personal editor, hardware, or service use.
 
@@ -102,9 +102,9 @@ The September 27 refinement at `f616185` has [CI run 36348207961](https://github
 
 Keep dated AegisGraph history attached to its original revisions. September 17 [source CI 35179396463](https://github.com/farhan-shafee/aegisgraph/actions/runs/35179396463) covers `534679eac4a04ee0298fe6f35d1422fa63a4fe90`; [hosted-demo CI 35251887304](https://github.com/farhan-shafee/aegisgraph/actions/runs/35251887304) covers `1670ca4b09e7000019401d852ab98e140bd137e7`. The [original evidence review](docs/aegisgraph-evidence-review.md) and [historical proof inspection](docs/proof-density-audit.md) remain archival records. Historical OpenAI observations do not extend into current deterministic benchmark accuracy or general model-safety claims.
 
-CreditOps' public showcase plays recorded model-assisted investigations using synthetic data. Playback makes no fresh model or MCP diagnostic calls. Fresh diagnostics are a separate mode; recordings do not demonstrate model-directed follow-ups. Initiating causes remain unconfirmed and human review remains required. Source stays private.
+CreditOps' public showcase plays recorded model-assisted investigations using synthetic data. Playback makes no fresh model or MCP diagnostic calls. Fresh diagnostics are a separate mode; recordings do not demonstrate model-directed follow-ups. Initiating causes remain unconfirmed and human review remains required. Source is public. Railway hosts its web, API, database and backup storage.
 
-TradeFlow's public source demonstrates a locally run synthetic workstation and reproducible test engineering. Its exact-head October 13 [CI run 38339620878](https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/38339620878) covers `dc8ac09`, with 34 unit checks and 205 Playwright executions counted separately. It establishes no live brokerage, exchange execution, matching engine, real P&L, employer integration, or production trading suitability.
+TradeFlow's public source demonstrates a locally reproducible synthetic workstation and reproducible test engineering; its public demo runs on Railway behind Cloudflare Tunnel, without a database and with session state reset on restart. Its exact-head October 13 [CI run 38339620878](https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/38339620878) covers `dc8ac09`, with 34 unit checks and 205 Playwright executions counted separately. It establishes no live brokerage, exchange execution, matching engine, real P&L, employer integration, or production trading suitability.
 
 ## Writing
 
@@ -134,9 +134,9 @@ Before publication, review every claim and artifact, check links and mobile rend
 
 Draft status defaults to true. Drafts and future-dated articles are excluded from public indexes, tags, sitemap, RSS, and article routes, including development and previews. There is no public draft bypass. Review trusted drafts in the editor or an ignored local rendering artifact. Dates use UTC; rebuild on publication day to refresh static indexes and feeds. A future date alone is not a privacy control: retain `draft: true` until approved.
 
-The collection retains one published article and five unpublished drafts. No draft was published by the October 14 synchronization; excluded-project drafts and older outlines remain private editorial material. Do not expose them through Work, related-writing links, feeds, or metadata.
+The collection retains one published article and five unpublished drafts. No draft was published by the October 14 synchronization; excluded-project drafts and older outlines remain unpublished editorial material on the website. This repository is public: draft filtering is not repository access control, and those source files are readable on GitHub. Do not expose them through Work, related-writing links, feeds, or metadata.
 
-`content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx` remains the featured published article, **Building an Evidence-Grounded AI Security Investigation System**, dated September 17, 2026, with its existing September 27 update note. Preserve its original narrative and dates. The [article evidence review](docs/aegisgraph-article-evidence-review.md) maps its claims, synthetic screenshots, and simplified diagram; the [article plan](docs/aegisgraph-article-plan.md) remains historical. Earlier draft checks are distinct from publication validation.
+`content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx` remains the featured published article, **Building an Evidence-Grounded AI Security Investigation System**, dated September 17, 2026, with its retained September 27 V2 note and the October 25 Railway hosting update. Preserve its original narrative and publication date; substantive maintenance uses the reviewed `updated` date. The [article evidence review](docs/aegisgraph-article-evidence-review.md) maps its claims, synthetic screenshots, and simplified diagram; the [article plan](docs/aegisgraph-article-plan.md) remains historical. Earlier draft checks are distinct from publication validation.
 
 ## Identity, SEO, privacy, and deployment
 
@@ -150,6 +150,10 @@ Security headers live in `next.config.ts`. Static rendering and the initial them
 
 There are no analytics, tracking cookies, third-party scripts, or runtime service credentials. Theme preference is stored locally under `fs-theme`. Do not commit secrets or confidential data, including to source-only notes.
 
-Deploy with Vercel's Next.js preset and this repository as the root directory. `npm run build` requires no service credentials. All production URLs derive from `siteConfig.url`. Bind both apex and www domains, configure DNS and HTTPS, and preserve the existing host-specific HTTP 308 www-to-apex redirect with path/query retention. Repository settings do not provision DNS or bind domains.
+Production runs on Railway Railpack with Node 24 and this repository as the root directory. Use `npm ci`, `npm run build` and `npm run start -- --hostname 0.0.0.0`; health path `/`. The GitHub App includes this repository, production follows `main`, and Wait for CI is enabled. See [the current production runbook](docs/railway-production.md). `npm run build` requires no service credentials. All production URLs derive from `siteConfig.url`. Bind both apex and www domains, configure DNS and HTTPS, and preserve the existing host-specific HTTP 308 www-to-apex redirect with path/query retention. Repository settings do not provision DNS or bind domains.
 
-Vercel previews emit `noindex, nofollow`, an `X-Robots-Tag` header, and disallowing robots rules. These are indexing controls; use deployment protection for access restrictions. Headers and redirects require a Next.js-capable host. After publication, verify the exact deployment commit and production routes, discovery files, retired 404s/assets, both themes, and narrow layouts.
+Rehearsals set `VERCEL_ENV=preview` and emit `noindex, nofollow`, an `X-Robots-Tag` header, and disallowing robots rules. These are indexing controls; use appropriate host access protection for restrictions. Production uses `NODE_ENV=production` and `VERCEL_ENV=production`; the variable name is retained for compatibility on Railway. Headers and redirects require a Next.js-capable host. After publication, verify the exact deployment commit and production routes, discovery files, retired 404s/assets, both themes, and narrow layouts.
+
+## October 25 deployment/source synchronization
+
+[Current project deployment matrix](docs/PROJECT_DEPLOYMENTS.md) records Railway hosting, public source, release pins, backup verification and remaining closeout for all four flagship projects and this site. The profile README, About/Now, case-study records, published article update and llms.txt use that reviewed state. Historical evidence documents retain their named revisions; current provider status must be read separately. Vercel and rehearsals remain retained for controlled rollback/stabilization.

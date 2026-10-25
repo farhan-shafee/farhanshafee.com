@@ -1,5 +1,7 @@
 # AegisGraph article evidence review
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 The article is `content/writing/building-an-evidence-grounded-ai-security-investigation-system.mdx`, with the matching slug and title **Building an Evidence-Grounded AI Security Investigation System**. Farhan approved its first-person judgments and explicitly authorized publication with `draft: false`, `featured: true`, and publication date `2026-09-17`. The collection now contains one published article and five remaining drafts. This internal review is not imported by public routes; historical draft validation below is retained as a separate record.
 
 Read-only source inspection used AegisGraph revision `c95afa6f5ec0a8024364740659569678cf7738a1`. No AegisGraph files, databases, tests, or model calls were changed or run. References identify that revision; unprefixed Python filenames below are under `apps/api/aegisgraph/`. [The project evidence review](aegisgraph-evidence-review.md) retains source, CI, and historical validation provenance.

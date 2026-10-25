@@ -1,5 +1,7 @@
 # AegisGraph evidence review
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 This is a source-only editorial record for adding AegisGraph to the personal portfolio. It is not a public site route or an article. The owner supplied authorship and the request to publish the project. The initial review used AegisGraph revision `7293c515d47178405df6fcf93feeeadac067cf64` (`feat: harden AegisGraph interview demo`). The source working tree was clean when inspected. No source files were changed and no application workflows, tests, model calls, or database commands were run in that repository. A dated public-source follow-up below records later evidence without changing the original validation history.
 
 Source paths below are relative to the AegisGraph repository. Portfolio asset paths are relative to this repository. No local workstation paths, credentials, or private configuration values are recorded.

@@ -1,6 +1,6 @@
 import type { Project } from "./projects";
 
-/** Presentation evidence is limited to the public profile and showcase. */
+/** Public source and Railway deployment reviewed October 25, 2026. */
 export const creditopsProject: Project = {
   title: "CreditOps AI",
   slug: "creditops-ai",
@@ -14,6 +14,11 @@ export const creditopsProject: Project = {
     summary:
       "Explore three recorded model-assisted investigations. Public playback uses synthetic data and makes no fresh model or MCP diagnostic calls; human review remains necessary.",
     links: [
+      {
+        label: "View source",
+        href: "https://github.com/farhan-shafee/creditops-ai",
+        featured: true,
+      },
       {
         label: "Public showcase",
         href: "https://creditops.farhan-shafee.com",
@@ -43,13 +48,18 @@ export const creditopsProject: Project = {
         value:
           "Recorded synthetic investigations; no fresh model or diagnostic calls.",
       },
-      { label: "Source", value: "Private." },
+      { label: "Source", value: "Public GitHub repository." },
+      {
+        label: "Hosting",
+        value:
+          "Railway Next.js, FastAPI and PostgreSQL; TLS and tested backup recovery.",
+      },
     ],
   },
   caseStudy: {
     overview: {
       paragraphs: [
-        "CreditOps AI explores trading incident investigation through three recorded model-assisted cases. The public showcase connects synthetic technical observations to fictional RFQs and orders, then exposes the assessment, its evidence, and its limitations for human review. Source remains private; this page describes only the publicly presented scope.",
+        "CreditOps AI explores trading incident investigation through three recorded model-assisted cases. The public showcase connects synthetic technical observations to fictional RFQs and orders, then exposes the assessment, its evidence, and its limitations for human review. The source is public, and the web, API and database run on Railway.",
       ],
     },
     problem: {
@@ -71,7 +81,7 @@ export const creditopsProject: Project = {
     architecture: {
       title: "Public technical scope",
       paragraphs: [
-        "The public profile describes Python/FastAPI, read-only MCP tools, Next.js, and PostgreSQL. The public showcase is a recorded inspection surface. Fresh MCP diagnostics are a separate mode, and the source repository is private.",
+        "Railway hosts the Next.js console, FastAPI API and PostgreSQL database. The API uses a restricted application role with required TLS; private off-volume pgBackRest backups and WAL archiving support a tested production-backup restore. Cloudflare supplies DNS. The public showcase remains a recorded inspection surface; fresh MCP diagnostics are a separate mode. Local Compose adds Redpanda, Prometheus and Grafana.",
       ],
     },
     whatIBuilt: {
@@ -100,7 +110,8 @@ export const creditopsProject: Project = {
   ],
   technologies: ["Python", "FastAPI", "MCP", "Next.js", "PostgreSQL"],
   website: "https://creditops.farhan-shafee.com",
-  sourceVisibility: "private",
+  github: "https://github.com/farhan-shafee/creditops-ai",
+  sourceVisibility: "public",
   featured: true,
   visibility: "public",
 };

@@ -1107,7 +1107,8 @@ test("metadata, internal links, security headers and feeds are valid", async ({
   for (const [route, html] of publicHtml)
     expect(html, route).not.toMatch(excludedPublicContent);
   expect(llms).not.toMatch(excludedPublicContent);
-  expect(llms).toContain("Source private");
+  expect(llms).toContain("https://github.com/farhan-shafee/creditops-ai");
+  expect(llms).not.toContain("Source private");
   expect(sitemapXml).not.toContain(
     `<loc>${canonicalOrigin}/work/job-intelligence-engine</loc>`,
   );

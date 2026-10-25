@@ -1,5 +1,7 @@
 # Personal brand refinement — pre-edit audit
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 Reviewed 2026-09-16, against production `https://farhan-shafee.com` and the local production build at commit `42e394a`. This audit was written before implementation changes.
 
 ## Scope and evidence

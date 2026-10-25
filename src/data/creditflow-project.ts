@@ -43,12 +43,20 @@ export const creditflowProject: Project = {
         href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md",
       },
       {
-        label: "Verified CI",
+        label: "CI history",
+        href: "https://github.com/farhan-shafee/creditflow-qe/actions/workflows/verify.yml",
+      },
+      {
+        label: "Recorded main CI (October 15)",
         href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
       },
       {
         label: "Validation history",
         href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md",
+      },
+      {
+        label: "Deployment and recovery",
+        href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/railway-production.md",
       },
       {
         label: "Local Jenkins execution",
@@ -104,7 +112,7 @@ export const creditflowProject: Project = {
     },
     architecture: {
       paragraphs: [
-        "A Java 21 / Spring Boot service implements exact BigDecimal money rules and stores the ledger in PostgreSQL with Flyway migrations. A Next.js command center mediates selected synthetic visitor workflows. Cucumber/REST Assured and TestNG modules exercise the running HTTP API independently of application source; Java Selenium and Playwright cover selected UI journeys.",
+        "Railway hosts the Next.js command center, Java 21 / Spring Boot API and PostgreSQL ledger. The API uses private verify-full TLS, a dedicated CA and a restricted runtime role; Flyway migrations run separately with administrative authority. Reviewed web/API releases remain pinned. A Next.js command center mediates selected synthetic visitor workflows. Cucumber/REST Assured and TestNG modules exercise the running HTTP API independently of application source; Java Selenium and Playwright cover selected UI journeys.",
       ],
     },
     whatIBuilt: {
@@ -127,7 +135,7 @@ export const creditflowProject: Project = {
     },
     lessonsConstraints: {
       paragraphs: [
-        "Synthetic data only; no real cards, funds, settlement or regulatory-compliance claim. Sessions expire after 30 minutes, public quotas are conservative and idle services can take time to wake. Local Jenkins execution is recorded; sustained-load behavior and availability/SLA remain unverified.",
+        "Synthetic data only; no real cards, funds, settlement or regulatory-compliance claim. Sessions expire after 30 minutes and public quotas are conservative. API sleep is disabled; the Railway frontend may wake from idle. Local Jenkins execution is recorded; sustained-load behavior and availability/SLA remain unverified. Off-volume backups and WAL recovery are verified within the documented scope; the first scheduled daily-backup closeout and resource retirement remain pending as of October 25, 2026.",
       ],
     },
   },

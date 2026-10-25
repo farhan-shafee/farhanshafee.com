@@ -1,5 +1,7 @@
 # AegisGraph flagship integration
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 ## Positioning and hierarchy
 
 AegisGraph is the primary flagship: a security investigation platform for synthetic fintech telemetry, deterministic detection and correlation, bounded AI analysis, and validated evidence citations. Its category is Security engineering / AI systems. The case study states at the outset that this is a synthetic/demo environment, not a production SOC deployment.

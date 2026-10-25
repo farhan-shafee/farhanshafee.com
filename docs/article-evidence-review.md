@@ -1,5 +1,7 @@
 # Job Intelligence Engine article evidence review
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 The expanded article remains an unpublished draft at `content/writing/building-a-job-intelligence-engine.mdx`, with the matching slug `building-a-job-intelligence-engine`. The owner authorized removing unsupported AI branding from the unpublished filename and slug; the title, body, and date are unchanged. `draft: true` and `featured: false` remain set. The published project URL `/work/ai-job-intelligence-engine` is preserved separately. This editorial record is not imported into application code.
 
 The draft was written only from the portfolio's existing project record and the Job Engine findings in `docs/flagship-evidence-review.md`. No additional sibling repository inspection, live integration call, personal data access, or outcome measurement was performed for this article.

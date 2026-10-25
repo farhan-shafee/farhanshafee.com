@@ -1,5 +1,7 @@
 # Frontmatter dependency follow-up — 2026-10-15
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](../PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 Based on portfolio integration commit `9867fd2ccab55441165760ed67602e89bce76b3d`. This follow-up changes the repository-owned article parser and dependencies; it does not publish or deploy the site.
 
 ## Runtime chain removed

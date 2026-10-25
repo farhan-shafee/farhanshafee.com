@@ -1,5 +1,7 @@
 # Portfolio interview and reviewer briefing
 
+> Updated October 25, 2026: the portfolio and all four flagship demos run on Railway. CreditOps source is public. See [the current deployment/source matrix](PROJECT_DEPLOYMENTS.md) for actual release pins, TLS/backup boundaries and remaining closeout; earlier test counts retain their dated source scope.
+
 Reviewed: October 20, 2026 (America/New_York). This is a rehearsal and external-review aid, not evidence that an actual interviewer has reviewed or endorsed the portfolio.
 
 ## Sixty-second professional introduction
@@ -10,12 +12,12 @@ Do not claim these portfolio systems are employer deployments. State clearly wha
 
 ## A fast inspection path for a hiring manager
 
-| Project       | Public first click                               | Technical evidence                                                                                       | Limitation to state                                                                       |
-| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| AegisGraph    | https://aegisgraph.farhan-shafee.com             | https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md                                       | Synthetic; public mode read-only/deterministic, not a production SOC                      |
-| CreditOps AI  | https://creditops.farhan-shafee.com/investigator | https://farhan-shafee.com/work/creditops-ai                                                              | Public showcase replays recordings; source private and root initiating causes unconfirmed |
-| TradeFlow     | https://tradeflow.farhan-shafee.com              | https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/INTERVIEW_DEMO.md         | Synthetic order book; no matching, real trades, exchange, or persistence                  |
-| CreditFlow QE | https://creditflow.farhan-shafee.com             | https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md | Synthetic ledger, no funds/settlement; idle demo may take time to wake                    |
+| Project       | Public first click                               | Technical evidence                                                                                       | Limitation to state                                                      |
+| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| AegisGraph    | https://aegisgraph.farhan-shafee.com             | https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md                                       | Synthetic; public mode read-only/deterministic, not a production SOC     |
+| CreditOps AI  | https://creditops.farhan-shafee.com/investigator | https://farhan-shafee.com/work/creditops-ai                                                              | Public source; recorded showcase playback; initiating causes unconfirmed |
+| TradeFlow     | https://tradeflow.farhan-shafee.com              | https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/INTERVIEW_DEMO.md         | Synthetic order book; no matching, real trades, exchange, or persistence |
+| CreditFlow QE | https://creditflow.farhan-shafee.com             | https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md | Synthetic ledger, no funds/settlement; idle demo may take time to wake   |
 
 When a demo is unavailable, use the exact linked guide, source, and dated CI evidence. Say which execution was witnessed live and which is a historical artifact. Never silently substitute an older result for current execution.
 
@@ -31,7 +33,7 @@ Challenge to prepare: Why does citing a real evidence row not prove any arbitrar
 
 ## CreditOps AI: two-minute public-recorded showcase
 
-1. **0:00–0:30 | Scope.** State that the public investigator plays recorded model-assisted scenarios using fictional RFQ/order data; the source is private and playback makes no fresh MCP or model calls.
+1. **0:00–0:30 | Scope.** State that the public investigator plays recorded model-assisted scenarios using fictional RFQ/order data; the source is public and playback makes no fresh MCP or model calls.
 2. **0:30–1:20 | Follow evidence.** Choose a pricing/Kafka, FIX, or database-pool scenario and trace symptoms, affected synthetic orders/RFQs, evidence links, and the distinction between original and validated assessment.
 3. **1:20–2:00 | Why review matters.** State what the recorded evidence supports, what remains unconfirmed about initiating causes, and why operational actions and stakeholder handoffs require human review.
 

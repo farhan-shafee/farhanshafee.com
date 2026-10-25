@@ -26,6 +26,10 @@ export const tradeflowProject: Project = {
         featured: true,
       },
       {
+        label: "Hosting and operations",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
+      },
+      {
         label: "Test strategy",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/TEST_STRATEGY.md",
       },
@@ -38,7 +42,7 @@ export const tradeflowProject: Project = {
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/workflows/quality.yml?query=branch%3Amain",
       },
       {
-        label: "Latest checked CI",
+        label: "Recorded CI",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/39537782961",
       },
     ],
@@ -55,14 +59,14 @@ export const tradeflowProject: Project = {
       {
         label: "Boundary",
         value:
-          "Synthetic in-memory sessions; public demo reachable, no financial connectivity.",
+          "Railway app behind Cloudflare Tunnel; ephemeral sessions, no database or financial connectivity.",
       },
     ],
   },
   caseStudy: {
     overview: {
       paragraphs: [
-        "I built TradeFlow to make test engineering inspectable through a small trading workstation. Its order workflow gives unit, API, contract, integration, and browser tests concrete behavior to check. Every credential, order, position, and quote is synthetic. A public demo is reachable; session books remain process-local and ephemeral.",
+        "I built TradeFlow to make test engineering inspectable through a small trading workstation. Its order workflow gives unit, API, contract, integration, and browser tests concrete behavior to check. Every credential, order, position, and quote is synthetic. The public demo runs independently on Railway behind Cloudflare Tunnel; session books remain process-local and ephemeral and reset when the app restarts.",
       ],
     },
     problem: {
@@ -86,7 +90,7 @@ export const tradeflowProject: Project = {
     },
     architecture: {
       paragraphs: [
-        "A Node.js HTTP server owns authentication, authorization, input validation, and order transitions. The TypeScript browser interface displays validated server responses. Each login receives a cloned order book; test-scoped fixtures supply an authenticated API context and in-memory browser storage state for that same session. Teardown revokes the session. Workers share only immutable health metadata, allowing parallel tests to reuse reference symbols without sharing created records.",
+        "A Railway Node.js HTTP server owns authentication, authorization, input validation, and order transitions. A separate Railway cloudflared service carries Cloudflare HTTPS traffic to the private app. The app has no database or persistent volume, and its reviewed application release remains pinned. The TypeScript browser interface displays validated server responses. Each login receives a cloned order book; test-scoped fixtures supply an authenticated API context and in-memory browser storage state for that same session. Teardown revokes the session. Workers share only immutable health metadata, allowing parallel tests to reuse reference symbols without sharing created records.",
         "Zod checks response bodies at runtime. A separate AJV validator reads the published OpenAPI specification, providing an independently interpreted wire contract alongside application types and runtime schemas.",
       ],
     },
@@ -104,7 +108,7 @@ export const tradeflowProject: Project = {
     validation: {
       paragraphs: [
         "October 13, 2026 hosted CI at dc8ac09 passed 34 unit checks and 205 Playwright executions: 42 API, 22 contract, and 47 on each of Chromium, Firefox, and WebKit. Compiler, lint, formatting, OpenAPI, and workflow-structure gates also passed. CI rejects flaky results even when a diagnostic retry passes. These are historical, revision-specific results.",
-        "A subsequent October 15 deployment-readiness revision (8c228d8) expanded the documented suite to 54 unit checks and 211 Playwright executions, including browser-free hosted-boundary cases; CI run 38673501021 passed. The latest October 21 documentation commit 284a474 also passed CI run 39537782961. These finite synthetic checks do not establish production trading, sustained capacity, or the exact revision running on the public hostname.",
+        "A subsequent October 15 deployment-readiness revision (8c228d8) expanded the documented suite to 54 unit checks and 211 Playwright executions, including browser-free hosted-boundary cases; CI run 38673501021 passed. The October 21 documentation commit 284a474 also passed CI run 39537782961. These finite synthetic checks do not establish production trading, sustained capacity, or current uptime. The October 25 deployment review separately identified the pinned Railway app at 7b125f6; documentation publication does not unpin that release.",
       ],
     },
     lessonsConstraints: {

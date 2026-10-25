@@ -1,4 +1,4 @@
-/** Independent public-project expectations reaffirmed in the October 20 portfolio synchronization. */
+/** Independent public-project expectations reaffirmed in the October 25 deployment/source synchronization. */
 export const approvedProjectSlugs = [
   "aegisgraph",
   "creditops-ai",
@@ -24,4 +24,4 @@ export const retiredPublicAssets = [
 ] as const;
 
 export const excludedPublicContent =
-  /CyberBit|Job Intelligence Engine|homelab|cyberbitsolutions\.com|Rollsites|systematic investing|github\.com\/farhan-shafee\/creditops/i;
+  /CyberBit|Job Intelligence Engine|homelab|cyberbitsolutions\.com|Rollsites|systematic investing/i;

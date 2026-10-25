@@ -1,5 +1,7 @@
 # Proof-density audit — September 17, 2026
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 Recorded before implementation, against the current production site and current source.
 
 ## Live review

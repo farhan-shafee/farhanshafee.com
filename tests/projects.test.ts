@@ -98,24 +98,26 @@ test("public portfolio follows the deliberately selected GitHub hierarchy", () =
   );
 });
 
-test("CreditOps exposes its recorded public showcase while keeping source private", async () => {
+test("CreditOps exposes public source while retaining recorded-showcase limits", async () => {
   const project = getProjectBySlug("creditops-ai");
   assert.ok(project);
   assert.equal(project.website, "https://creditops.farhan-shafee.com");
-  assert.equal(project.sourceVisibility, "private");
-  assert.equal(project.github, undefined);
-  const props = { params: Promise.resolve({ slug: project.slug }) };
-  const html = renderToStaticMarkup(await ProjectPage(props));
-  assert.match(html, /Source private/);
+  assert.equal(project.sourceVisibility, "public");
+  assert.equal(project.github, "https://github.com/farhan-shafee/creditops-ai");
+  assert.ok(
+    project.inspection?.links.some(({ href }) => href === project.github),
+  );
+  const html = renderToStaticMarkup(
+    await ProjectPage({ params: Promise.resolve({ slug: project.slug }) }),
+  );
+  assert.doesNotMatch(html, /Source private/);
+  assert.ok(html.includes(project.github));
+  assert.match(html, /SoftwareSourceCode|codeRepository/);
   assert.match(html, /recorded/i);
   assert.match(html, /synthetic/i);
   assert.match(html, /no (?:fresh|new) model or MCP/i);
   assert.match(html, /unconfirmed/i);
   assert.match(html, /human review/i);
-  assert.doesNotMatch(
-    html,
-    /SoftwareSourceCode|codeRepository|github\.com\/farhan-shafee\/creditops/i,
-  );
 });
 
 test("TradeFlow features its public synthetic demo", () => {
@@ -169,7 +171,7 @@ test("flagship case studies include inspectable quick guides and current proof",
   );
 });
 
-test("CreditFlow QE uses current main evidence with separate local Jenkins proof", () => {
+test("CreditFlow QE separates CI history, dated main evidence and local Jenkins proof", () => {
   const project = getProjectBySlug("creditflow-qe");
   assert.ok(project);
   assert.equal(
@@ -180,6 +182,7 @@ test("CreditFlow QE uses current main evidence with separate local Jenkins proof
   const contents = JSON.stringify(project);
   assert.ok(!contents.includes("feat/provider-pilot"));
   assert.ok(!contents.includes("38682147631"));
+  assert.ok(contents.includes("actions/workflows/verify.yml"));
   assert.ok(contents.includes("actions/runs/38820309474"));
   assert.ok(contents.includes("docs/evidence/STATUS.md"));
   assert.ok(contents.includes("docs/evidence/jenkins-execution.md"));
@@ -560,7 +563,7 @@ test("flagship inspection separates live demo, recorded playback, and local test
   assert.match(modes.get("Public demo") ?? "", /deterministic/i);
   assert.match(modes.get("Public demo") ?? "", /no live OpenAI/i);
   assert.match(modes.get("Local/interview mode") ?? "", /optional OpenAI/i);
-  assert.match(modes.get("Hosting") ?? "", /Vercel.*Railway/i);
+  assert.match(modes.get("Hosting") ?? "", /Railway.*TLS.*restricted.*backup/i);
 
   assert.match(creditops.inspection.summary, /recorded/i);
   assert.match(creditops.inspection.summary, /no fresh model or MCP/i);

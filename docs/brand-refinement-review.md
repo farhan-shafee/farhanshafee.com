@@ -1,5 +1,7 @@
 # Personal brand refinement — review
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 Reviewed 2026-09-16 (America/New_York). The pre-edit audit, implementation, visual comparison, and production-build validation are complete. All 26 unit tests and 17 browser tests pass.
 
 Scope: refine the current personal site while preserving its factual positioning, public projects, static rendering, and production origin, `https://farhan-shafee.com`. The [pre-edit audit](brand-refinement-audit.md) records the baseline findings.

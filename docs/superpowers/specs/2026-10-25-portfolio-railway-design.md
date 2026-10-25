@@ -1,5 +1,7 @@
 # Portfolio security update and Railway pilot
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](../../PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 Approved scope: execute the patch/test/isolated-pilot sequence in Portfolio_Railway_Readiness_2026-10-25.txt, approved by the user on October 25, 2026. Preserve the existing site and production Vercel hosting.
 
 ## Goal and architecture

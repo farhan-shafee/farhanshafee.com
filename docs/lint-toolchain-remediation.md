@@ -1,5 +1,7 @@
 # Lint dependency remediation — 2026-10-15
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 The full portfolio npm audit previously reported five high-severity affected-package entries from one Next ESLint → fast-glob → micromatch → braces chain (GHSA-vfj7-8cjw-p6xm). Production-only audit already reported zero. The current tested dependency tree removes that chain and both audits report zero. These are dated audit results, not a security certification.
 
 ## Implementation

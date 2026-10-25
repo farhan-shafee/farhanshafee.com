@@ -93,7 +93,8 @@ test("public editorial pages and generated resources enforce the narrowed portfo
   for (const route of retiredProjectRoutes)
     assert.ok(!urls.includes(`${origin}${route}`));
   const llms = await getLlms().text();
-  assert.match(llms, /Source private/);
+  assert.ok(llms.includes("https://github.com/farhan-shafee/creditops-ai"));
+  assert.doesNotMatch(llms, /Source private/);
   assert.match(llms, /no fresh model or MCP/i);
   for (const slug of approvedProjectSlugs)
     assert.ok(llms.includes(`${origin}/work/${slug}`));

@@ -1,5 +1,7 @@
 # CreditFlow QE portfolio integration — 2026-10-15
 
+> **Historical deployment context** - This record retains its original milestone, source revisions, measured results and approval boundaries. Earlier hosting/source-visibility/pending-release statements are dated history. Use [the current production documentation](../PROJECT_DEPLOYMENTS.md) for the October 24-25 Railway topology, release state and remaining closeout.
+
 Source validation completed against base 562d534160d7aee07e200dcb49fe77ec994551e9. Production deployment provenance and public postflight results are recorded in the associated pull request after release.
 
 ## Approved change

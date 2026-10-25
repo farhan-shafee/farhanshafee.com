@@ -200,7 +200,8 @@ export const projects: Project[] = [
         },
         {
           label: "Hosting",
-          value: "Vercel frontend; Railway API and PostgreSQL.",
+          value:
+            "Railway frontend, API and PostgreSQL; TLS, restricted database role and tested backup recovery.",
         },
       ],
     },
@@ -245,7 +246,7 @@ export const projects: Project[] = [
       },
       architecture: {
         paragraphs: [
-          "One Next.js/TypeScript frontend connects to FastAPI, with Pydantic validation, SQLAlchemy, Alembic, and PostgreSQL. The hosted path is Vercel → Railway FastAPI → Railway PostgreSQL; SQLite supports lightweight local runs and tests. Only the canonical Atlas case is persisted. Other scenario projections remain ephemeral, including those that form an incident during replay.",
+          "One Next.js/TypeScript frontend connects to FastAPI, with Pydantic validation, SQLAlchemy, Alembic, and PostgreSQL. The hosted path is Railway Next.js → Railway FastAPI → private Railway PostgreSQL over TLS. The API has SELECT-only database authority; pgBackRest supplies off-volume backups and WAL archiving, with production-backup recovery tested. SQLite supports lightweight local runs and tests. Only the canonical Atlas case is persisted. Other scenario projections remain ephemeral, including those that form an incident during replay.",
           "Four adapters normalize identity, API gateway, endpoint, and Atlas application telemetry into a canonical event model with timestamps, actors, targets, outcomes, network/device/session context, bounded attributes, and synthetic source references. The workspace connects source records, a timeline, and relational entity links. Local annotations, findings, workflow, and report approvals remain separate from source observations.",
         ],
       },

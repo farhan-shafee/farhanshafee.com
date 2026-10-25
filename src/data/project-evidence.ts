@@ -26,6 +26,11 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   aegisgraph: {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEPLOYMENT.md",
+        supports:
+          "October 24–25, 2026 provider/configuration and completion review confirms Railway Next.js, FastAPI and PostgreSQL, required TLS, restricted SELECT-only aegisgraph_app authority, off-volume pgBackRest/WAL backups and an actual isolated restore of the production full. Vercel is retained as a patched rollback host. Earlier Vercel topology and source/test observations below remain dated history, not current deployment claims.",
+      },
+      {
         path: "docs/aegisgraph-evidence-review.md",
         supports:
           "Read-only review at source revision 7293c515d47178405df6fcf93feeeadac067cf64 supports the synthetic investigation architecture, deterministic correlation, bounded providers, citation/support validation, and production limitations. The September 17, 2026 UTC follow-up verifies public source availability, MIT licensing at inspected main c95afa6, and successful backend/frontend/browser CI run 35179396463 at 534679eac4a04ee0298fe6f35d1422fa63a4fe90. That deterministic run makes no live OpenAI calls and does not establish success for later revisions. The linked release record documents 146 backend, 25 frontend, 13 browser, and 28 deterministic checks, preserving the historical 23-frontend-test hardening result separately.",
@@ -72,6 +77,11 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   "creditops-ai": {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/creditops-ai/blob/main/docs/DEPLOYMENT.md",
+        supports:
+          "October 25, 2026 GitHub metadata confirms public source. Railway configuration and cutover/release records confirm Next.js, FastAPI and PostgreSQL with TLS, a restricted application role, off-volume backups and tested production-backup recovery. Both application services follow main without a commit pin; observed checkSuites=false does not provide a CI wait gate. Public recorded playback and human-review limitations remain unchanged. Earlier private-source observations below are historical.",
+      },
+      {
         url: "https://github.com/farhan-shafee/farhan-shafee/blob/51fb4c6ba552ee622b019eca0752413e99c38361/README.md",
         supports:
           "October 20, 2026 reviewed public profile continues to present CreditOps AI second and labels its source private. Approved public scope covers synthetic pricing/Kafka backlog, FIX instability, database-pool exhaustion, RFQ/order impact, linked diagnostic evidence, original-versus-validated assessments, and technical/stakeholder handoffs. Published technology is Python/FastAPI, read-only MCP tools, Next.js, and PostgreSQL. Recorded model-assisted showcase playback makes no fresh model or MCP diagnostic calls; recordings do not demonstrate model-directed follow-ups, initiating causes remain unconfirmed, and human review is required.",
@@ -85,18 +95,23 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
     statusReview: {
       status: "Completed",
       reason:
-        "Completed describes the publicly approved recorded synthetic showcase, not production incident investigation, confirmed initiating root causes, or autonomous resolution. Source remains private.",
+        "Completed describes the publicly approved recorded synthetic showcase, not production incident investigation, confirmed initiating root causes, or autonomous resolution. Source is now public; the earlier private-source observations remain historical.",
     },
     todos: [
       {
         area: "additional-public-evidence",
         prompt:
-          "TODO: Use only explicitly approved public documentation or reviewed synthetic showcase captures for future additions; retain recorded-playback, unconfirmed-cause, private-source, and human-review boundaries.",
+          "TODO: Use only explicitly approved public documentation or reviewed synthetic showcase captures for future additions; retain recorded-playback, unconfirmed-cause, and human-review boundaries; source links must match the verified public repository.",
       },
     ],
   },
   tradeflow: {
     sources: [
+      {
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
+        supports:
+          "October 25, 2026 provider review confirms the Railway Node app pinned to 7b125f63198b0eb38a2e7140aba0d83d2e7fcdc1, a separate cloudflared service, canonical Cloudflare HTTPS ingress and no database or volume. It is independent of the owner's computer; synthetic sessions and orders reset on app restart. Public website/health monitoring is separate from empty Railway ingress metrics and historical source-bound tests.",
+      },
       {
         url: "https://tradeflow.farhan-shafee.com",
         supports:
@@ -131,7 +146,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
     statusReview: {
       status: "Completed",
       reason:
-        "The local synthetic workstation and its reproducible quality-engineering deliverable are implemented and validated. Completed does not describe a production trading platform or live financial integration.",
+        "The synthetic workstation, Railway public hosting and reproducible quality-engineering deliverable are implemented and validated within their documented scope. Completed does not describe a production trading platform or live financial integration.",
     },
     todos: [
       {
@@ -143,6 +158,11 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   },
   "creditflow-qe": {
     sources: [
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/railway-production.md",
+        supports:
+          "October 25, 2026 production cutover and provider configuration review confirms Railway web/API/PostgreSQL, private verify-full TLS with dedicated CA and restricted runtime authority, disabled runtime Flyway, off-volume pgBackRest/WAL backups and isolated recovery evidence. API remains pinned to20c91f5; web to7a16b50. API sleep is disabled; web sleep remains enabled. First scheduled daily-backup verification and resource retirement remain pending; historical Vercel/Neon tests below retain their original scope.",
+      },
       {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/architecture/core-design.md",
         supports:
@@ -156,7 +176,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
       {
         url: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
         supports:
-          "October 15, 2026 GitHub Actions at main commit 631948a85f54e00f9fc8fae7fa844807e643847a completed successfully for both core and browser jobs. This is current-main evidence reviewed October 20, separate from earlier hosted-release and local Jenkins records.",
+          "October 15, 2026 GitHub Actions at main commit 631948a85f54e00f9fc8fae7fa844807e643847a completed successfully for both core and browser jobs. This was current-main evidence reviewed October 20, separate from earlier hosted-release and local Jenkins records.",
       },
       {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md",

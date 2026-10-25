@@ -95,7 +95,8 @@ export default function AboutPage() {
               assessments using synthetic evidence, with no fresh model or MCP
               diagnostic calls during playback. Original proposals and recorded
               advisories remain inspectable; initiating causes remain
-              unconfirmed. Its source is private.
+              unconfirmed. Its source is public, and the synthetic showcase runs
+              on Railway.
             </p>
             <p>
               The supporting security work applies the same discipline at other
