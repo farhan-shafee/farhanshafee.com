@@ -30,6 +30,9 @@ ignored by path filtering.
 
 ## Rollback and fallback
 
+A source connection can apply to production and rehearsal environments.
+Verify each environment's indexing settings after changing that connection.
+
 Retain the previous healthy deployment and recorded DNS targets during rollout.
 The Vercel copy is retained for stabilization and rollback.
 Do not delete either provider's resources as part of a routine release.
