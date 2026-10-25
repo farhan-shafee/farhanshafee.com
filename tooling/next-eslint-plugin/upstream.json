@@ -1,9 +1,9 @@
 {
   "package": "@next/eslint-plugin-next",
-  "version": "16.3.8",
-  "tarball": "https://registry.npmjs.org/@next/eslint-plugin-next/-/eslint-plugin-next-16.3.8.tgz",
-  "integrity": "sha512-eCR9RcLTZrVS+K3+VOhi0xMdUUGNuriCHHhU1ZoABC/QQ/Gp0OWbLKQxV2/9DkmihYdYRcQWFmZXW8M1AMUXYw==",
-  "tarballSha256": "93018023d0100c0a1315799e651bd3d41f413bd61e3875f735e3170c40d01345",
+  "version": "16.4.3",
+  "tarball": "https://registry.npmjs.org/@next/eslint-plugin-next/-/eslint-plugin-next-16.4.3.tgz",
+  "integrity": "sha512-oxuC06wt/71h6ACYCV9GbKOfnf5a7VlRe/p80YHTut15TNgDEmynDnaq8t/xhy5rlvk7dhItIPs6H3rvIM4kyw==",
+  "tarballSha256": "35770f53c8b0188655b5a9c97f824e3eb81b829af6db99bce8419f0758a1c656",
   "license": "MIT",
   "files": [
     {
@@ -224,7 +224,7 @@
     },
     {
       "file": "package.json",
-      "sha256": "ca413c6096bb8c2c28e95b5cd9be84a0ac6d926435985fe1701e2d0d7f985d07"
+      "sha256": "4c428b3d007e924a8de9dfd4f1b10e011d8da61d329b73eb3e21941c236ddc8a"
     },
     {
       "file": "README.md",

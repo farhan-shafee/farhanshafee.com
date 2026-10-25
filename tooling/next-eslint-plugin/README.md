@@ -1,6 +1,6 @@
 # Local Next.js lint plugin security patch
 
-This private package starts from the authenticated npm tarball for `@next/eslint-plugin-next@16.3.8`. Its local version is `16.3.8-farhan.1`; it is maintained in this repository and is not an official Next.js release.
+This private package starts from the authenticated npm tarball for `@next/eslint-plugin-next@16.4.3`. Its local version is `16.4.3-farhan.1`; it is maintained in this repository and is not an official Next.js release.
 
 The upstream `fast-glob` dependency pulls in `micromatch` and the unpatched `braces` package flagged by GHSA-vfj7-8cjw-p6xm. The only upstream `fast-glob` consumer is `dist/utils/get-root-dirs.js`. This patch replaces that helper's implementation with `glob@13.0.6` and `minimatch@10.2.6`, preserving directory-only matching, symlink traversal, original relative/absolute root representations, explicit trailing separators, input-array order and empty/missing input behavior.
 
