@@ -14,6 +14,12 @@ The Railway production service follows this repository's `main` branch.
 - Canonical URLs remain `https://farhan-shafee.com`.
 - No application database or persistent volume is required.
 
+## GitHub App access
+
+The Railway GitHub App must include `farhan-shafee/farhanshafee.com` in its
+selected-repository list. Public read access alone does not provide the
+repository's deployment events.
+
 ## Release verification
 
 1. Merge reviewed changes into `main`.
