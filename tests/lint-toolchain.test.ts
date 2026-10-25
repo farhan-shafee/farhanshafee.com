@@ -34,6 +34,76 @@ const dirs = (rootDir: unknown) =>
   getRootDirs({ cwd: repo, settings: { next: { rootDir } } });
 const sorted = (values: string[]) => [...values].sort();
 
+function stableResolverSettings(settings: Record<string, unknown>) {
+  const resolvers = settings["import/resolver"];
+  if (!resolvers || typeof resolvers !== "object" || Array.isArray(resolvers))
+    return settings;
+  const aliases = new Map([
+    [load.resolve("eslint-import-resolver-node"), "node"],
+    [load.resolve("eslint-import-resolver-typescript"), "typescript"],
+  ]);
+  const seen = new Set<string>();
+  const entries = Object.entries(resolvers).map(([key, value]) => {
+    const name = aliases.get(key) ?? key;
+    assert.ok(!seen.has(name), "duplicate resolver " + name);
+    seen.add(name);
+    return [name, value];
+  });
+  return { ...settings, "import/resolver": Object.fromEntries(entries) };
+}
+
+test("resolver settings normalize only the installed official resolver paths", () => {
+  const input = {
+    react: { version: "detect" },
+    "import/resolver": {
+      [load.resolve("eslint-import-resolver-node")]: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+      [load.resolve("eslint-import-resolver-typescript")]: {
+        alwaysTryTypes: true,
+      },
+    },
+  };
+  assert.deepEqual(stableResolverSettings(input), {
+    react: { version: "detect" },
+    "import/resolver": {
+      node: { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+      typescript: { alwaysTryTypes: true },
+    },
+  });
+});
+
+test("resolver settings reject aliases that would overwrite an existing resolver", () => {
+  assert.throws(
+    () =>
+      stableResolverSettings({
+        "import/resolver": {
+          node: { extensions: [".js"] },
+          [load.resolve("eslint-import-resolver-node")]: {
+            extensions: [".ts"],
+          },
+        },
+      }),
+    /duplicate resolver/,
+  );
+});
+
+test("resolver settings preserve unknown paths and every resolver option", () => {
+  const unknown = path.join(
+    repo,
+    "other-checkout",
+    "eslint-import-resolver-node",
+    "index.js",
+  );
+  const input = {
+    "import/resolver": {
+      [unknown]: { extensions: [".custom"], enabled: false },
+      node: { extensions: [".js"], custom: { strict: true } },
+    },
+  };
+  assert.deepEqual(stableResolverSettings(input), input);
+});
+
 before(() => {
   for (const dir of ["apps/one/deep", "apps/two", "apps/.hidden", "empty"])
     mkdirSync(path.join(fixture, dir), { recursive: true });
@@ -218,7 +288,7 @@ test("the effective Next, React, accessibility and TypeScript rule configuration
     const config = await lint.calculateConfigForFile(path.join(repo, file));
     const current = {
       rules: config.rules,
-      settings: config.settings,
+      settings: stableResolverSettings(config.settings ?? {}),
       globals: config.languageOptions.globals,
       parser: config.languageOptions.parser.meta?.name,
       ecmaVersion: config.languageOptions.ecmaVersion,
