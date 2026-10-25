@@ -6,7 +6,7 @@ Reviewed: October 20, 2026 (America/New_York). This is a rehearsal and external-
 
 ## Sixty-second professional introduction
 
-My professional background is in fintech software and test automation, including APIs and financial-system workflows. I apply that engineering background to security investigation and reliable automation. AegisGraph is my principal security-engineering proof; CreditOps AI is a recorded synthetic trading-incident investigation showcase with private source; TradeFlow demonstrates reproducible trading-workflow SDET practices; and CreditFlow QE demonstrates transactional Java/PostgreSQL correctness with independent API/UI tests. Across them I emphasize observed evidence, explicit failure states, human review, and bounded claims rather than unexplained automation.
+My professional background is in fintech software and test automation, including APIs and financial-system workflows. I apply that engineering background to security investigation and reliable automation. AegisGraph is my principal security-engineering proof; CreditOps AI is a recorded synthetic trading-incident investigation showcase with public source; TradeFlow demonstrates reproducible trading-workflow SDET practices; and CreditFlow QE demonstrates transactional Java/PostgreSQL correctness with independent API/UI tests. Across them I emphasize observed evidence, explicit failure states, human review, and bounded claims rather than unexplained automation.
 
 Do not claim these portfolio systems are employer deployments. State clearly what AI-assisted implementation contributed and what code, decisions, and failures you can personally reproduce and defend.
 
@@ -45,7 +45,9 @@ Challenge to prepare: How do you distinguish an observed failure condition from 
 2. **0:45–2:00 | Test ownership.** Open the per-test fixture and server session model. Explain how test-scoped data and in-memory storage state isolate order records and session credentials.
 3. **2:00–3:15 | Real contract failure.** Explain why a malformed HTTP 200 body fails runtime Zod and independent OpenAPI/AJV checks. Show one precise 409 cancellation invariant.
 4. **3:15–4:15 | Failure triage.** Use prepared traces/reports to identify which assertion actually failed. Distinguish service, environment, test, data, and timing faults.
-5. **4:15–5:00 | Evidence.** Describe three-browser CI and separate source revisions for the October 13 baseline (34 unit, 205 Playwright) and October 15 deployment-readiness additions (54 unit, 211 Playwright). No live exchange, brokerage, or trading-capacity claim.
+5. **4:15–5:00 | Evidence.** Describe three-browser CI and separate source revisions for the October 13 baseline (34 unit, 205 Playwright) and October 15 deployment-readiness additions (54 unit, 211 Playwright). The October 25 patch 265c9e0 passed hosted CI 40214510996 with 54 units and 211 Playwright executions; 422 local repeated executions and 20 public release checks are separate evidence. No live exchange, brokerage, or trading-capacity claim.
+
+Current maintenance: the [October 25 TradeFlow dependency record](https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md) explains the three compatible package patches, full/production audit gates and their dated evidence. Distinguish a clean advisory scan from proof of generalized security.
 
 Challenge to prepare: Why must the test own the exact record? What happens to state on restart? How do projects differ from workers? What would make the real trading integration materially different?
 

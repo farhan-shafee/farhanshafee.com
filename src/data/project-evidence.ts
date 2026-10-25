@@ -108,9 +108,14 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   tradeflow: {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md",
+        supports:
+          "October 25, 2026 compatible maintenance updates the locked Zod runtime to 4.6.7 and development-only Undici/fast-uri to 8.12.3/3.1.9. Fresh full and production audits returned zero known findings; local validation and CI require both audits. Registry availability and future advisory changes remain explicit limits. Patch 265c9e0ed1fdc528193cd474d966513decd03d3b passed CI 40214510996 with 54 units and 211 Playwright executions; local repeated execution passed 422. Railway deployment 30ca206b-765b-4fe5-ad22-50a1f2d02aec reached SUCCESS at 2026-10-25T17:08:36.249Z with that exact source. Twenty public acceptance checks passed at 2026-10-25T17:09:14.687237+00:00, including exact production-asset hashes and own-session trader/viewer workflows; verification sessions were revoked. App and tunnel each had one running and zero crashed replicas. The initial Firefox timeout remains disclosed; its cause is not established.",
+      },
+      {
         url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
         supports:
-          "October 25, 2026 provider review confirms the Railway Node app pinned to 7b125f63198b0eb38a2e7140aba0d83d2e7fcdc1, a separate cloudflared service, canonical Cloudflare HTTPS ingress and no database or volume. It is independent of the owner's computer; synthetic sessions and orders reset on app restart. Public website/health monitoring is separate from empty Railway ingress metrics and historical source-bound tests.",
+          "The initial October 25, 2026 provider review observed the earlier Railway Node app pinned to 7b125f63198b0eb38a2e7140aba0d83d2e7fcdc1, a separate cloudflared service, canonical Cloudflare HTTPS ingress and no database or volume. It is independent of the owner's computer; synthetic sessions and orders reset on app restart. Public website/health monitoring is separate from empty Railway ingress metrics and historical source-bound tests.",
       },
       {
         url: "https://tradeflow.farhan-shafee.com",

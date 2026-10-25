@@ -30,6 +30,10 @@ export const tradeflowProject: Project = {
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
       },
       {
+        label: "Dependency maintenance",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md",
+      },
+      {
         label: "Test strategy",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/TEST_STRATEGY.md",
       },
@@ -42,7 +46,11 @@ export const tradeflowProject: Project = {
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/workflows/quality.yml?query=branch%3Amain",
       },
       {
-        label: "Recorded CI",
+        label: "Patch CI",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/40214510996",
+      },
+      {
+        label: "Historical CI",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/39537782961",
       },
     ],
@@ -55,6 +63,11 @@ export const tradeflowProject: Project = {
         label: "Execution",
         value:
           "API and contract checks once; browser journeys on three engines.",
+      },
+      {
+        label: "Maintenance",
+        value:
+          "October 25 compatible dependency patch released; full and production npm audits are blocking quality gates.",
       },
       {
         label: "Boundary",
@@ -107,8 +120,9 @@ export const tradeflowProject: Project = {
     },
     validation: {
       paragraphs: [
+        "October 25 dependency maintenance at 265c9e0 updated Zod to 4.6.7, Undici to 8.12.3 and fast-uri to 3.1.9 within compatible ranges. CI run 40214510996 passed both audits, 54 unit checks and 211 Playwright executions; the local twice-repeated suite passed 422 executions. Railway released that exact patch, followed by 20 public checks covering matching assets, login, viewer restrictions and session-owned order workflows. The maintenance record retains an earlier isolated Firefox timeout and its later clean diagnostic/full runs. Zero known audit findings is dated evidence, not a guarantee against unknown or future vulnerabilities.",
         "October 13, 2026 hosted CI at dc8ac09 passed 34 unit checks and 205 Playwright executions: 42 API, 22 contract, and 47 on each of Chromium, Firefox, and WebKit. Compiler, lint, formatting, OpenAPI, and workflow-structure gates also passed. CI rejects flaky results even when a diagnostic retry passes. These are historical, revision-specific results.",
-        "A subsequent October 15 deployment-readiness revision (8c228d8) expanded the documented suite to 54 unit checks and 211 Playwright executions, including browser-free hosted-boundary cases; CI run 38673501021 passed. The October 21 documentation commit 284a474 also passed CI run 39537782961. These finite synthetic checks do not establish production trading, sustained capacity, or current uptime. The October 25 deployment review separately identified the pinned Railway app at 7b125f6; documentation publication does not unpin that release.",
+        "A subsequent October 15 deployment-readiness revision (8c228d8) expanded the documented suite to 54 unit checks and 211 Playwright executions, including browser-free hosted-boundary cases; CI run 38673501021 passed. The October 21 documentation commit 284a474 also passed CI run 39537782961. These finite synthetic checks do not establish production trading, sustained capacity, or current uptime. The initial October 25 provider review identified the earlier Railway pin 7b125f6; the later maintenance release is pinned to 265c9e0 and verified separately.",
       ],
     },
     lessonsConstraints: {

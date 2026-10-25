@@ -23,7 +23,7 @@ export const now: { updated: string; sections: NowSection[] } = {
     },
     {
       title: "Evidence & quality",
-      text: "The supporting security work covers CI evidence gates, detection tuning, synthetic cloud reassessment, and matching-rescan closure. Each case study distinguishes its fixture or recorded evidence from production claims. The portfolio and all four flagship demos now run on Railway. Current case studies document TLS, database authority, off-volume backups and source-release boundaries, while the AegisGraph article preserves its original design and dated updates.",
+      text: "The supporting security work covers CI evidence gates, detection tuning, synthetic cloud reassessment, and matching-rescan closure. Each case study distinguishes its fixture or recorded evidence from production claims. The portfolio and all four flagship demos now run on Railway. Current case studies document TLS, database authority, off-volume backups and source-release boundaries, while the AegisGraph article preserves its original design and dated updates. The October 25 TradeFlow compatible dependency patch is deployed, with a dated validation record and blocking full/production npm audits.",
       links: [
         {
           label: "Security engineering work",
