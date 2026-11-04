@@ -6,7 +6,7 @@ type NowSection = {
 
 /** Update this date only when the content is reviewed; do not use build time. */
 export const now: { updated: string; sections: NowSection[] } = {
-  updated: "2026-10-25",
+  updated: "2026-11-04",
   sections: [
     {
       title: "Current systems",
@@ -37,7 +37,7 @@ export const now: { updated: string; sections: NowSection[] } = {
     },
     {
       title: "Open boundaries",
-      text: "Broader live-model evaluation and authenticated tenant controls remain outside AegisGraph's public demo. CreditOps recordings leave initiating causes unconfirmed. TradeFlow's tests establish finite synthetic behavior without exchange execution; CreditFlow QE similarly has no real card or funds movement or banking SLA. CreditFlow's first scheduled daily-backup closeout and retained-resource cleanup remain pending as of October 25. The lab notebook keeps open questions tied to public evidence.",
+      text: "Broader live-model evaluation and authenticated tenant controls remain outside AegisGraph's public demo. CreditOps recordings leave initiating causes unconfirmed. TradeFlow's tests establish finite synthetic behavior without exchange execution; CreditFlow QE similarly has no real card or funds movement or banking SLA. CreditFlow's first scheduled-backup/stabilization gate passed October 26; five rehearsal service instances were retired October 29 while protected volumes/archive storage were retained. Further retirement and future backup/availability assurances remain separate operational questions. The lab notebook keeps open questions tied to public evidence.",
       links: [{ label: "Questions in the lab", href: "/lab" }],
     },
   ],

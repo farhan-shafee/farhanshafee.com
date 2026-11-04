@@ -1,5 +1,7 @@
 # Deployment Documentation Synchronization Implementation Plan
 
+> **Historical October 25 plan.** Its CreditFlow pending-backup/retirement instruction describes that earlier checkpoint. The October 26/29 gates and November 4 releases are recorded in the [current CreditFlow index](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/current-state.md).
+
 > **For agentic workers:** Use superpowers:executing-plans in this session. Steps use checkbox syntax for tracking.
 
 **Goal:** Synchronize the five migrated projects, the GitHub profile, and the personal portfolio with the verified October 24–25 Railway state.

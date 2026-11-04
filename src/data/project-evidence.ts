@@ -174,6 +174,21 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
           "November 4 Railway frontend deployment 5af466c1-c2ba-4685-aad0-d431a08d7552 at b286242 reached SUCCESS and passed bounded public acceptance: five synthetic accounts, 44 HTTP requests including a read-only navigation follow-up, no page errors, reconciled saved receipts and all four correctness demonstrations. Backend/database/monitor identities and resource settings were unchanged. This is point-in-time synthetic correctness, not capacity, an SLA or settlement.",
       },
       {
+        url: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/41899735083",
+        supports:
+          "November 4 full merged-main CI passed at the later evidence release d7658be. Both core and browser jobs completed successfully on that exact revision; this workflow result is separate from public deployment acceptance.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/pull/8",
+        supports:
+          "The evidence refresh is merged and deployed as Railway e19a4383-e1ef-4568-acc4-c15cb684072e. Its separate public check used 10 read-only requests, zero accounts and zero page errors without repeating the financial journeys. Its static workspace snapshot intentionally preserves the b286242 financial execution and artifact provenance; it is not a live provider-health feed. The independently deployed API remains at 20c91f5.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/current-state.md",
+        supports:
+          "Maintained release index separates deployed component pins, earlier financial acceptance, later evidence-only release, portfolio publication, historical Jenkins execution and completed operational gates. Older receipts retain their original revisions and limitations.",
+      },
+      {
         path: "public/projects/creditflow-qe/payment-20261104.png",
         supports:
           "Actual hosted November 4 capture, 1440 by 1000, SHA-256 307ec2bc5d69c5ee4ba21650c75075fee3263203d7546810166ee2d707aeb62e. A 100 USD purchase and 50 USD payment leave 300 USD outstanding, 700 USD available and two persisted receipts. Synthetic data; no session credentials. Historical payment.png is retained separately.",
@@ -181,7 +196,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
       {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/railway-production.md",
         supports:
-          "October 25, 2026 production cutover and provider configuration review confirms Railway web/API/PostgreSQL, private verify-full TLS with dedicated CA and restricted runtime authority, disabled runtime Flyway, off-volume pgBackRest/WAL backups and isolated recovery evidence. At that review, API was pinned to20c91f5 and web to7a16b50; API sleep was disabled and web sleep enabled. First scheduled daily-backup verification and resource retirement were pending at that timestamp; historical Vercel/Neon tests below retain their original scope.",
+          "The maintained runbook records Railway web/API/PostgreSQL, private verify-full TLS with dedicated CA, restricted runtime authority, disabled runtime Flyway, off-volume pgBackRest/WAL backups and isolated recovery evidence. November 4 provider reads identify frontend d7658be and independently pinned API 20c91f5. The first scheduled daily-backup/stabilization gate passed October 26 and five rehearsal service instances were retired October 29 with protected volumes/archive storage retained. The reviewed monitor recovery rollout completed October 31. These dated observations do not establish future backup chains, alert delivery or availability.",
       },
       {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/architecture/core-design.md",

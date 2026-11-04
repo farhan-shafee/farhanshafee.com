@@ -57,7 +57,7 @@ Challenge to prepare: Why must the test own the exact record? What happens to st
 2. **0:50–1:40 | Exact money.** Explain BigDecimal, strict decimal input, purchase and payment limits, and why rounding is rejected.
 3. **1:40–2:45 | Ledger correctness.** Trace PostgreSQL row locking, account ownership, unique account/idempotency key, replay of the original receipt, and rollback after a real isolated database insert failure.
 4. **2:45–4:00 | Independent test oracles.** Show Cucumber/REST Assured modules using HTTP rather than application source imports, then the separate TestNG and UI journey boundaries.
-5. **4:00–5:00 | Evidence and honesty.** Use the current main CI, dated local Jenkins run, and source-pinned hosted checks as distinct evidence. Explain the process-local quotas, idle wake, and lack of production banking/SLA guarantees.
+5. **4:00–5:00 | Evidence and honesty.** Use the [current CreditFlow release index](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/current-state.md) to distinguish b286242 financial acceptance, d7658be evidence-release CI/read-only checks, and the earlier local Jenkins run. Explain the process-local quotas, idle wake, and lack of production banking/SLA guarantees.
 
 Challenge to prepare: Why SELECT FOR UPDATE? What if the same idempotency key is replayed after another transaction? What would happen if the ledger insert fails after a balance update? Where can browser and API oracles disagree?
 
