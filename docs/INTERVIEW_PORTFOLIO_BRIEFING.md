@@ -1,6 +1,8 @@
 # Portfolio interview and reviewer briefing
 
-> Updated October 25, 2026: the portfolio and all four flagship demos run on Railway. CreditOps source is public. See [the current deployment/source matrix](PROJECT_DEPLOYMENTS.md) for actual release pins, TLS/backup boundaries and remaining closeout; earlier test counts retain their dated source scope.
+> TradeFlow section refreshed November 4, 2026: Phase 3C0 is accepted in source, while the public equities demo remains pinned to `265c9e0`. The other project sections retain their earlier review scope.
+>
+> Hosting update October 25, 2026: the portfolio and all four flagship demos run on Railway. CreditOps source is public. See [the current deployment/source matrix](PROJECT_DEPLOYMENTS.md) for actual release pins, TLS/backup boundaries and remaining closeout; earlier test counts retain their dated source scope.
 
 Reviewed: October 20, 2026 (America/New_York). This is a rehearsal and external-review aid, not evidence that an actual interviewer has reviewed or endorsed the portfolio.
 
@@ -12,12 +14,12 @@ Do not claim these portfolio systems are employer deployments. State clearly wha
 
 ## A fast inspection path for a hiring manager
 
-| Project       | Public first click                               | Technical evidence                                                                                       | Limitation to state                                                      |
-| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| AegisGraph    | https://aegisgraph.farhan-shafee.com             | https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md                                       | Synthetic; public mode read-only/deterministic, not a production SOC     |
-| CreditOps AI  | https://creditops.farhan-shafee.com/investigator | https://farhan-shafee.com/work/creditops-ai                                                              | Public source; recorded showcase playback; initiating causes unconfirmed |
-| TradeFlow     | https://tradeflow.farhan-shafee.com              | https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/INTERVIEW_DEMO.md         | Synthetic order book; no matching, real trades, exchange, or persistence |
-| CreditFlow QE | https://creditflow.farhan-shafee.com             | https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md | Synthetic ledger, no funds/settlement; idle demo may take time to wake   |
+| Project       | Public first click                               | Technical evidence                                                                                       | Limitation to state                                                        |
+| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| AegisGraph    | https://aegisgraph.farhan-shafee.com             | https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md                                       | Synthetic; public mode read-only/deterministic, not a production SOC       |
+| CreditOps AI  | https://creditops.farhan-shafee.com/investigator | https://farhan-shafee.com/work/creditops-ai                                                              | Public source; recorded showcase playback; initiating causes unconfirmed   |
+| TradeFlow     | https://tradeflow.farhan-shafee.com              | https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/CURRENT_STATE.md          | Public equities book is ephemeral; local PostgreSQL/FIX source is separate |
+| CreditFlow QE | https://creditflow.farhan-shafee.com             | https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md | Synthetic ledger, no funds/settlement; idle demo may take time to wake     |
 
 When a demo is unavailable, use the exact linked guide, source, and dated CI evidence. Say which execution was witnessed live and which is a historical artifact. Never silently substitute an older result for current execution.
 
@@ -41,13 +43,13 @@ Challenge to prepare: How do you distinguish an observed failure condition from 
 
 ## TradeFlow: five-minute engineering demonstration
 
-1. **0:00–0:45 | Workstation.** Show synthetic login, orders, a specific order identity, and deliberately limited UI state. In-memory order books reset; positions are static.
+1. **0:00–0:45 | Public workstation.** Show synthetic login, orders and a specific order identity. State the public pin `265c9e0`: in-memory books reset, positions are static and there is no application database.
 2. **0:45–2:00 | Test ownership.** Open the per-test fixture and server session model. Explain how test-scoped data and in-memory storage state isolate order records and session credentials.
 3. **2:00–3:15 | Real contract failure.** Explain why a malformed HTTP 200 body fails runtime Zod and independent OpenAPI/AJV checks. Show one precise 409 cancellation invariant.
-4. **3:15–4:15 | Failure triage.** Use prepared traces/reports to identify which assertion actually failed. Distinguish service, environment, test, data, and timing faults.
-5. **4:15–5:00 | Evidence.** Describe three-browser CI and separate source revisions for the October 13 baseline (34 unit, 205 Playwright) and October 15 deployment-readiness additions (54 unit, 211 Playwright). The October 25 patch 265c9e0 passed hosted CI 40214510996 with 54 units and 211 Playwright executions; 422 local repeated executions and 20 public release checks are separate evidence. No live exchange, brokerage, or trading-capacity claim.
+4. **3:15–4:15 | Source and failure triage.** Open the current source index and distinguish opt-in local PostgreSQL financial workflows from the public demo. Phase 3C0 checks offline transcripts; it does not run a session engine or real peer. Use prepared reports to identify the failed assertion; normal authenticated traces are disabled.
+5. **4:15–5:00 | Current evidence.** Accepted source checkpoint `f31f6e2` passed all eight original main checks on attempt 1: 966 Node units, 117 financial Python tests, 78 session Python tests, 59 transcript expectations, 230/460 API/browser cases, 455 per PostgreSQL execution and 99/198 workstation cases. The current source index binds these counts to exact runs. The public October 25 release separately recorded 54 units, 211 Playwright executions, a 422-case local repeat and 20 public checks. No live exchange, brokerage, peer interoperability or trading-capacity claim.
 
-Current maintenance: the [October 25 TradeFlow dependency record](https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md) explains the three compatible package patches, full/production audit gates and their dated evidence. Distinguish a clean advisory scan from proof of generalized security.
+Public-demo maintenance history: the [October 25 TradeFlow dependency record](https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md) explains the three compatible package patches, full/production audit gates and their dated evidence. Distinguish a clean advisory scan from proof of generalized security.
 
 Challenge to prepare: Why must the test own the exact record? What happens to state on restart? How do projects differ from workers? What would make the real trading integration materially different?
 
