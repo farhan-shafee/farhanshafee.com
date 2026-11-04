@@ -48,12 +48,20 @@ export const creditflowProject: Project = {
         href: "https://github.com/farhan-shafee/creditflow-qe/actions/workflows/verify.yml",
       },
       {
-        label: "Recorded main CI (November 4)",
+        label: "Workspace CI (November 4)",
         href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/41886196621",
       },
       {
-        label: "Recorded frontend release (November 4)",
+        label: "Workspace acceptance (November 4)",
         href: "https://github.com/farhan-shafee/creditflow-qe/blob/4fac13ac84565296281fed72ae6e1b1dd9b3be55/docs/evidence/financial-workspace-20261104.md",
+      },
+      {
+        label: "Evidence release CI (November 4)",
+        href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/41899735083",
+      },
+      {
+        label: "Current release index",
+        href: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/current-state.md",
       },
       {
         label: "Validation history",
@@ -136,12 +144,13 @@ export const creditflowProject: Project = {
       paragraphs: [
         "November 4 GitHub Actions run 41886196621 passed at main revision b286242: 31 Java unit tests, 18 PostgreSQL integration tests, and 31 Cucumber scenarios, 154 steps and 6 TestNG cases in each private/public mode. Separate scopes passed 37 Java UI/BFF cases, 57 frontend tests and 7 Bruno requests / 11 checks. All 192 report and 22 command-log hashes matched.",
         "Separate November 4 public acceptance of frontend b286242 passed using five synthetic accounts and 44 HTTP requests, including a read-only mobile-navigation follow-up. Purchases, payments, replay/conflict responses and the complete saved ledger reconciled. This is bounded correctness evidence, not a capacity or availability assurance.",
+        "The subsequent November 4 evidence refresh is deployed at d7658be. Its full main CI run 41899735083 passed, followed by a separate read-only public check using 10 requests, zero accounts and zero page errors. It preserves the earlier b286242 financial acceptance as a dated snapshot; the application does not poll providers or claim continuous current-health verification.",
         "An October 15 isolated local Jenkins build published 123 passing cases and 32 separate evidence-framework tests from an earlier pinned source. It was not rerun for the November 4 revision; that historical execution does not establish current production banking operation.",
       ],
     },
     lessonsConstraints: {
       paragraphs: [
-        "Synthetic data only; no real cards, funds, settlement or regulatory-compliance claim. Sessions expire after 30 minutes and public quotas are conservative. API sleep is disabled; the Railway frontend may wake from idle. Local Jenkins execution is recorded; sustained-load behavior and availability/SLA remain unverified. Off-volume backups and WAL recovery are verified within the documented scope; the first scheduled daily-backup closeout and resource retirement remain pending as of October 25, 2026.",
+        "Synthetic data only; no real cards, funds, settlement or regulatory-compliance claim. Sessions expire after 30 minutes and public quotas are conservative. API sleep is disabled; the Railway frontend may wake from idle. Local Jenkins execution is recorded; sustained-load behavior and availability/SLA remain unverified. Off-volume backups and WAL recovery are verified within the documented scope. The first scheduled daily-backup/stabilization gate passed October 26; five rehearsal service instances were retired October 29 with protected volumes/archive storage retained. The reviewed archive-monitor recovery was deployed October 31 with two scheduled executions verified. Retained old-provider resources are not synchronized database standbys; further retirement and future recovery assurances are separate operational questions.",
       ],
     },
   },
