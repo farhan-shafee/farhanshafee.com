@@ -3,17 +3,17 @@ import type { Project } from "./projects";
 export const tradeflowProject: Project = {
   title: "TradeFlow",
   slug: "tradeflow",
-  status: "Completed",
+  status: "Active",
   year: "2026",
   category: "Fintech systems / Test engineering",
   kind: "personal",
   description:
-    "A synthetic trading workstation that makes test ownership, API contracts, and three-browser workflow validation inspectable.",
+    "A synthetic trading SDET lab with PostgreSQL financial workflows, independent verification and offline FIX conformance, alongside a bounded public equities demo.",
   sourceVisibility: "public",
   website: "https://tradeflow.farhan-shafee.com",
   inspection: {
     summary:
-      "Inspect the reachable synthetic workstation and the completed SDET lab: isolated fixtures, independent contract checks, and cross-browser evidence.",
+      "Explore the accepted local/CI financial and FIX milestones in public source, and the separately pinned equities demo. Phase 3C0 is merged; a running FIX session engine remains unimplemented.",
     links: [
       {
         label: "Live demo",
@@ -26,12 +26,24 @@ export const tradeflowProject: Project = {
         featured: true,
       },
       {
-        label: "Hosting and operations",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
+        label: "Current state and evidence",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/CURRENT_STATE.md",
       },
       {
-        label: "Dependency maintenance",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md",
+        label: "Local RFQ workstation",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/FIXED_INCOME_RFQ.md",
+      },
+      {
+        label: "Controlled FIX application",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/FIX44_APPLICATION.md",
+      },
+      {
+        label: "Offline session conformance",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/FIX44_SESSION.md",
+      },
+      {
+        label: "Hosting and operations",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
       },
       {
         label: "Test strategy",
@@ -42,49 +54,51 @@ export const tradeflowProject: Project = {
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/INTERVIEW_DEMO.md",
       },
       {
-        label: "CI",
+        label: "Main quality checkpoint",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/41914340404",
+      },
+      {
+        label: "Main database/workstation checkpoint",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/41914340173",
+      },
+      {
+        label: "CI history",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/workflows/quality.yml?query=branch%3Amain",
-      },
-      {
-        label: "Patch CI",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/40214510996",
-      },
-      {
-        label: "Historical CI",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/39537782961",
       },
     ],
     facts: [
       {
         label: "Stack",
-        value: "TypeScript, Node.js, Playwright, Zod, OpenAPI, and AJV.",
+        value:
+          "TypeScript, Node.js, Playwright, PostgreSQL, Python, SQL, OpenAPI and bounded FIX 4.4 tooling.",
       },
       {
-        label: "Execution",
+        label: "Source milestone",
         value:
-          "API and contract checks once; browser journeys on three engines.",
+          "Phase 3C0 accepted at f31f6e2 on November 4; all eight post-merge checks passed on attempt 1.",
       },
       {
-        label: "Maintenance",
+        label: "Public demo",
         value:
-          "October 25 compatible dependency patch released; full and production npm audits are blocking quality gates.",
+          "Railway/Cloudflare equities slice pinned to 265c9e0; ephemeral books and no application database.",
       },
       {
-        label: "Boundary",
+        label: "Local/CI boundary",
         value:
-          "Railway app behind Cloudflare Tunnel; ephemeral sessions, no database or financial connectivity.",
+          "PostgreSQL workflow defaults OFF. Offline session conformance does not implement transport, a runtime session engine or peer interoperability.",
       },
     ],
   },
   caseStudy: {
     overview: {
       paragraphs: [
-        "I built TradeFlow to make test engineering inspectable through a small trading workstation. Its order workflow gives unit, API, contract, integration, and browser tests concrete behavior to check. Every credential, order, position, and quote is synthetic. The public demo runs independently on Railway behind Cloudflare Tunnel; session books remain process-local and ephemeral and reset when the app restarts.",
+        "TradeFlow makes quality engineering inspectable through synthetic trading workflows. Public source now includes fixed-income analytics, opt-in local PostgreSQL RFQ acceptance, order/execution and reconciliation workflows, controlled FIX application and Phase 3C0 offline session conformance. Every credential, quote, order and execution is synthetic.",
+        "The public Railway demo is a separately pinned equities slice at 265c9e0. Its session-owned books remain ephemeral, positions and quotes are fixed read models, and it has no application database. The accepted source checkpoint f31f6e2 does not imply that those later capabilities were deployed to the public demo.",
       ],
     },
     problem: {
       paragraphs: [
-        "A passing interaction says little if a test inspects the wrong record, shares mutable state, or accepts any error as the intended rejection. The lab makes the rule, ownership, and observable outcome explicit. Canceling a FILLED order must return HTTP 409 with ORDER_NOT_CANCELABLE, and a subsequent read must still show FILLED.",
+        "A passing click says little if a test inspects the wrong record, shares mutable state or accepts an arbitrary error. Financial retries also need evidence that they preserve the original operation instead of manufacturing a second effect. TradeFlow binds rules to owned records, exact outcomes and independently checked evidence.",
       ],
     },
     system: {
@@ -92,48 +106,55 @@ export const tradeflowProject: Project = {
       steps: [
         "Business rule",
         "Owned synthetic session",
-        "Action through API or UI",
-        "Status, contract, and state checks",
-        "Trace and report",
+        "Action through API or local SDK",
+        "Status, contract and retained-state checks",
+        "Independent financial/protocol verification",
         "Human review",
       ],
       paragraphs: [
-        "Overview summarizes the full session book. Orders supports server-side filters, MARKET/LIMIT submission, exact-record details, and eligible cancellation. Positions and quotes are fixed synthetic read models. Activity records actions observed by the current browser session and clears on reload or logout. A viewer can inspect orders while the API rejects mutations with HTTP 403.",
+        "The public demo exposes Overview, Orders, Positions and Activity, exact-record inspection and trader/viewer authorization. Public order submission creates a NEW order; it does not simulate an execution. Browser Activity clears on reload or logout.",
+        "The separate opt-in local PostgreSQL workstation exercises invited dealer quotes, atomic RFQ acceptance, controlled acknowledgments/fills/cancellations, execution-derived cash/positions and historical reconciliation. Phase 3C0 classifies reviewed administrative-message transcripts offline; its reports keep peer interoperability, delivery, financial application and external completeness unverified.",
       ],
     },
     architecture: {
       paragraphs: [
-        "A Railway Node.js HTTP server owns authentication, authorization, input validation, and order transitions. A separate Railway cloudflared service carries Cloudflare HTTPS traffic to the private app. The app has no database or persistent volume, and its reviewed application release remains pinned. The TypeScript browser interface displays validated server responses. Each login receives a cloned order book; test-scoped fixtures supply an authenticated API context and in-memory browser storage state for that same session. Teardown revokes the session. Workers share only immutable health metadata, allowing parallel tests to reuse reference symbols without sharing created records.",
-        "Zod checks response bodies at runtime. A separate AJV validator reads the published OpenAPI specification, providing an independently interpreted wire contract alongside application types and runtime schemas.",
+        "The public demo uses a Railway Node.js HTTP app behind a separate cloudflared service and Cloudflare HTTPS. Its release is pinned, with no application database or persistent volume. Test-scoped API sessions and in-memory browser storage state isolate each default equities book.",
+        "Accepted local/CI source adds opt-in PostgreSQL workflows with scoped roles, forced RLS, immutable receipts and execution evidence, original-key recovery and finite capacity. Independent Python and SQL verification check financial and retained-protocol evidence. This database workflow defaults OFF and is not part of the public equities release.",
+        "The bounded FIX application-message codec and explicitly opted-in server-side application SDK are separate from the offline A/0/1/5 session classifier. No running session engine, socket transport, durable session store or independent peer is implemented by Phase 3C0. Zod/runtime schemas and an independent OpenAPI/AJV oracle remain part of the API test architecture.",
       ],
     },
     whatIBuilt: {
       paragraphs: [
-        "Integration tests follow the exact owned order ID across API creation, browser inspection, cancellation, and API readback. Another regression intercepts an HTTP 200 response containing malformed order data: both validators reject it, and the UI displays the contract error. Controlled delayed-response tests check that an older request cannot overwrite a newer session or accepted mutation.",
+        "API/UI integration tests follow exact owned order IDs and reject malformed HTTP 200 bodies. Delayed-response regressions prevent an older request from overwriting a newer session or accepted mutation. Real PostgreSQL tests add concurrency, authorization, transactional recovery, corruption detection, protected reservation accounting and cleanup checks.",
+        "The offline session pack contains 59 literal expected reports and 57 raw SOH fixtures, with an independent Python evaluator and explicit invalid, incomplete and out-of-scope outcomes. Corpus admission, reference pins and bounds fail closed. The existing application codec continues rejecting administrative messages, and the new checker never calls the financial SDK.",
       ],
     },
     engineeringDecisions: {
       bullets: [
-        "Run API and contract checks once in a browser-free service project; run UI and integration journeys in Chromium, Firefox, and WebKit. Projects define coverage, while workers control concurrency.",
-        "Keep intentional UI and contract failures in separate commands and output directories. Their traces, screenshots, videos, and reports support diagnosis without replacing normal results. AI-assisted test proposals remain subject to human review and deterministic gates.",
+        "Separate the pinned public demo from later accepted local/CI source. A source merge or green CI does not update the public application pin.",
+        "Keep financial rules, authorization and immutable operation identities authoritative across retries; use independent Python/SQL evidence rather than deriving expected outcomes from the implementation under test.",
+        "Run API/contract cases once and browser workflows in Chromium, Firefox and WebKit. Preserve owned resources, deadlines, cleanup and first-failure evidence; keep intentional failure demos separate.",
+        "Define executable offline session rules before introducing a runtime engine or real peer. Expected INVALID/OUT_OF_SCOPE matches are successful oracle comparisons, not successful session interoperability.",
       ],
     },
     validation: {
       paragraphs: [
-        "October 25 dependency maintenance at 265c9e0 updated Zod to 4.6.7, Undici to 8.12.3 and fast-uri to 3.1.9 within compatible ranges. CI run 40214510996 passed both audits, 54 unit checks and 211 Playwright executions; the local twice-repeated suite passed 422 executions. Railway released that exact patch, followed by 20 public checks covering matching assets, login, viewer restrictions and session-owned order workflows. The maintenance record retains an earlier isolated Firefox timeout and its later clean diagnostic/full runs. Zero known audit findings is dated evidence, not a guarantee against unknown or future vulnerabilities.",
-        "October 13, 2026 hosted CI at dc8ac09 passed 34 unit checks and 205 Playwright executions: 42 API, 22 contract, and 47 on each of Chromium, Firefox, and WebKit. Compiler, lint, formatting, OpenAPI, and workflow-structure gates also passed. CI rejects flaky results even when a diagnostic retry passes. These are historical, revision-specific results.",
-        "A subsequent October 15 deployment-readiness revision (8c228d8) expanded the documented suite to 54 unit checks and 211 Playwright executions, including browser-free hosted-boundary cases; CI run 38673501021 passed. The October 21 documentation commit 284a474 also passed CI run 39537782961. These finite synthetic checks do not establish production trading, sustained capacity, or current uptime. The initial October 25 provider review identified the earlier Railway pin 7b125f6; the later maintenance release is pinned to 265c9e0 and verified separately.",
+        "November 4, 2026 Phase 3C0 checkpoint f31f6e2 was merged in PR #29 with a GitHub Verified signature and the exact reviewed tree. Main quality run 41914340404 and persistence run 41914340173 completed on attempt 1, with all eight checks successful. Quality/regression each passed 966 Node units, 117 independent financial Python tests, 78 session Python tests, 59 expected transcript reports and 230 baseline/460 repeated API/browser cases.",
+        "Both post-merge PostgreSQL executions passed 455/455, preserving 247 financial executions and 44 rotations per execution. All three workload phases stayed below the unchanged 30-second deadline. The three-browser workstation passed 99 baseline and 198 repeated cases; retained capacity returned to zero. Counts belong to that exact source checkpoint; documentation-only revisions may follow it.",
+        "The public equities release remains 265c9e0, rechecked in provider metadata on November 4. Its October 25 maintenance evidence recorded 54 unit checks and 211 Playwright executions, a 422-case local repeat and 20 public acceptance checks. Those historical deployed-release results are separate from current source/CI evidence. Earlier lifecycle and timeout incidents remain disclosed; later green runs do not establish their causal resolution.",
       ],
     },
     lessonsConstraints: {
       paragraphs: [
-        "This completed lab uses one process with ephemeral in-memory sessions and books. The branded public demo is reachable, without an uptime or capacity guarantee. There is no broker or exchange connection, live market feed, matching engine, execution simulation, persistence, reconciliation, or P&L. Positions remain static after submission. Browser activity is not a durable audit trail. Production identity, distributed resilience, and trading capacity are outside the implemented scope; no employer or customer data is used.",
+        "This is an active personal engineering lab with a completed Phase 3C0 milestone. The pinned public equities demo has ephemeral books and static positions. Durable RFQ/execution/reconciliation behavior belongs to the explicitly opted-in local/CI workflow, not that public deployment.",
+        "All data is synthetic. There is no live brokerage/exchange or market feed, matching, real-money P&L, settlement or production-trading claim. Phase 3C0 does not implement a running FIX session engine, transport, heartbeat scheduling, durable session state, real recovery or independent-peer interoperability. Reconciliation is a historical assessment, not financial repair or proof of external completeness. No employer/customer material is used; availability and capacity are not certified.",
       ],
     },
   },
   technicalHighlights: [
-    "Test-owned sessions connect exact-record UI assertions with API state checks.",
-    "Runtime schemas and an independent OpenAPI oracle reject malformed HTTP 200 responses.",
+    "Test-owned sessions connect exact-record UI assertions with independently validated API state.",
+    "Local PostgreSQL workflows exercise financial idempotency, concurrency, retained evidence and independently verified recovery.",
+    "Phase 3C0 turns selected FIX session rules into 59 reviewed offline transcript expectations with explicit claim boundaries.",
   ],
   screenshots: [
     {
@@ -142,7 +163,7 @@ export const tradeflowProject: Project = {
       width: 1425,
       height: 1167,
       caption:
-        "Synthetic order book and LIMIT ticket. Each session owns its records; submission creates a NEW order without simulating execution.",
+        "Public equities-slice capture: session-owned synthetic book and LIMIT ticket. Submission creates a NEW order without simulating execution; this image does not show later PostgreSQL/FIX source milestones.",
     },
     {
       src: "/projects/tradeflow/order-details.jpg",
@@ -157,6 +178,10 @@ export const tradeflowProject: Project = {
     "TypeScript",
     "Node.js",
     "Playwright",
+    "PostgreSQL",
+    "Python",
+    "SQL",
+    "FIX 4.4",
     "Zod",
     "OpenAPI",
     "AJV",

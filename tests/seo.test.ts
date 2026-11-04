@@ -156,3 +156,14 @@ test("production robots uses the new sitemap while preview crawling stays disabl
     else process.env.VERCEL_ENV = originalEnvironment;
   }
 });
+
+test("TradeFlow discovery names the source milestone and public deployment separately", async () => {
+  const text = (await getLlms().text())
+    .split("## TradeFlow")[1]!
+    .split("## CreditFlow QE")[0]!;
+  assert.match(text, /Phase 3C0/);
+  assert.match(text, /f31f6e2/);
+  assert.match(text, /265c9e0/);
+  assert.match(text, /local.*PostgreSQL|PostgreSQL.*local/i);
+  assert.match(text, /offline/i);
+});
