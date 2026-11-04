@@ -164,9 +164,24 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   "creditflow-qe": {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/41886196621",
+        supports:
+          "November 4, 2026 merged-main b286242 passed both CI jobs and all five source-bound evidence scopes: 31 unit, 18 PostgreSQL integration; each private/public mode 31 Cucumber scenarios, 154 steps and 6 TestNG cases; 37 Java UI/BFF cases; 57 frontend cases; 7 Bruno requests / 11 checks. Independent retained-artifact validation matched 192 report and 22 command-log hashes. This dated execution is not continuous deployment health or Jenkins execution for that source.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/creditflow-qe/blob/4fac13ac84565296281fed72ae6e1b1dd9b3be55/docs/evidence/financial-workspace-20261104.md",
+        supports:
+          "November 4 Railway frontend deployment 5af466c1-c2ba-4685-aad0-d431a08d7552 at b286242 reached SUCCESS and passed bounded public acceptance: five synthetic accounts, 44 HTTP requests including a read-only navigation follow-up, no page errors, reconciled saved receipts and all four correctness demonstrations. Backend/database/monitor identities and resource settings were unchanged. This is point-in-time synthetic correctness, not capacity, an SLA or settlement.",
+      },
+      {
+        path: "public/projects/creditflow-qe/payment-20261104.png",
+        supports:
+          "Actual hosted November 4 capture, 1440 by 1000, SHA-256 307ec2bc5d69c5ee4ba21650c75075fee3263203d7546810166ee2d707aeb62e. A 100 USD purchase and 50 USD payment leave 300 USD outstanding, 700 USD available and two persisted receipts. Synthetic data; no session credentials. Historical payment.png is retained separately.",
+      },
+      {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/railway-production.md",
         supports:
-          "October 25, 2026 production cutover and provider configuration review confirms Railway web/API/PostgreSQL, private verify-full TLS with dedicated CA and restricted runtime authority, disabled runtime Flyway, off-volume pgBackRest/WAL backups and isolated recovery evidence. API remains pinned to20c91f5; web to7a16b50. API sleep is disabled; web sleep remains enabled. First scheduled daily-backup verification and resource retirement remain pending; historical Vercel/Neon tests below retain their original scope.",
+          "October 25, 2026 production cutover and provider configuration review confirms Railway web/API/PostgreSQL, private verify-full TLS with dedicated CA and restricted runtime authority, disabled runtime Flyway, off-volume pgBackRest/WAL backups and isolated recovery evidence. At that review, API was pinned to20c91f5 and web to7a16b50; API sleep was disabled and web sleep enabled. First scheduled daily-backup verification and resource retirement were pending at that timestamp; historical Vercel/Neon tests below retain their original scope.",
       },
       {
         url: "https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/architecture/core-design.md",

@@ -51,15 +51,16 @@ ${tradeflow?.inspection ? `\n${tradeflow.inspection.links.map((link) => `- [${li
 
 ## CreditFlow QE
 
-[CreditFlow QE](https://farhan-shafee.com/work/creditflow-qe): A transactional credit-card simulator with independent Java, Cucumber and REST Assured automation, plus executed CI and browser-test evidence.
+[CreditFlow QE](https://farhan-shafee.com/work/creditflow-qe): A Java/PostgreSQL credit-card simulator with independent Cucumber and REST Assured automation, inspectable transaction receipts and four real correctness demos.
 
-An AI-assisted synthetic banking application with exact monetary values, transactional PostgreSQL state, original payment receipt replay and independent Java API/browser automation. The web, API and live PostgreSQL run on Railway with private verify-full TLS and pinned application releases. Public accounts are isolated and expire after 30 minutes; quotas are conservative. API sleep is disabled; the frontend may wake from idle. First scheduled daily-backup closeout and retained-resource retirement remain pending as of October 25, 2026. No real cards, funds, settlement or regulatory-compliance claim. A dated isolated local Jenkins execution is documented separately from current GitHub CI; sustained-load behavior and availability/SLA remain unverified.
+An AI-assisted synthetic banking application with exact monetary values, transactional PostgreSQL state, original payment receipt replay and independent Java API/browser automation. The workspace exposes sanitized transaction receipts and four isolated correctness demonstrations backed by observed HTTP responses and saved ledger state. The web, API and live PostgreSQL run on Railway with private verify-full TLS and pinned application releases. Public accounts are isolated and expire after 30 minutes; quotas are conservative. API sleep is disabled; the frontend may wake from idle. First scheduled daily-backup closeout and retained-resource retirement remain pending as of October 25, 2026. No real cards, funds, settlement or regulatory-compliance claim. A dated isolated local Jenkins execution is documented separately from current GitHub CI; sustained-load behavior and availability/SLA remain unverified.
 
 - [Live demo](https://creditflow.farhan-shafee.com)
 - [Five-minute walkthrough](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md)
 - [View source](https://github.com/farhan-shafee/creditflow-qe)
 - [CI history](https://github.com/farhan-shafee/creditflow-qe/actions/workflows/verify.yml)
-- [Recorded main CI (October 15)](https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474)
+- [Recorded main CI (November 4)](https://github.com/farhan-shafee/creditflow-qe/actions/runs/41886196621)
+- [Recorded frontend release (November 4)](https://github.com/farhan-shafee/creditflow-qe/blob/4fac13ac84565296281fed72ae6e1b1dd9b3be55/docs/evidence/financial-workspace-20261104.md)
 - [Deployment and recovery](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/railway-production.md)
 - [Validation history](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/STATUS.md)
 - [Local Jenkins execution](https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/evidence/jenkins-execution.md)

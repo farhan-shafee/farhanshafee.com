@@ -46,6 +46,9 @@
     "@next/eslint-plugin-next": "file:tooling/next-eslint-plugin"
   },
   "overrides": {
-    "@next/eslint-plugin-next": "$@next/eslint-plugin-next"
+    "@next/eslint-plugin-next": "$@next/eslint-plugin-next",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
   }
 }

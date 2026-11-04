@@ -8,7 +8,7 @@ export const creditflowProject: Project = {
   category: "Financial systems / Quality engineering",
   kind: "personal",
   description:
-    "A transactional credit-card simulator with independent Java, Cucumber and REST Assured automation, plus executed CI and browser-test evidence.",
+    "A Java/PostgreSQL credit-card simulator with independent Cucumber and REST Assured automation, inspectable transaction receipts and four real correctness demos.",
   technologies: [
     "Java 21",
     "Spring Boot",
@@ -18,6 +18,7 @@ export const creditflowProject: Project = {
     "Maven",
     "Playwright",
     "GitHub Actions",
+    "Next.js",
   ],
   github: "https://github.com/farhan-shafee/creditflow-qe",
   website: "https://creditflow.farhan-shafee.com",
@@ -26,7 +27,7 @@ export const creditflowProject: Project = {
   visibility: "public",
   inspection: {
     summary:
-      "Explore synthetic accounts, post purchases and payments, and inspect the source, test framework and verified execution evidence.",
+      "Post a synthetic purchase or payment, inspect its receipt, and run four isolated correctness demonstrations backed by real HTTP responses and the saved ledger.",
     links: [
       {
         label: "Live demo",
@@ -47,8 +48,12 @@ export const creditflowProject: Project = {
         href: "https://github.com/farhan-shafee/creditflow-qe/actions/workflows/verify.yml",
       },
       {
-        label: "Recorded main CI (October 15)",
-        href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/38820309474",
+        label: "Recorded main CI (November 4)",
+        href: "https://github.com/farhan-shafee/creditflow-qe/actions/runs/41886196621",
+      },
+      {
+        label: "Recorded frontend release (November 4)",
+        href: "https://github.com/farhan-shafee/creditflow-qe/blob/4fac13ac84565296281fed72ae6e1b1dd9b3be55/docs/evidence/financial-workspace-20261104.md",
       },
       {
         label: "Validation history",
@@ -129,8 +134,9 @@ export const creditflowProject: Project = {
     },
     validation: {
       paragraphs: [
-        "Recorded October 15 source verification passed 31 application unit tests, 18 PostgreSQL integration tests, and 31 Cucumber scenarios in each private/public mode. The hosted release separately passed ten banking checks and eleven Java UI/BFF tests. These are distinct dated executions, not one aggregate current test total.",
-        "GitHub Actions run 38820309474 passed core and browser jobs at main revision 631948a. A separate isolated local Jenkins build published 123 passing cases, with 32 separate evidence-framework tests, from an earlier pinned source revision. Neither the Jenkins record nor historical hosted checks establish current production banking operation or availability guarantees.",
+        "November 4 GitHub Actions run 41886196621 passed at main revision b286242: 31 Java unit tests, 18 PostgreSQL integration tests, and 31 Cucumber scenarios, 154 steps and 6 TestNG cases in each private/public mode. Separate scopes passed 37 Java UI/BFF cases, 57 frontend tests and 7 Bruno requests / 11 checks. All 192 report and 22 command-log hashes matched.",
+        "Separate November 4 public acceptance of frontend b286242 passed using five synthetic accounts and 44 HTTP requests, including a read-only mobile-navigation follow-up. Purchases, payments, replay/conflict responses and the complete saved ledger reconciled. This is bounded correctness evidence, not a capacity or availability assurance.",
+        "An October 15 isolated local Jenkins build published 123 passing cases and 32 separate evidence-framework tests from an earlier pinned source. It was not rerun for the November 4 revision; that historical execution does not establish current production banking operation.",
       ],
     },
     lessonsConstraints: {
@@ -141,12 +147,12 @@ export const creditflowProject: Project = {
   },
   screenshots: [
     {
-      src: "/projects/creditflow-qe/payment.png",
-      alt: "CreditFlow QE hosted simulator after a synthetic $50 payment",
+      src: "/projects/creditflow-qe/payment-20261104.png",
+      alt: "CreditFlow QE hosted simulator after a synthetic purchase and payment",
       width: 1440,
-      height: 3318,
+      height: 1000,
       caption:
-        "Actual Playwright journey: $200 outstanding, $800 available and one committed payment.",
+        "Actual November 4 public journey: 100 USD purchase, 50 USD payment, 300 USD outstanding, 700 USD available and two persisted receipts.",
     },
   ],
 };

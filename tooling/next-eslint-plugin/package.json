@@ -1,6 +1,6 @@
 {
   "name": "@next/eslint-plugin-next",
-  "version": "16.4.3-farhan.1",
+  "version": "16.4.3-farhan.2",
   "description": "ESLint plugin for Next.js. Local root-directory glob security patch; upstream rules unchanged.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,8 +14,8 @@
   ],
   "dependencies": {
     "@eslint-community/eslint-utils": "4.9.1",
-    "glob": "13.0.6",
-    "minimatch": "10.2.6"
+    "glob": "14.0.2",
+    "minimatch": "11.0.1"
   },
   "private": true
 }
