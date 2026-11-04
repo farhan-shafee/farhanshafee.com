@@ -183,7 +183,18 @@ test("CreditFlow QE separates CI history, dated main evidence and local Jenkins 
   assert.ok(!contents.includes("feat/provider-pilot"));
   assert.ok(!contents.includes("38682147631"));
   assert.ok(contents.includes("actions/workflows/verify.yml"));
-  assert.ok(contents.includes("actions/runs/38820309474"));
+  assert.ok(contents.includes("actions/runs/41886196621"));
+  assert.ok(
+    contents.includes(
+      "4fac13ac84565296281fed72ae6e1b1dd9b3be55/docs/evidence/financial-workspace-20261104.md",
+    ),
+  );
+  assert.ok(project.technologies.includes("Next.js"));
+  assert.equal(
+    project.screenshots?.[0].src,
+    "/projects/creditflow-qe/payment-20261104.png",
+  );
+  assert.equal(project.screenshots?.[0].height, 1000);
   assert.ok(contents.includes("docs/evidence/STATUS.md"));
   assert.ok(contents.includes("docs/evidence/jenkins-execution.md"));
   assert.match(contents, /synthetic/i);
