@@ -133,6 +133,46 @@ test("TradeFlow features its public synthetic demo", () => {
   assert.match(JSON.stringify(project), /synthetic/i);
 });
 
+test("TradeFlow separates the deployed demo from the merged Phase 3C0 source", () => {
+  const project = getProjectBySlug("tradeflow");
+  assert.ok(project?.inspection && project.caseStudy);
+  assert.equal(project.status, "Active");
+  const text = JSON.stringify(project);
+  assert.match(text, /Phase 3C0/);
+  assert.match(text, /f31f6e2/);
+  assert.match(text, /265c9e0/);
+  assert.match(text, /966/);
+  assert.match(text, /455/);
+  assert.match(text, /59/);
+  assert.match(text, /PostgreSQL/);
+  assert.match(text, /offline/i);
+  assert.match(
+    text,
+    /session engine.*(?:not|outside|unimplemented)|(?:not|outside|unimplemented).*session engine/i,
+  );
+  for (const suffix of [
+    "/docs/CURRENT_STATE.md",
+    "/docs/FIX44_SESSION.md",
+    "/actions/runs/41914340404",
+    "/actions/runs/41914340173",
+  ]) {
+    assert.ok(
+      project.inspection.links.some(({ href }) => href.endsWith(suffix)),
+      suffix,
+    );
+  }
+  assert.match(
+    project.inspection.facts.find(({ label }) => label === "Public demo")
+      ?.value ?? "",
+    /265c9e0/,
+  );
+  assert.match(
+    project.inspection.facts.find(({ label }) => label === "Source milestone")
+      ?.value ?? "",
+    /Phase 3C0/,
+  );
+});
+
 test("flagship case studies include inspectable quick guides and current proof", () => {
   const aegisgraph = getProjectBySlug("aegisgraph");
   const tradeflow = getProjectBySlug("tradeflow");
@@ -162,7 +202,7 @@ test("flagship case studies include inspectable quick guides and current proof",
   }
   assert.ok(
     tradeflow.inspection?.links.some((link) =>
-      link.href.includes("39537782961"),
+      link.href.includes("41914340173"),
     ),
   );
   assert.match(
