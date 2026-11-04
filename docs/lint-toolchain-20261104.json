@@ -1,0 +1,164 @@
+{
+  "recordedAt": "2026-11-04T20:26:37.333Z",
+  "startingRevision": "501ebbf74e9d244a842347fbf1ab156a492b87c3",
+  "scope": "Approved project-local development/lint dependency remediation; no portfolio deployment",
+  "versions": {
+    "localPlugin": "16.4.3-farhan.2",
+    "upstreamPlugin": "16.4.3",
+    "glob": "14.0.2",
+    "minimatch": "11.0.1",
+    "typescriptEstreeOverride": "minimatch 11.0.1"
+  },
+  "runtimeGraphUnchanged": true,
+  "originalHelperAndUpstreamRuleCodeUnchanged": true,
+  "focused": {
+    "tests": 24,
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "unit": {
+    "tests": 69,
+    "passed": 69,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "browser": {
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0
+  },
+  "audits": {
+    "audit-full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "audit-production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "commands": [
+    {
+      "name": "clean-install",
+      "start": "2026-11-04T20:21:15.686Z",
+      "finish": "2026-11-04T20:22:07.990Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "7a1555f9e9f2107326ce7e6d876babf89a1ec409ef435cc2f2aff7991c149ebc"
+    },
+    {
+      "name": "lint-regressions",
+      "start": "2026-11-04T20:22:08.001Z",
+      "finish": "2026-11-04T20:22:13.621Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "e183991463cd3d1c282328841d42a93048580ee7df35dd4e56c9e5d3052b2aa2"
+    },
+    {
+      "name": "unit",
+      "start": "2026-11-04T20:22:13.629Z",
+      "finish": "2026-11-04T20:22:20.809Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "59fabafbf32d796800c3ca56206f3f6b27abda5009c213aa96d77f3b2bbeac02"
+    },
+    {
+      "name": "lint",
+      "start": "2026-11-04T20:22:20.818Z",
+      "finish": "2026-11-04T20:22:41.973Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "567b8ca4f8eb9be06981fd2545d47f08fd9a0095d70269251600daed5a826669"
+    },
+    {
+      "name": "types",
+      "start": "2026-11-04T20:22:41.988Z",
+      "finish": "2026-11-04T20:22:45.227Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "f7953e0fc94a67e4ceb364e33bb197998fc17cf337e34032452099b43b7bba3d"
+    },
+    {
+      "name": "format",
+      "start": "2026-11-04T20:22:45.234Z",
+      "finish": "2026-11-04T20:22:47.851Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "417f7adcce539fe7774beaede68097be17e38a631e261203224a2407a23040bf"
+    },
+    {
+      "name": "build",
+      "start": "2026-11-04T20:22:47.858Z",
+      "finish": "2026-11-04T20:22:57.683Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "d599ea0971b8ae19387942877d5a019125a360ac85ef178d9437d0c0dd960304"
+    },
+    {
+      "name": "audit-full",
+      "start": "2026-11-04T20:22:57.691Z",
+      "finish": "2026-11-04T20:22:59.995Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "612f0da96e9bd080bcf6895e9658807e12784dc458a26564cf0b91881f89c40e"
+    },
+    {
+      "name": "audit-production",
+      "start": "2026-11-04T20:23:00.004Z",
+      "finish": "2026-11-04T20:23:02.124Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "612f0da96e9bd080bcf6895e9658807e12784dc458a26564cf0b91881f89c40e"
+    },
+    {
+      "name": "installed-graph",
+      "start": "2026-11-04T20:23:02.125Z",
+      "finish": "2026-11-04T20:23:04.113Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "99e09df84cdaf72a504bda0554acc4f3395ce79036d56b8f8e3becdd4a972f03"
+    },
+    {
+      "name": "browser",
+      "start": "2026-11-04T20:23:05.247Z",
+      "finish": "2026-11-04T20:25:12.227Z",
+      "exitCode": 0,
+      "error": null,
+      "logHash": "593897c9952f2858aaa72a9dbb8713fd40edb0c4ee2b82b55680b70f81d58bc3"
+    }
+  ],
+  "hashes": {
+    "package.json": "e0673210e07acd1523d5cb8669851aa566272e25aa7e87982dd308bc6e9e831c",
+    "package-lock.json": "ac41ab48d0ac6830823f5c3a7e96d3af9be574b68e484469a735f16703807064",
+    "tooling/next-eslint-plugin/package.json": "60d06114bdb9afd363bf8f433b761f467e617a963dbd4e104d03c433c0038ecc",
+    "tooling/next-eslint-plugin/README.md": "3f8e627222c6af256b235fe4e00f7f54ae953fbc5c0f634915e936b39d7b840a",
+    "tooling/next-eslint-plugin/dist/utils/get-root-dirs.js": "67d9b02933cbf6823a9ffa16d985bad094d29d3267abfe5c9d2b51b09e2c25b3",
+    "tooling/next-eslint-plugin/upstream.json": "5c227ac50409524e20382f39dd3c818f646bdc8e4abc5509ced240c3a2ae86a3",
+    "tests/lint-toolchain.test.ts": "848538e2d8b87215c348e705f0113e5c81cb5142fd8625e4fff906f5d8bf74e0",
+    "tests/fixtures/next-lint-config.json": "c15bee9da18f9853e63cf702efc9c19be8e5a47178d861ccdff1edfe9c51a3c1",
+    ".github/workflows/quality.yml": "6709eca22bf57bdef8d958a9f983f5cddc2f6cc25c7afad585ddd08942c4601b"
+  },
+  "retainedFailures": [
+    "The prior hosted run 41903678475 failed the full audit with ten moderate affected-package entries from two advisories.",
+    "The isolated trial lock encoded a symlink because it lacked project .npmrc; it was rejected and never copied.",
+    "Warm lock regeneration retained stale local package metadata. The old module tree and stale lock were preserved; only the local plugin lock entry was evicted before fresh npm resolution with install-links=true."
+  ],
+  "limits": [
+    "Latest hosted CI is recorded in PR #4 after push; this receipt describes local execution.",
+    "Existing npm ESLint 9.39.5 end-of-support warning remains visible.",
+    "Audit results are dated observations, not comprehensive security certification.",
+    "The maintained local Next lint patch remains; its removal requires independent official-release and regression verification.",
+    "Portfolio main/public deployment remain separately unapproved."
+  ]
+}
