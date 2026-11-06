@@ -1,6 +1,6 @@
 # Portfolio interview and reviewer briefing
 
-> TradeFlow section refreshed November 4, 2026: Phase 3C0 is accepted in source, while the public equities demo remains pinned to `265c9e0`. The other project sections retain their earlier review scope.
+> TradeFlow section refreshed November 6, 2026 after the observed public institutional release at `b021602`. Other project sections retain their earlier review scopes.
 >
 > Hosting update October 25, 2026: the portfolio and all four flagship demos run on Railway. CreditOps source is public. See [the current deployment/source matrix](PROJECT_DEPLOYMENTS.md) for actual release pins, TLS/backup boundaries and remaining closeout; earlier test counts retain their dated source scope.
 
@@ -14,12 +14,12 @@ Do not claim these portfolio systems are employer deployments. State clearly wha
 
 ## A fast inspection path for a hiring manager
 
-| Project       | Public first click                               | Technical evidence                                                                                       | Limitation to state                                                        |
-| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| AegisGraph    | https://aegisgraph.farhan-shafee.com             | https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md                                       | Synthetic; public mode read-only/deterministic, not a production SOC       |
-| CreditOps AI  | https://creditops.farhan-shafee.com/investigator | https://farhan-shafee.com/work/creditops-ai                                                              | Public source; recorded showcase playback; initiating causes unconfirmed   |
-| TradeFlow     | https://tradeflow.farhan-shafee.com              | https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/CURRENT_STATE.md          | Public equities book is ephemeral; local PostgreSQL/FIX source is separate |
-| CreditFlow QE | https://creditflow.farhan-shafee.com             | https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md | Synthetic ledger, no funds/settlement; idle demo may take time to wake     |
+| Project       | Public first click                               | Technical evidence                                                                                                   | Limitation to state                                                                                     |
+| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| AegisGraph    | https://aegisgraph.farhan-shafee.com             | https://github.com/farhan-shafee/aegisgraph/blob/main/docs/DEMO.md                                                   | Synthetic; public mode read-only/deterministic, not a production SOC                                    |
+| CreditOps AI  | https://creditops.farhan-shafee.com/investigator | https://farhan-shafee.com/work/creditops-ai                                                                          | Public source; recorded showcase playback; initiating causes unconfirmed                                |
+| TradeFlow     | https://tradeflow.farhan-shafee.com              | https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/PUBLIC_WORKFLOW_RELEASE_2026-11-06.md | Synthetic private institutional workspace; original-session access, no live trading or runtime FIX peer |
+| CreditFlow QE | https://creditflow.farhan-shafee.com             | https://github.com/farhan-shafee/creditflow-qe/blob/main/docs/interview-guide/five-minute-walkthrough.md             | Synthetic ledger, no funds/settlement; idle demo may take time to wake                                  |
 
 When a demo is unavailable, use the exact linked guide, source, and dated CI evidence. Say which execution was witnessed live and which is a historical artifact. Never silently substitute an older result for current execution.
 
@@ -43,15 +43,15 @@ Challenge to prepare: How do you distinguish an observed failure condition from 
 
 ## TradeFlow: five-minute engineering demonstration
 
-1. **0:00–0:45 | Public workstation.** Show synthetic login, orders and a specific order identity. State the public pin `265c9e0`: in-memory books reset, positions are static and there is no application database.
-2. **0:45–2:00 | Test ownership.** Open the per-test fixture and server session model. Explain how test-scoped data and in-memory storage state isolate order records and session credentials.
-3. **2:00–3:15 | Real contract failure.** Explain why a malformed HTTP 200 body fails runtime Zod and independent OpenAPI/AJV checks. Show one precise 409 cancellation invariant.
-4. **3:15–4:15 | Source and failure triage.** Open the current source index and distinguish opt-in local PostgreSQL financial workflows from the public demo. Phase 3C0 checks offline transcripts; it does not run a session engine or real peer. Use prepared reports to identify the failed assertion; normal authenticated traces are disabled.
-5. **4:15–5:00 | Current evidence.** Accepted source checkpoint `f31f6e2` passed all eight original main checks on attempt 1: 966 Node units, 117 financial Python tests, 78 session Python tests, 59 transcript expectations, 230/460 API/browser cases, 455 per PostgreSQL execution and 99/198 workstation cases. The current source index binds these counts to exact runs. The public October 25 release separately recorded 54 units, 211 Playwright executions, a 422-case local repeat and 20 public checks. No live exchange, brokerage, peer interoperability or trading-capacity claim.
+1. **0:00-0:45 | Scope and analytics.** Sign in with the published fake trader. State that this is synthetic. Calculate bond analytics and explain clean/dirty price and accrued interest.
+2. **0:45-2:00 | Private RFQ.** Start a workspace, send 100 par, request/accept the ATLAS quote 100.050000000123 and acknowledge the order. Explain exact prices and idempotent commands.
+3. **2:00-3:15 | Execution and cancellation.** Fill 40 par and cancel 60. Show 4002 consideration cents and signed cash -4002; distinguish immutable receipts, projections and separate static equities positions.
+4. **3:15-4:15 | Independent assessment.** Request reconciliation, inspect COMPLETED_CLEAN and source/tree/CLEAN provenance. Explain historical scope, independent SQL/Python and why assessment is not repair or external completeness.
+5. **4:15-5:00 | Ownership and proof.** Explain original-session access, 30-minute writes, 60-minute cleanup eligibility, no public recovery, restricted-role TLS and the observed database restart. Cite b021602, its eight first-attempt main checks, both 455/455 database runs and actual three-browser main-domain acceptance.
 
-Public-demo maintenance history: the [October 25 TradeFlow dependency record](https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md) explains the three compatible package patches, full/production audit gates and their dated evidence. Distinguish a clean advisory scan from proof of generalized security.
+The separate local launcher is a reproducible rehearsal/verification route, not a prerequisite for the main website. FIX is bounded application tooling and offline transcript conformance; no socket transport, running session engine or peer interoperability is implemented.
 
-Challenge to prepare: Why must the test own the exact record? What happens to state on restart? How do projects differ from workers? What would make the real trading integration materially different?
+Challenge to prepare: Why must a test own the exact record? How do database survival and session access differ on restart? Where do runtime schemas, OpenAPI and independent SQL/Python provide different evidence? What remains necessary for real institutional connectivity?
 
 ## CreditFlow QE: five-minute engineering demonstration
 

@@ -108,6 +108,21 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
   tradeflow: {
     sources: [
       {
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/33e7587c1a5294a7075a5bfc3f30f90bfbbd86f9/docs/PUBLIC_WORKFLOW_RELEASE_2026-11-06.md",
+        supports:
+          "November 6 production release: accepted merge b021602/tree0312dae, terminal Railway SUCCESS, real-domain Chromium/Firefox/WebKit analytics/RFQ/execution/cancellation/reconciliation acceptance, exact 4002-cent consideration, visitor/viewer boundaries, reload/mobile and genuine clean source provenance. Dedicated PostgreSQL 17.10 and three restricted roles verified TLS 1.3. The authorized pre-activation database restart preserved financial records, schema/identity, roles and certificates. Short public lifetimes, no recovery, rollback limits and synthetic/offline FIX boundaries remain explicit.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/42221090065",
+        supports:
+          "Exact release-merge persistence CI passed all seven jobs on first attempts. Both complete PostgreSQL runs passed 455/455 with zero failures/cancellations/skips, 247 financial executions, 44 rotations and retained capacity zero. These are finite source-bound results, not hosted load or availability evidence.",
+      },
+      {
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/42221089925",
+        supports:
+          "Exact release-merge quality passed on attempt 1, including audits/static checks, independent financial/FIX checks, native build/smoke and baseline/repeated API/browser validation.",
+      },
+      {
         url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/f31f6e28ea07c4927537c43d797dae8e11b1b85c/docs/FIX44_SESSION.md",
         supports:
           "November 4 accepted Phase 3C0 source checkpoint f31f6e2 implements the bounded offline A/0/1/5 session contract and reviewed transcripts. Post-merge quality run 41914340404/persistence run 41914340173 passed 8/8 on attempt 1: 966 units, 117 financial Python tests, 78 session tests, 59 expected reports, 230/460 legacy, 455 per fresh PostgreSQL execution with 247 executions/44 rotations, and 99/198 workstation. Synthetic/offline scope; no runtime session engine, transport, peer interoperability, verified delivery or completeness.",
@@ -118,12 +133,12 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
           "November 4 direct Railway provider reads confirmed tradeflow-app remains pinned to 265c9e0ed1fdc528193cd474d966513decd03d3b, successful deployment 30ca206b-765b-4fe5-ad22-50a1f2d02aec, no app database/volume and separate cloudflared ingress. The accepted source includes opt-in local PostgreSQL capabilities not deployed to that public equities slice. Portfolio production remains Railway main with Wait for CI.",
       },
       {
-        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/SECURITY_MAINTENANCE_2026-10-25.md",
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/SECURITY_MAINTENANCE_2026-10-25.md",
         supports:
           "October 25, 2026 compatible maintenance updates the locked Zod runtime to 4.6.7 and development-only Undici/fast-uri to 8.12.3/3.1.9. Fresh full and production audits returned zero known findings; local validation and CI require both audits. Registry availability and future advisory changes remain explicit limits. Patch 265c9e0ed1fdc528193cd474d966513decd03d3b passed CI 40214510996 with 54 units and 211 Playwright executions; local repeated execution passed 422. Railway deployment 30ca206b-765b-4fe5-ad22-50a1f2d02aec reached SUCCESS at 2026-10-25T17:08:36.249Z with that exact source. Twenty public acceptance checks passed at 2026-10-25T17:09:14.687237+00:00, including exact production-asset hashes and own-session trader/viewer workflows; verification sessions were revoked. App and tunnel each had one running and zero crashed replicas. The initial Firefox timeout remains disclosed; its cause is not established.",
       },
       {
-        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/RAILWAY_PRODUCTION.md",
+        url: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/RAILWAY_PRODUCTION.md",
         supports:
           "The initial October 25, 2026 provider review observed the earlier Railway Node app pinned to 7b125f63198b0eb38a2e7140aba0d83d2e7fcdc1, a separate cloudflared service, canonical Cloudflare HTTPS ingress and no database or volume. It is independent of the owner's computer; synthetic sessions and orders reset on app restart. Public website/health monitoring is separate from empty Railway ingress metrics and historical source-bound tests.",
       },
@@ -161,7 +176,7 @@ export const projectEvidenceBacklog: Record<string, ProjectEvidenceReview> = {
     statusReview: {
       status: "Active",
       reason:
-        "Phase 3C0 is accepted and merged, while later runtime-session milestones remain proposed. The active source includes local PostgreSQL/financial/FIX verification; the public demo is separately pinned to the older bounded equities slice. Neither surface establishes production trading or real peer interoperability.",
+        "The accepted institutional workflow is publicly deployed at b021602 with private visitor ownership, dedicated PostgreSQL/TLS and observed three-browser acceptance. Phase 3C0 remains bounded offline conformance; a runtime FIX session engine and real peer interoperability remain unimplemented. Active describes the synthetic project, not production trading.",
     },
     todos: [
       {

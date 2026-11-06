@@ -157,13 +157,20 @@ test("production robots uses the new sitemap while preview crawling stays disabl
   }
 });
 
-test("TradeFlow discovery names the source milestone and public deployment separately", async () => {
+test("TradeFlow discovery names the deployed release, visitor policy and offline FIX boundary", async () => {
   const text = (await getLlms().text())
     .split("## TradeFlow")[1]!
     .split("## CreditFlow QE")[0]!;
   assert.match(text, /Phase 3C0/);
-  assert.match(text, /f31f6e2/);
-  assert.match(text, /265c9e0/);
-  assert.match(text, /local.*PostgreSQL|PostgreSQL.*local/i);
+  assert.match(text, /b021602/);
+  assert.match(text, /dedicated PostgreSQL 17[.]10/i);
+  assert.match(text, /TLS/);
+  assert.match(text, /original session/);
+  assert.match(text, /30 minutes/);
+  assert.match(text, /60 minutes/);
   assert.match(text, /offline/i);
+  assert.match(text, /no real broker/i);
+  assert.match(text, /runtime FIX session engine/);
+  assert.match(text, /42221089925/);
+  assert.match(text, /42221090065/);
 });

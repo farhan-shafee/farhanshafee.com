@@ -133,44 +133,55 @@ test("TradeFlow features its public synthetic demo", () => {
   assert.match(JSON.stringify(project), /synthetic/i);
 });
 
-test("TradeFlow separates the deployed demo from the merged Phase 3C0 source", () => {
+test("TradeFlow binds its deployed institutional demo to reviewed source and bounded FIX claims", () => {
   const project = getProjectBySlug("tradeflow");
   assert.ok(project?.inspection && project.caseStudy);
   assert.equal(project.status, "Active");
   const text = JSON.stringify(project);
   assert.match(text, /Phase 3C0/);
-  assert.match(text, /f31f6e2/);
-  assert.match(text, /265c9e0/);
-  assert.match(text, /966/);
+  assert.match(text, /b021602/);
+  assert.match(text, /994/);
   assert.match(text, /455/);
-  assert.match(text, /59/);
+  assert.match(text, /4002/);
   assert.match(text, /PostgreSQL/);
+  assert.match(text, /TLS/);
   assert.match(text, /offline/i);
   assert.match(
     text,
-    /session engine.*(?:not|outside|unimplemented)|(?:not|outside|unimplemented).*session engine/i,
+    /No running FIX session engine|no.*runtime FIX session engine/i,
   );
+  assert.doesNotMatch(project.description, /equities.only|local.only/i);
   for (const suffix of [
     "/docs/CURRENT_STATE.md",
     "/docs/FIX44_SESSION.md",
-    "/actions/runs/41914340404",
-    "/actions/runs/41914340173",
+    "/docs/PUBLIC_WORKFLOW_RELEASE_2026-11-06.md",
+    "/actions/runs/42221089925",
+    "/actions/runs/42221090065",
   ]) {
     assert.ok(
       project.inspection.links.some(({ href }) => href.endsWith(suffix)),
       suffix,
     );
   }
-  assert.match(
-    project.inspection.facts.find(({ label }) => label === "Public demo")
-      ?.value ?? "",
-    /265c9e0/,
+  assert.ok(
+    project.inspection.links.some(
+      ({ href }) =>
+        href ===
+        "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/FIX44_SESSION.md",
+    ),
   );
   assert.match(
-    project.inspection.facts.find(({ label }) => label === "Source milestone")
+    project.inspection.facts.find(({ label }) => label === "Public release")
       ?.value ?? "",
-    /Phase 3C0/,
+    /b021602/,
   );
+  const ownership =
+    project.inspection.facts.find(({ label }) => label === "Public ownership")
+      ?.value ?? "";
+  assert.match(ownership, /original.session/i);
+  assert.match(ownership, /30.minute/i);
+  assert.match(ownership, /60 minutes/i);
+  assert.match(ownership, /No public recovery/i);
 });
 
 test("flagship case studies include inspectable quick guides and current proof", () => {
@@ -202,12 +213,12 @@ test("flagship case studies include inspectable quick guides and current proof",
   }
   assert.ok(
     tradeflow.inspection?.links.some((link) =>
-      link.href.includes("41914340173"),
+      link.href.includes("42221090065"),
     ),
   );
   assert.match(
     tradeflow.caseStudy?.validation?.paragraphs?.join(" ") ?? "",
-    /54 unit checks and 211 Playwright executions/,
+    /994 Node units/,
   );
 });
 
