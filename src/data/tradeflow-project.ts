@@ -8,15 +8,15 @@ export const tradeflowProject: Project = {
   category: "Fintech systems / Test engineering",
   kind: "personal",
   description:
-    "A synthetic trading SDET lab with PostgreSQL financial workflows, independent verification and offline FIX conformance, alongside a bounded public equities demo.",
+    "A public synthetic institutional-trading workstation with private RFQ workflows, exact execution accounting, PostgreSQL persistence and independent SDET verification.",
   sourceVisibility: "public",
   website: "https://tradeflow.farhan-shafee.com",
   inspection: {
     summary:
-      "Explore the accepted local/CI financial and FIX milestones in public source, and the separately pinned equities demo. Phase 3C0 is merged; a running FIX session engine remains unimplemented.",
+      "Sign in with the published fake credentials, calculate bond analytics, start a private workspace and follow a dealer quote through partial execution, cancellation and reconciliation. Inspect exact source and verification separately.",
     links: [
       {
-        label: "Live demo",
+        label: "Live institutional demo",
         href: "https://tradeflow.farhan-shafee.com",
         featured: true,
       },
@@ -26,20 +26,24 @@ export const tradeflowProject: Project = {
         featured: true,
       },
       {
+        label: "Verified public release",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/33e7587c1a5294a7075a5bfc3f30f90bfbbd86f9/docs/PUBLIC_WORKFLOW_RELEASE_2026-11-06.md",
+      },
+      {
         label: "Current state and evidence",
         href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/CURRENT_STATE.md",
       },
       {
-        label: "Local RFQ workstation",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/FIXED_INCOME_RFQ.md",
+        label: "RFQ and execution contract",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/FIXED_INCOME_RFQ.md",
       },
       {
-        label: "Controlled FIX application",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/FIX44_APPLICATION.md",
+        label: "Independent reconciliation",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/FIXED_INCOME_RECONCILIATION.md",
       },
       {
-        label: "Offline session conformance",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/FIX44_SESSION.md",
+        label: "Offline FIX session conformance",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/FIX44_SESSION.md",
       },
       {
         label: "Hosting and operations",
@@ -47,23 +51,19 @@ export const tradeflowProject: Project = {
       },
       {
         label: "Test strategy",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/TEST_STRATEGY.md",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/TEST_STRATEGY.md",
       },
       {
-        label: "Five-minute demo guide",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/main/docs/INTERVIEW_DEMO.md",
+        label: "Interview rehearsal guide",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/blob/b0216022cb8ff18de904efea9279c91b3977d55f/docs/INTERVIEW_DEMO.md",
       },
       {
-        label: "Main quality checkpoint",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/41914340404",
+        label: "Release quality CI",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/42221089925",
       },
       {
-        label: "Main database/workstation checkpoint",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/41914340173",
-      },
-      {
-        label: "CI history",
-        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/workflows/quality.yml?query=branch%3Amain",
+        label: "Release database/workstation CI",
+        href: "https://github.com/farhan-shafee/institutional-trading-sdet-lab/actions/runs/42221090065",
       },
     ],
     facts: [
@@ -73,105 +73,105 @@ export const tradeflowProject: Project = {
           "TypeScript, Node.js, Playwright, PostgreSQL, Python, SQL, OpenAPI and bounded FIX 4.4 tooling.",
       },
       {
-        label: "Source milestone",
+        label: "Public release",
         value:
-          "Phase 3C0 accepted at f31f6e2 on November 4; all eight post-merge checks passed on attempt 1.",
+          "Accepted PR #32; pinned b021602 deployed November 6. All eight main checks passed on first attempts.",
       },
       {
-        label: "Public demo",
+        label: "Observed workflow",
         value:
-          "Railway/Cloudflare equities slice pinned to 265c9e0; ephemeral books and no application database.",
+          "Three browsers checked a 100.00 par order, 40.00 fill, 4002-cent consideration, remainder cancellation and clean reconciliation.",
       },
       {
-        label: "Local/CI boundary",
+        label: "Public ownership",
         value:
-          "PostgreSQL workflow defaults OFF. Offline session conformance does not implement transport, a runtime session engine or peer interoperability.",
+          "Private original-session access; 30-minute writes and cleanup eligibility after 60 minutes. No public recovery.",
       },
     ],
   },
   caseStudy: {
     overview: {
       paragraphs: [
-        "TradeFlow makes quality engineering inspectable through synthetic trading workflows. Public source now includes fixed-income analytics, opt-in local PostgreSQL RFQ acceptance, order/execution and reconciliation workflows, controlled FIX application and Phase 3C0 offline session conformance. Every credential, quote, order and execution is synthetic.",
-        "The public Railway demo is a separately pinned equities slice at 265c9e0. Its session-owned books remain ephemeral, positions and quotes are fixed read models, and it has no application database. The accepted source checkpoint f31f6e2 does not imply that those later capabilities were deployed to the public demo.",
+        "TradeFlow makes institutional-trading test engineering inspectable through a working public synthetic workstation. Sign in with qa.user / Password123! or use qa.viewer for read-only inspection. The November 6 public release adds fictional bond analytics, private dealer RFQ workflows, simulated executions and historical reconciliation alongside the original equities book.",
+        "The app is pinned to accepted source b021602 and runs independently of the owner's computer. Dedicated PostgreSQL persistence uses separate restricted roles and verified TLS. Every credential, quote, order and execution is synthetic; the project is a personal engineering demonstration.",
       ],
     },
     problem: {
       paragraphs: [
-        "A passing click says little if a test inspects the wrong record, shares mutable state or accepts an arbitrary error. Financial retries also need evidence that they preserve the original operation instead of manufacturing a second effect. TradeFlow binds rules to owned records, exact outcomes and independently checked evidence.",
+        "A passing click says little if a test inspects the wrong record, shares mutable data or accepts an arbitrary error. Financial retries need evidence that they preserve the original operation instead of creating a second effect. TradeFlow binds rules to owned records, exact monetary outcomes and independently checked evidence.",
       ],
     },
     system: {
-      title: "From rule to executable evidence",
+      title: "From quote to independently checked evidence",
       steps: [
-        "Business rule",
-        "Owned synthetic session",
-        "Action through API or local SDK",
-        "Status, contract and retained-state checks",
-        "Independent financial/protocol verification",
-        "Human review",
+        "Private visitor workspace",
+        "Fictional dealer quote",
+        "Atomic quotation acceptance",
+        "Acknowledgment, partial fill and cancellation",
+        "Execution ledger and historical reconciliation",
+        "Source-bound test evidence",
       ],
       paragraphs: [
-        "The public demo exposes Overview, Orders, Positions and Activity, exact-record inspection and trader/viewer authorization. Public order submission creates a NEW order; it does not simulate an execution. Browser Activity clears on reload or logout.",
-        "The separate opt-in local PostgreSQL workstation exercises invited dealer quotes, atomic RFQ acceptance, controlled acknowledgments/fills/cancellations, execution-derived cash/positions and historical reconciliation. Phase 3C0 classifies reviewed administrative-message transcripts offline; its reports keep peer interoperability, delivery, financial application and external completeness unverified.",
+        "Calculate clean/dirty bond prices and accrued interest, then start a private workspace. Send a 100.00 par RFQ, accept the ATLAS quotation 100.050000000123, acknowledge the order, execute 40.00 par and cancel the remaining 60.00. The verified journey records 4002 consideration cents and signed cash -4002 cents.",
+        "Reconciliation returns a historical assessment with source/tree/CLEAN provenance and explicit completeness boundaries. A viewer has a separate read-only workspace; cross-visitor reads are denied. The original equities book remains session-owned, and its static positions do not imply fills.",
       ],
     },
     architecture: {
       paragraphs: [
-        "The public demo uses a Railway Node.js HTTP app behind a separate cloudflared service and Cloudflare HTTPS. Its release is pinned, with no application database or persistent volume. Test-scoped API sessions and in-memory browser storage state isolate each default equities book.",
-        "Accepted local/CI source adds opt-in PostgreSQL workflows with scoped roles, forced RLS, immutable receipts and execution evidence, original-key recovery and finite capacity. Independent Python and SQL verification check financial and retained-protocol evidence. This database workflow defaults OFF and is not part of the public equities release.",
-        "The bounded FIX application-message codec and explicitly opted-in server-side application SDK are separate from the offline A/0/1/5 session classifier. No running session engine, socket transport, durable session store or independent peer is implemented by Phase 3C0. Zod/runtime schemas and an independent OpenAPI/AJV oracle remain part of the API test architecture.",
+        "Cloudflare HTTPS enters through a separate Railway cloudflared service to the private native Node.js app. A dedicated PostgreSQL 17.10 database stores short-lived institutional records over certificate/hostname-verified TLS. App, reconciler and maintenance roles use separate restricted credentials; admin and migration credentials are absent from the app.",
+        "Public workspace ownership stays server-side and ends with the original synthetic session, logout or app restart. Workspace writes last 30 minutes; records become cleanup-eligible after 60 minutes subject to lease and infrastructure rules. Database record retention does not provide post-session access or public capability recovery. Local durable ownership retains its separate contract.",
+        "Independent Python and SQL verification check financial and retained protocol evidence. Bounded FIX application-message tooling and the explicitly opted-in local server SDK remain separate from the Phase 3C0 offline A/0/1/5 session classifier. No running FIX session engine, socket transport, persistent session store or independent peer is implemented.",
       ],
     },
     whatIBuilt: {
       paragraphs: [
-        "API/UI integration tests follow exact owned order IDs and reject malformed HTTP 200 bodies. Delayed-response regressions prevent an older request from overwriting a newer session or accepted mutation. Real PostgreSQL tests add concurrency, authorization, transactional recovery, corruption detection, protected reservation accounting and cleanup checks.",
-        "The offline session pack contains 59 literal expected reports and 57 raw SOH fixtures, with an independent Python evaluator and explicit invalid, incomplete and out-of-scope outcomes. Corpus admission, reference pins and bounds fail closed. The existing application codec continues rejecting administrative messages, and the new checker never calls the financial SDK.",
+        "The tests follow exact owned records across API, database and browser layers, with runtime Zod validation and an independently interpreted OpenAPI/AJV oracle. Controlled malformed-200 and stale-response regressions check failures that click-only automation would miss.",
+        "The public profile adds private bootstrap, finite retention/capacity, least-privilege TLS configuration and native Git provenance. The owner-authorized database restart preserved the synthetic financial fixture, schema identity, role properties and certificates before public activation.",
       ],
     },
     engineeringDecisions: {
       bullets: [
-        "Separate the pinned public demo from later accepted local/CI source. A source merge or green CI does not update the public application pin.",
-        "Keep financial rules, authorization and immutable operation identities authoritative across retries; use independent Python/SQL evidence rather than deriving expected outcomes from the implementation under test.",
-        "Run API/contract cases once and browser workflows in Chromium, Firefox and WebKit. Preserve owned resources, deadlines, cleanup and first-failure evidence; keep intentional failure demos separate.",
-        "Define executable offline session rules before introducing a runtime engine or real peer. Expected INVALID/OUT_OF_SCOPE matches are successful oracle comparisons, not successful session interoperability.",
+        "Use immutable execution receipts and exact integer cents; reconcile historical snapshots with independent checks rather than repairing financial state.",
+        "Separate API/contract coverage from Chromium, Firefox and WebKit journeys. Preserve owned-resource cleanup, existing deadlines, assertions and first-failure evidence.",
+        "Keep public session ownership ephemeral even when records survive a database restart; use a short-lived demonstration policy instead of exposing native recovery capabilities.",
+        "Define executable offline FIX rules before introducing a runtime engine or real peer. Expected INVALID/OUT_OF_SCOPE fixture reports do not establish interoperability.",
       ],
     },
     validation: {
       paragraphs: [
-        "November 4, 2026 Phase 3C0 checkpoint f31f6e2 was merged in PR #29 with a GitHub Verified signature and the exact reviewed tree. Main quality run 41914340404 and persistence run 41914340173 completed on attempt 1, with all eight checks successful. Quality/regression each passed 966 Node units, 117 independent financial Python tests, 78 session Python tests, 59 expected transcript reports and 230 baseline/460 repeated API/browser cases.",
-        "Both post-merge PostgreSQL executions passed 455/455, preserving 247 financial executions and 44 rotations per execution. All three workload phases stayed below the unchanged 30-second deadline. The three-browser workstation passed 99 baseline and 198 repeated cases; retained capacity returned to zero. Counts belong to that exact source checkpoint; documentation-only revisions may follow it.",
-        "The public equities release remains 265c9e0, rechecked in provider metadata on November 4. Its October 25 maintenance evidence recorded 54 unit checks and 211 Playwright executions, a 422-case local repeat and 20 public acceptance checks. Those historical deployed-release results are separate from current source/CI evidence. Earlier lifecycle and timeout incidents remain disclosed; later green runs do not establish their causal resolution.",
+        "Release merge b021602 passed all eight main jobs on first attempts: quality run 42221089925 and persistence run 42221090065. Both complete PostgreSQL executions passed 455/455 with zero failures/cancellations/skips, 247 financial executions, 44 rotations and retained capacity returned to zero.",
+        "Exact-candidate local qualification passed 994 Node units, 230 baseline/460 repeated API/browser cases, two 455-case PostgreSQL runs, 99/198 workstation cases, the real public image and a bounded interview journey. Named command results are separate categories; documentation-only commits may follow the pinned release.",
+        "Actual production-domain Chromium, Firefox and WebKit journeys verified analytics, quote acceptance, acknowledgment, 40.00 par execution, 4002-cent consideration, cancellation and COMPLETED_CLEAN reconciliation. Reload, viewer/cross-visitor boundaries, genuine Git provenance and 320 px layout passed. All three runtime roles independently verified TLS 1.3 from the deployed app.",
       ],
     },
     lessonsConstraints: {
       paragraphs: [
-        "This is an active personal engineering lab with a completed Phase 3C0 milestone. The pinned public equities demo has ephemeral books and static positions. Durable RFQ/execution/reconciliation behavior belongs to the explicitly opted-in local/CI workflow, not that public deployment.",
-        "All data is synthetic. There is no live brokerage/exchange or market feed, matching, real-money P&L, settlement or production-trading claim. Phase 3C0 does not implement a running FIX session engine, transport, heartbeat scheduling, durable session state, real recovery or independent-peer interoperability. Reconciliation is a historical assessment, not financial repair or proof of external completeness. No employer/customer material is used; availability and capacity are not certified.",
+        "This is a bounded synthetic engineering lab. Public sessions and equities books reset on app restart; institutional records have separate short retention and no public recovery. Reconciliation is a historical assessment, not financial repair or external completeness proof. Old equities screenshots below retain their original scope.",
+        "There is no live broker/exchange or market feed, matching engine, real-money P&L, settlement, running FIX session engine or peer interoperability. Finite browser/database checks do not establish sustained capacity, availability, regulated-trading suitability or generalized resolution of historical intermittent failures. No employer or customer material is used.",
       ],
     },
   },
   technicalHighlights: [
-    "Test-owned sessions connect exact-record UI assertions with independently validated API state.",
-    "Local PostgreSQL workflows exercise financial idempotency, concurrency, retained evidence and independently verified recovery.",
-    "Phase 3C0 turns selected FIX session rules into 59 reviewed offline transcript expectations with explicit claim boundaries.",
+    "A public RFQ-to-execution journey exposes exact monetary effects and independently assessed reconciliation.",
+    "Private visitor workspaces combine session ownership with restricted-role PostgreSQL over verified TLS.",
+    "Source-bound three-browser evidence and offline FIX conformance keep observed behavior separate from unimplemented peer claims.",
   ],
   screenshots: [
     {
       src: "/projects/tradeflow/orders-workstation.jpg",
-      alt: "TradeFlow synthetic order blotter with server-side filters, lifecycle states, and a LIMIT order ticket.",
+      alt: "TradeFlow synthetic equities order blotter with filters, lifecycle states and a LIMIT ticket.",
       width: 1425,
       height: 1167,
       caption:
-        "Public equities-slice capture: session-owned synthetic book and LIMIT ticket. Submission creates a NEW order without simulating execution; this image does not show later PostgreSQL/FIX source milestones.",
+        "Historical equities-view capture. Submission creates a NEW order; this image does not show the later public institutional RFQ/execution workflow.",
     },
     {
       src: "/projects/tradeflow/order-details.jpg",
-      alt: "Exact synthetic AAPL LIMIT order details showing quantity one million, price 0.001, and NEW status.",
+      alt: "Exact synthetic AAPL LIMIT details with quantity one million, price 0.001 and NEW status.",
       width: 1425,
       height: 891,
       caption:
-        "Details preserve the exact generated order ID and accepted sub-cent LIMIT price. The state summary records creation time and current status.",
+        "Historical equities detail capture preserves the exact generated order ID and accepted sub-cent LIMIT price.",
     },
   ],
   technologies: [
