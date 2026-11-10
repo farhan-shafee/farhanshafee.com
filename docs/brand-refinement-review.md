@@ -4,6 +4,8 @@
 
 Reviewed 2026-09-16 (America/New_York). The pre-edit audit, implementation, visual comparison, and production-build validation are complete. All 26 unit tests and 17 browser tests pass.
 
+> **Current status (2026-11-10):** Job Intelligence Engine has been retired and its local repository deleted. This historical review preserves its September 2026 observations and screenshot links for audit context, not as current portfolio work or a project to revive.
+
 Scope: refine the current personal site while preserving its factual positioning, public projects, static rendering, and production origin, `https://farhan-shafee.com`. The [pre-edit audit](brand-refinement-audit.md) records the baseline findings.
 
 ## 1. Audit findings
@@ -133,7 +135,7 @@ The production origin remains `https://farhan-shafee.com`. No public reference t
 
 ## 19. Worth improving later
 
-Populate Uses only when Farhan confirms the actual tool inventory. Review and publish the first technical article when its evidence and editorial review are complete. Add real Job Intelligence Engine interface or execution evidence when suitable public material exists. Replace or supplement the fictional CyberBit sample only with authorized, appropriately redacted evidence; its current qualification must remain until then. Keep the short Now page current when the underlying focus changes, without generating artificial updates.
+Populate Uses only when Farhan confirms the actual tool inventory. Review and publish the first technical article when its evidence and editorial review are complete. Replace or supplement the fictional CyberBit sample only with authorized, appropriately redacted evidence; its current qualification must remain until then. Keep the short Now page current when the underlying focus changes, without generating artificial updates.
 
 ## 20. Revisit when AegisGraph is ready
 

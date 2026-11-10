@@ -4,6 +4,8 @@
 
 Reviewed 2026-09-16, against production `https://farhan-shafee.com` and the local production build at commit `42e394a`. This audit was written before implementation changes.
 
+> **Current status (2026-11-10):** Job Intelligence Engine has been retired and its local repository deleted. References to it below document the September 2026 portfolio state only; they are not current recommendations, published project entries, or work to revive.
+
 ## Scope and evidence
 
 The browser review covered Home, About, Work, CyberBit, Job Intelligence Engine, Writing, Lab, Uses, Now, and Contact. Desktop production captures and local mobile captures are under `.artifacts/brand-refinement/before/`. The seven comparison pages have 1440px dark and 375px light baselines; Home also has 320, 430, 768, and 1920px light captures. Case-study captures were repeated after scrolling to load the lazy images. Source review covered shared styles, components, page content, project evidence, publication filtering, and metadata.
