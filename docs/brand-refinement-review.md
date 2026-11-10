@@ -4,6 +4,8 @@
 
 Reviewed 2026-09-16 (America/New_York). The pre-edit audit, implementation, visual comparison, and production-build validation are complete. All 26 unit tests and 17 browser tests pass.
 
+> **Current status (2026-11-10):** Job Intelligence Engine has been retired and its local repository deleted. This historical review preserves its September 2026 observations and screenshot links for audit context, not as current portfolio work or a project to revive.
+
 Scope: refine the current personal site while preserving its factual positioning, public projects, static rendering, and production origin, `https://farhan-shafee.com`. The [pre-edit audit](brand-refinement-audit.md) records the baseline findings.
 
 ## 1. Audit findings
@@ -99,15 +101,15 @@ Open the local [side-by-side comparison gallery](../.artifacts/brand-refinement/
 
 The seven requested comparison pages have desktop captures at 1440px in dark mode and mobile captures at 375px in light mode. Before/after pairs were inspected from disk and reviewed at desktop and mobile sizes. Final after captures include the image-loading and contrast corrections. Writing uses a 375�1000 viewport capture because the browser tool produced a distorted full-page capture on that short page; direct viewport inspection and browser layout checks confirmed the actual page layout.
 
-| Page                    | Desktop before                                                           | Desktop after                                                          | Mobile before                                                            | Mobile after                                                           |
-| ----------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Home                    | [Before](../.artifacts/brand-refinement/before/home-dark-1440.jpg)       | [After](../.artifacts/brand-refinement/after/home-dark-1440.jpg)       | [Before](../.artifacts/brand-refinement/before/home-light-375.jpg)       | [After](../.artifacts/brand-refinement/after/home-light-375.jpg)       |
-| Work                    | [Before](../.artifacts/brand-refinement/before/work-dark-1440.jpg)       | [After](../.artifacts/brand-refinement/after/work-dark-1440.jpg)       | [Before](../.artifacts/brand-refinement/before/work-light-375.jpg)       | [After](../.artifacts/brand-refinement/after/work-light-375.jpg)       |
-| CyberBit                | [Before](../.artifacts/brand-refinement/before/cyberbit-dark-1440.jpg)   | [After](../.artifacts/brand-refinement/after/cyberbit-dark-1440.jpg)   | [Before](../.artifacts/brand-refinement/before/cyberbit-light-375.jpg)   | [After](../.artifacts/brand-refinement/after/cyberbit-light-375.jpg)   |
-| Job Intelligence Engine | [Before](../.artifacts/brand-refinement/before/job-engine-dark-1440.jpg) | [After](../.artifacts/brand-refinement/after/job-engine-dark-1440.jpg) | [Before](../.artifacts/brand-refinement/before/job-engine-light-375.jpg) | [After](../.artifacts/brand-refinement/after/job-engine-light-375.jpg) |
-| About                   | [Before](../.artifacts/brand-refinement/before/about-dark-1440.jpg)      | [After](../.artifacts/brand-refinement/after/about-dark-1440.jpg)      | [Before](../.artifacts/brand-refinement/before/about-light-375.jpg)      | [After](../.artifacts/brand-refinement/after/about-light-375.jpg)      |
-| Writing                 | [Before](../.artifacts/brand-refinement/before/writing-dark-1440.jpg)    | [After](../.artifacts/brand-refinement/after/writing-dark-1440.jpg)    | [Before](../.artifacts/brand-refinement/before/writing-light-375.jpg)    | [After](../.artifacts/brand-refinement/after/writing-light-375.jpg)    |
-| Lab                     | [Before](../.artifacts/brand-refinement/before/lab-dark-1440.jpg)        | [After](../.artifacts/brand-refinement/after/lab-dark-1440.jpg)        | [Before](../.artifacts/brand-refinement/before/lab-light-375.jpg)        | [After](../.artifacts/brand-refinement/after/lab-light-375.jpg)        |
+| Page                    | Desktop before                                                         | Desktop after                                                        | Mobile before                                                          | Mobile after                                                         |
+| ----------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Home                    | [Before](../.artifacts/brand-refinement/before/home-dark-1440.jpg)     | [After](../.artifacts/brand-refinement/after/home-dark-1440.jpg)     | [Before](../.artifacts/brand-refinement/before/home-light-375.jpg)     | [After](../.artifacts/brand-refinement/after/home-light-375.jpg)     |
+| Work                    | [Before](../.artifacts/brand-refinement/before/work-dark-1440.jpg)     | [After](../.artifacts/brand-refinement/after/work-dark-1440.jpg)     | [Before](../.artifacts/brand-refinement/before/work-light-375.jpg)     | [After](../.artifacts/brand-refinement/after/work-light-375.jpg)     |
+| CyberBit                | [Before](../.artifacts/brand-refinement/before/cyberbit-dark-1440.jpg) | [After](../.artifacts/brand-refinement/after/cyberbit-dark-1440.jpg) | [Before](../.artifacts/brand-refinement/before/cyberbit-light-375.jpg) | [After](../.artifacts/brand-refinement/after/cyberbit-light-375.jpg) |
+| Job Intelligence Engine | Archived; link omitted                                                 | Archived; link omitted                                               | Archived; link omitted                                                 | Archived; link omitted                                               |
+| About                   | [Before](../.artifacts/brand-refinement/before/about-dark-1440.jpg)    | [After](../.artifacts/brand-refinement/after/about-dark-1440.jpg)    | [Before](../.artifacts/brand-refinement/before/about-light-375.jpg)    | [After](../.artifacts/brand-refinement/after/about-light-375.jpg)    |
+| Writing                 | [Before](../.artifacts/brand-refinement/before/writing-dark-1440.jpg)  | [After](../.artifacts/brand-refinement/after/writing-dark-1440.jpg)  | [Before](../.artifacts/brand-refinement/before/writing-light-375.jpg)  | [After](../.artifacts/brand-refinement/after/writing-light-375.jpg)  |
+| Lab                     | [Before](../.artifacts/brand-refinement/before/lab-dark-1440.jpg)      | [After](../.artifacts/brand-refinement/after/lab-dark-1440.jpg)      | [Before](../.artifacts/brand-refinement/before/lab-light-375.jpg)      | [After](../.artifacts/brand-refinement/after/lab-light-375.jpg)      |
 
 These files live in the ignored local `.artifacts/brand-refinement/{before,after}` directories. They are not public site assets and will not be deployed or included in the Git commit. Additional baseline captures cover Home at 320, 430, 768, and 1920px and the Uses, Now, and Contact pages.
 
@@ -133,7 +135,7 @@ The production origin remains `https://farhan-shafee.com`. No public reference t
 
 ## 19. Worth improving later
 
-Populate Uses only when Farhan confirms the actual tool inventory. Review and publish the first technical article when its evidence and editorial review are complete. Add real Job Intelligence Engine interface or execution evidence when suitable public material exists. Replace or supplement the fictional CyberBit sample only with authorized, appropriately redacted evidence; its current qualification must remain until then. Keep the short Now page current when the underlying focus changes, without generating artificial updates.
+Populate Uses only when Farhan confirms the actual tool inventory. Review and publish the first technical article when its evidence and editorial review are complete. Replace or supplement the fictional CyberBit sample only with authorized, appropriately redacted evidence; its current qualification must remain until then. Keep the short Now page current when the underlying focus changes, without generating artificial updates.
 
 ## 20. Revisit when AegisGraph is ready
 
